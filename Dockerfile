@@ -37,18 +37,19 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
-
-# Cache Laravel config
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+    && chmod -R 755 /var/www/storage \
+    && chmod -R 755 /var/www/bootstrap/cache
 
 # Expose port
 EXPOSE 8080
 
-# Create start script
+# Create start script that runs cache commands at runtime
 RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'echo "Starting Laravel application..."' >> /start.sh && \
+    echo 'php artisan config:cache' >> /start.sh && \
+    echo 'php artisan route:cache' >> /start.sh && \
+    echo 'php artisan view:cache' >> /start.sh && \
+    echo 'echo "Server starting on port ${PORT:-8080}..."' >> /start.sh && \
     echo 'php artisan serve --host=0.0.0.0 --port=${PORT:-8080}' >> /start.sh && \
     chmod +x /start.sh
 
