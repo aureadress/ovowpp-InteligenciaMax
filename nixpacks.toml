@@ -8,10 +8,9 @@ cmds = ['composer install --no-dev --optimize-autoloader --ignore-platform-reqs'
 # Create necessary directories with proper permissions
 cmds = [
     'mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache',
-    'chmod -R 775 storage bootstrap/cache',
-    'echo "Build completed at: $(date)" > storage/logs/build.log'
+    'chmod -R 775 storage bootstrap/cache'
 ]
 
 [start]
-# Use dedicated start script for better logging and control
-cmd = './start.sh'
+# Use bash to execute start script with proper permissions
+cmd = 'bash start.sh'
