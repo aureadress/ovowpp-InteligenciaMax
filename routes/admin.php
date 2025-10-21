@@ -295,7 +295,7 @@ Route::middleware('admin')->group(function () {
 
         // Pusher Configuration
         Route::get('pusher-configuration', 'pusherConfiguration')->name('setting.pusher.configuration')->middleware('permission:pusher configuration,admin');
-        Route::post('pusher-configuration', 'pusherConfigurationUpdate')->name('setting.pusher.configuration')->middleware('permission:pusher configuration,admin');
+        Route::post('pusher-configuration', 'pusherConfigurationUpdate')->middleware('permission:pusher configuration,admin');
 
 
         Route::get('setting/social/credentials', 'socialiteCredentials')->name('setting.socialite.credentials')->middleware('permission:social login settings,admin');
@@ -308,7 +308,7 @@ Route::middleware('admin')->group(function () {
 
         // Logo-Icon
         Route::get('setting/brand', 'logoIcon')->name('setting.brand')->middleware('permission:update brand settings,admin');
-        Route::post('setting/brand', 'logoIconUpdate')->name('setting.brand')->middleware('permission:update brand settings,admin');
+        Route::post('setting/brand', 'logoIconUpdate')->middleware('permission:update brand settings,admin');
 
         //Custom CSS
         Route::get('custom-css', 'customCss')->name('setting.custom.css')->middleware('permission:custom css,admin');

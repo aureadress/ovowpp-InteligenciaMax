@@ -12,5 +12,6 @@ cmds = [
 ]
 
 [start]
-# Clear all caches and start server without caching (to avoid route serialization issues)
+# IMPORTANT: NO CACHING - Only clear commands to prevent route serialization errors
+# Updated: 2025-10-21 - All route duplicates fixed, caching disabled
 cmd = 'php artisan config:clear && php artisan cache:clear && php artisan view:clear && php artisan serve --host=0.0.0.0 --port=$PORT'
