@@ -1,0 +1,55 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Node
+node_modules
+npm-debug.log
+
+# Laravel
+/vendor
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+!storage/framework/.gitkeep
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+!storage/logs/.gitkeep
+!bootstrap/cache/.gitkeep
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+*.log
+npm-debug.log*
+
+# Documentation
+README.md
+CLAUDE.md
+GEMINI.md
+*.md
+
+# Backup files
+*.backup
+Dockerfile.backup
+
+# Railway/Nixpacks configs (not needed for Docker build)
+railway-config.json
+nixpacks.toml
+nixpacks.json
+.nixpacks
+railway.json
+.railwayignore
