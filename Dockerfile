@@ -45,7 +45,10 @@ EXPOSE 8080
 
 # Create start script that runs cache commands at runtime
 RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'cd /var/www' >> /start.sh && \
     echo 'echo "Starting Laravel application..."' >> /start.sh && \
+    echo 'php artisan config:clear' >> /start.sh && \
+    echo 'php artisan cache:clear' >> /start.sh && \
     echo 'php artisan config:cache' >> /start.sh && \
     echo 'php artisan route:cache' >> /start.sh && \
     echo 'php artisan view:cache' >> /start.sh && \
