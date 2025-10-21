@@ -47,8 +47,6 @@ EXPOSE 8080
 RUN echo '#!/bin/sh' > /start.sh && \
     echo 'set -e' >> /start.sh && \
     echo 'cd /var/www' >> /start.sh && \
-    echo 'pwd' >> /start.sh && \
-    echo 'ls -la' >> /start.sh && \
     echo 'echo "Starting Laravel application..."' >> /start.sh && \
     echo 'php artisan config:clear' >> /start.sh && \
     echo 'php artisan cache:clear' >> /start.sh && \
@@ -56,7 +54,7 @@ RUN echo '#!/bin/sh' > /start.sh && \
     echo 'php artisan route:cache' >> /start.sh && \
     echo 'php artisan view:cache' >> /start.sh && \
     echo 'echo "Server starting on port ${PORT:-8080}..."' >> /start.sh && \
-    echo 'exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080} --no-reload' >> /start.sh && \
+    echo 'exec php -S 0.0.0.0:${PORT:-8080} -t /var/www index.php' >> /start.sh && \
     chmod +x /start.sh
 
 # Start PHP built-in server
