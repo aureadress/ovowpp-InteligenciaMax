@@ -9,6 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "ext-bcmath": "*",
+        "ext-gd": "*",
+        "ext-gmp": "*",
+        "ext-mbstring": "*",
+        "ext-xml": "*",
+        "ext-zip": "*",
+        "ext-pdo_mysql": "*",
         "authorizenet/authorizenet": "^2.0",
         "barryvdh/laravel-dompdf": "^3.0",
         "btcpayserver/btcpayserver-greenfield-php": "^2.3",
@@ -88,6 +95,16 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.3",
+            "ext-bcmath": "8.3",
+            "ext-gd": "8.3",
+            "ext-gmp": "8.3",
+            "ext-mbstring": "8.3",
+            "ext-xml": "8.3",
+            "ext-zip": "8.3",
+            "ext-pdo_mysql": "8.3"
         }
     },
     "minimum-stability": "stable",

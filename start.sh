@@ -4,7 +4,7 @@ set -e
 echo "========================================="
 echo "🚀 Starting InteligenciaMax Application"
 echo "========================================="
-echo "Build Version: 2025-10-21-FINAL"
+echo "Build Version: 2025-10-21-NIXPACKS-FORCED"
 echo "Timestamp: $(date)"
 echo "========================================="
 
