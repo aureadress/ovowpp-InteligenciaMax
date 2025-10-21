@@ -47,5 +47,10 @@ RUN php artisan config:cache && \
 # Expose port
 EXPOSE 8080
 
+# Create start script
+RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'php artisan serve --host=0.0.0.0 --port=${PORT:-8080}' >> /start.sh && \
+    chmod +x /start.sh
+
 # Start PHP built-in server
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+CMD ["/start.sh"]
