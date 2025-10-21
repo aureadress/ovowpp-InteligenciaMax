@@ -26,6 +26,7 @@ use App\Http\Middleware\HasSubscription;
 use App\Http\Middleware\IsParentUser;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Middleware\RemoveWWW;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -53,6 +54,9 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Global middleware - applies to all requests
+        $middleware->append(RemoveWWW::class);
+        
         $middleware->group('web', [
             AddQueuedCookiesToResponse::class,
             StartSession::class,

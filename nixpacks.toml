@@ -5,7 +5,12 @@ nixPkgs = ['php83', 'php83Extensions.bcmath', 'php83Extensions.ctype', 'php83Ext
 cmds = ['composer install --no-dev --optimize-autoloader --ignore-platform-reqs']
 
 [phases.build]
-cmds = ['php artisan config:cache', 'php artisan route:cache', 'php artisan view:cache']
+# Create necessary directories with proper permissions
+cmds = [
+    'mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache',
+    'chmod -R 775 storage bootstrap/cache'
+]
 
 [start]
-cmd = 'php artisan serve --host=0.0.0.0 --port=$PORT'
+# Clear caches first, then start server
+cmd = 'php artisan config:clear && php artisan cache:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT'
