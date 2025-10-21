@@ -70,7 +70,7 @@ Route::middleware('admin')->group(function () {
     Route::controller('SubscriberController')->prefix('subscriber')->name('subscriber.')->middleware('permission:manage subscribers,admin')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('send-email', 'sendEmailForm')->name('send.email')->middleware('permission:send user notification,admin');
-        Route::post('send-email', 'sendEmail')->name('send.email')->middleware('permission:send user notification,admin');
+        Route::post('send-email', 'sendEmail')->middleware('permission:send user notification,admin');
         Route::post('remove/{id}', 'remove')->name('remove');
     });
 
