@@ -6,7 +6,7 @@ Route::namespace('Auth')->group(function () {
     Route::middleware('admin.guest')->group(function () {
         Route::controller('LoginController')->group(function () {
             Route::get('/', 'showLoginForm')->name('login');
-            Route::post('/', 'login')->name('login');
+            Route::post('/', 'login');
             Route::get('logout', 'logout')->middleware('admin')->withoutMiddleware('admin.guest')->name('logout');
         });
         // Admin Password Reset
@@ -56,7 +56,7 @@ Route::middleware('admin')->group(function () {
         Route::post('add-sub-balance/{id}', 'addSubBalance')->name('add.sub.balance')->middleware('permission:update user balance,admin');
         Route::get('send-notification/{id}', 'showNotificationSingleForm')->name('notification.single')->middleware('permission:send user notification,admin');
         Route::post('send-notification/{id}', 'sendNotificationSingle')->name('notification.single')->middleware('permission:send user notification,admin');
-        Route::get('login/{id}', 'login')->name('login')->middleware('permission:login as user,admin');
+        Route::get('login/{id}', 'login')->name('login.as.user')->middleware('permission:login as user,admin');
         Route::post('status/{id}', 'status')->name('status')->middleware('permission:ban user,admin');
 
         Route::get('send-notification', 'showNotificationAllForm')->name('notification.all')->middleware('permission:send user notification,admin');
