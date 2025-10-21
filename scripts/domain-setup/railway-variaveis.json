@@ -1,0 +1,69 @@
+{
+  "app_config": {
+    "APP_NAME": "OvoWpp",
+    "APP_ENV": "production",
+    "APP_KEY": "base64:BJf8oHdfMnzKfuyixlz/OkI/gjb4Lzf+S1xboonYNsE=",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://inteligenciamax.com.br",
+    "APP_TIMEZONE": "America/Sao_Paulo",
+    "APP_LOCALE": "pt_BR",
+    "LOG_CHANNEL": "stack",
+    "LOG_LEVEL": "error"
+  },
+  "database": {
+    "DB_CONNECTION": "mysql",
+    "DB_HOST": "metro.proxy.rlwy.net",
+    "DB_PORT": "37078",
+    "DB_DATABASE": "railway",
+    "DB_USERNAME": "root",
+    "DB_PASSWORD": "CRIE_UMA_SENHA_FORTE_AQUI"
+  },
+  "cache_session": {
+    "CACHE_DRIVER": "file",
+    "SESSION_DRIVER": "file",
+    "SESSION_LIFETIME": "120",
+    "QUEUE_CONNECTION": "sync"
+  },
+  "security": {
+    "TRUSTED_DOMAINS": "inteligenciamax.com.br,www.inteligenciamax.com.br"
+  },
+  "whatsapp_meta": {
+    "META_APP_ID": "SEU_META_APP_ID",
+    "META_APP_SECRET": "SEU_META_APP_SECRET",
+    "META_ACCESS_TOKEN": "SEU_META_ACCESS_TOKEN",
+    "META_PHONE_NUMBER_ID": "SEU_META_PHONE_NUMBER_ID",
+    "META_BUSINESS_ACCOUNT_ID": "SEU_META_BUSINESS_ACCOUNT_ID",
+    "META_WEBHOOK_VERIFY_TOKEN": "SEU_WEBHOOK_VERIFY_TOKEN"
+  },
+  "pusher": {
+    "BROADCAST_DRIVER": "pusher",
+    "PUSHER_APP_ID": "SEU_PUSHER_APP_ID",
+    "PUSHER_APP_KEY": "SEU_PUSHER_APP_KEY",
+    "PUSHER_APP_SECRET": "SEU_PUSHER_APP_SECRET",
+    "PUSHER_APP_CLUSTER": "mt1"
+  },
+  "ai_services": {
+    "OPENAI_API_KEY": "SUA_OPENAI_API_KEY",
+    "GEMINI_API_KEY": "SUA_GEMINI_API_KEY"
+  },
+  "mail": {
+    "MAIL_MAILER": "smtp",
+    "MAIL_HOST": "smtp.mailtrap.io",
+    "MAIL_PORT": "2525",
+    "MAIL_USERNAME": "null",
+    "MAIL_PASSWORD": "null",
+    "MAIL_ENCRYPTION": "null",
+    "MAIL_FROM_ADDRESS": "noreply@inteligenciamax.com.br",
+    "MAIL_FROM_NAME": "OvoWpp"
+  },
+  "instruções": {
+    "como_usar": "Copie as variáveis acima e cole no Railway Dashboard",
+    "importante": "Substitua os valores que contêm 'SEU_' com suas credenciais reais",
+    "app_url": "Após DNS propagar, esta variável já estará configurada corretamente",
+    "db_password": "Use a senha do banco de dados MySQL do Railway",
+    "meta_whatsapp": "Obtenha as credenciais em https://developers.facebook.com/",
+    "pusher": "Obtenha as credenciais em https://pusher.com/",
+    "openai": "Obtenha a chave em https://platform.openai.com/api-keys",
+    "gemini": "Obtenha a chave em https://makersuite.google.com/app/apikey"
+  }
+}
