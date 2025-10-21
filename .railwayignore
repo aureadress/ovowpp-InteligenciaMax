@@ -1,0 +1,10 @@
+# Railway ignore file
+# Force fresh builds - do not cache these
+node_modules/
+vendor/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+storage/logs/
+bootstrap/cache/
+.env
