@@ -4,14 +4,16 @@ use Illuminate\Support\Facades\Facade;
 use App\Constants\Status;
 
 require 'timezone.php';
+
+// Always initialize Pusher variables with default values
+$pusherAppId = env('PUSHER_APP_ID', '');
+$pusherAppKey = env('PUSHER_APP_KEY', '');
+$pusherAppSecret = env('PUSHER_APP_SECRET', '');
+$pusherAppCluster = env('PUSHER_APP_CLUSTER', 'mt1');
+
+// If pusher.php exists, include it (it may override the values)
 if (file_exists(__DIR__ . '/pusher.php')) {
     require_once('pusher.php');
-} else {
-    // Fallback if pusher.php doesn't exist or has errors
-    $pusherAppId = env('PUSHER_APP_ID', '');
-    $pusherAppKey = env('PUSHER_APP_KEY', '');
-    $pusherAppSecret = env('PUSHER_APP_SECRET', '');
-    $pusherAppCluster = env('PUSHER_APP_CLUSTER', 'mt1');
 }
 
 return [
