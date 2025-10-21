@@ -13,7 +13,5 @@ cmds = [
 ]
 
 [start]
-# CRITICAL: NO CACHING! Only clear commands to prevent route serialization errors
-# Build: 2025-10-21-v2 - All route duplicates fixed, all caching disabled
-# VERIFY: This command should NOT show "Configuration cached successfully"
-cmd = 'echo "Starting at $(date)" && php artisan config:clear && php artisan cache:clear && php artisan view:clear && echo "All caches cleared successfully" && php artisan serve --host=0.0.0.0 --port=$PORT'
+# Use dedicated start script for better logging and control
+cmd = './start.sh'
