@@ -12,5 +12,5 @@ cmds = [
 ]
 
 [start]
-# Clear caches first, then cache config and views (skip route:cache to avoid serialization issues)
-cmd = 'php artisan config:clear && php artisan cache:clear && php artisan config:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT'
+# Clear all caches and start server without caching (to avoid route serialization issues)
+cmd = 'php artisan config:clear && php artisan cache:clear && php artisan view:clear && php artisan serve --host=0.0.0.0 --port=$PORT'

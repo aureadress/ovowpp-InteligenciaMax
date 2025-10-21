@@ -55,7 +55,7 @@ Route::middleware('admin')->group(function () {
         Route::post('update/{id}', 'update')->name('update')->middleware('permission:update user,admin');
         Route::post('add-sub-balance/{id}', 'addSubBalance')->name('add.sub.balance')->middleware('permission:update user balance,admin');
         Route::get('send-notification/{id}', 'showNotificationSingleForm')->name('notification.single')->middleware('permission:send user notification,admin');
-        Route::post('send-notification/{id}', 'sendNotificationSingle')->name('notification.single')->middleware('permission:send user notification,admin');
+        Route::post('send-notification/{id}', 'sendNotificationSingle')->middleware('permission:send user notification,admin');
         Route::get('login/{id}', 'login')->name('login.as.user')->middleware('permission:login as user,admin');
         Route::post('status/{id}', 'status')->name('status')->middleware('permission:ban user,admin');
 
