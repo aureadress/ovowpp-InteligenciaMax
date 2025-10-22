@@ -25,7 +25,6 @@ Route::get('/criar-usuario-teste', function () {
             'firstname' => 'Cliente',
             'lastname' => 'Teste',
             'country_code' => 'BR',
-            'country' => 'Brasil',
             'mobile' => '11999999999',
             'address' => json_encode([
                 'address' => 'Rua Teste, 123',
@@ -39,9 +38,6 @@ Route::get('/criar-usuario-teste', function () {
             'sv' => 1,
             'ts' => 0,
             'tv' => 1,
-            'kv' => 1,
-            'profile_complete' => 1,
-            'ban_reason' => null,
             'updated_at' => now()
         ];
         
