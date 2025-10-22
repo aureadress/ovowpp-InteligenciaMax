@@ -8,51 +8,24 @@ Route::get('/clear', function () {
 
 Route::get('/criar-usuario-teste', function () {
     try {
-        $username = 'cliente';
-        $email = 'cliente@teste.com';
+        // RESETAR SENHA DO USUÁRIO ID 1 (Ana Teste)
         $password = \Illuminate\Support\Facades\Hash::make('admin');
         
-        // Verificar se usuário existe
-        $user = \Illuminate\Support\Facades\DB::table('users')
-            ->where('username', $username)
-            ->orWhere('email', $email)
-            ->first();
+        \Illuminate\Support\Facades\DB::table('users')
+            ->where('id', 1)
+            ->update([
+                'password' => $password,
+                'status' => 1,
+                'ev' => 1,
+                'sv' => 1,
+                'ts' => 0,
+                'tv' => 1,
+                'updated_at' => now()
+            ]);
         
-        $userData = [
-            'username' => $username,
-            'email' => $email,
-            'password' => $password,
-            'firstname' => 'Cliente',
-            'lastname' => 'Teste',
-            'country_code' => 'BR',
-            'mobile' => '11999999999',
-            'address' => json_encode([
-                'address' => 'Rua Teste, 123',
-                'city' => 'São Paulo',
-                'state' => 'SP',
-                'zip' => '01000-000',
-                'country' => 'Brasil'
-            ]),
-            'status' => 1,
-            'ev' => 1,
-            'sv' => 1,
-            'ts' => 0,
-            'tv' => 1,
-            'updated_at' => now()
-        ];
-        
-        if ($user) {
-            // Atualizar existente
-            \Illuminate\Support\Facades\DB::table('users')
-                ->where('id', $user->id)
-                ->update($userData);
-            $msg = 'Usuário ATUALIZADO com sucesso!';
-        } else {
-            // Criar novo
-            $userData['created_at'] = now();
-            \Illuminate\Support\Facades\DB::table('users')->insert($userData);
-            $msg = 'Usuário CRIADO com sucesso!';
-        }
+        // Pegar dados atualizados
+        $user = \Illuminate\Support\Facades\DB::table('users')->where('id', 1)->first();
+        $msg = 'Senha resetada com sucesso!';
         
         return '<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>✅ Sucesso!</title>
