@@ -273,3 +273,4 @@ SVG;
         return view('Template::maintenance', compact('pageTitle', 'maintenance'));
     }
 }
+
