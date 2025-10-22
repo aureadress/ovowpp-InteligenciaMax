@@ -1073,3 +1073,62 @@ if (!function_exists('themeConfig')) {
         return config("theme.{$key}", $default);
     }
 }
+
+if (!function_exists('brandVersion')) {
+    /**
+     * Retorna versão de cache para brand assets (logo, favicon, cores)
+     * Atualizado automaticamente quando logo ou cores são modificados
+     * 
+     * @return string
+     */
+    function brandVersion()
+    {
+        return cache()->get('brand_version', time());
+    }
+}
+
+if (!function_exists('assetVersion')) {
+    /**
+     * Adiciona versão ao asset para cache busting
+     * 
+     * @param string $path Caminho do asset
+     * @param bool $useBrandVersion Se deve usar versão de brand (para logos/cores)
+     * @return string
+     */
+    function assetVersion($path, $useBrandVersion = false)
+    {
+        $version = $useBrandVersion ? brandVersion() : config('app.version', time());
+        $asset = asset($path);
+        return $asset . '?v=' . $version;
+    }
+}
+
+if (!function_exists('logoWithVersion')) {
+    /**
+     * Retorna URL do logo com cache busting
+     * 
+     * @param string $filename Nome do arquivo (logo.png, logo_dark.png, favicon.png)
+     * @return string
+     */
+    function logoWithVersion($filename = 'logo.png')
+    {
+        $path = getFilePath('logoIcon') . '/' . $filename;
+        return assetVersion($path, true);
+    }
+}
+
+if (!function_exists('colorCssUrl')) {
+    /**
+     * Retorna URL do CSS dinâmico de cores com cache busting
+     * 
+     * @param string $area 'admin' ou 'basic' (frontend)
+     * @return string
+     */
+    function colorCssUrl($area = 'admin')
+    {
+        if ($area === 'admin') {
+            return url('assets/admin/css/color.php?v=' . brandVersion());
+        }
+        return url('assets/templates/basic/css/color.php?v=' . brandVersion());
+    }
+}

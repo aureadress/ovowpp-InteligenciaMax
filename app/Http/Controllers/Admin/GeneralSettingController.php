@@ -71,6 +71,14 @@ class GeneralSettingController extends Controller
         $content      = '<?php $timezone = "' . $timezone . '" ?>';
         file_put_contents($timezoneFile, $content);
 
+        // Update brand version for cache busting
+        cache()->forever('brand_version', time());
+        
+        // Clear relevant caches
+        \Artisan::call('config:clear');
+        \Artisan::call('view:clear');
+        \Artisan::call('cache:clear');
+
         $notify[] = ['success', 'General setting updated successfully'];
         return back()->withNotify($notify);
     }
@@ -184,6 +192,14 @@ class GeneralSettingController extends Controller
                 return back()->withNotify($notify);
             }
         }
+        
+        // Update brand version for cache busting
+        cache()->forever('brand_version', time());
+        
+        // Clear relevant caches
+        \Artisan::call('view:clear');
+        \Artisan::call('cache:clear');
+        
         $notify[] = ['success', 'Brand setting updated successfully'];
         return back()->withNotify($notify);
     }
