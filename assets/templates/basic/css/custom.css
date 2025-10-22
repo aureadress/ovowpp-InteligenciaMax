@@ -28,7 +28,7 @@
     font-size: 1em;
     padding: 5px 5px;
     color: #fff;
-    background-color: #FF7000;
+    background-color: var(--robot-primary);
     border-radius: 3px;
     opacity: 0;
     will-change: opacity, transform;
@@ -68,9 +68,9 @@
     left: 30px;
     z-index: 999999;
     transition: all .5s;
-    background: hsl(145.71deg 13.73% 10%);
+    background: #2C3E50;
     border-radius: 5px;
-    box-shadow: 0 0 18px rgb(125 137 153);
+    box-shadow: 0 0 18px rgba(41, 182, 246, 0.3);
     border-radius: 20px;
 }
 
@@ -227,7 +227,7 @@
 
 .input-popup p.success::before {
     content: "\f058";
-    color: #28c76f;
+    color: #29B6F6;
 }
 
 
@@ -720,7 +720,7 @@ button .spinner-border {
 }
 
 .importModal .bg-success {
-    background-color: hsl(var(--base)) !important;
+    background-color: var(--robot-primary) !important;
 }
 
 .importModal .progress-bar-striped {
@@ -847,7 +847,7 @@ button .spinner-border {
     height: calc(100% - 10px);
     margin: 5px;
     border-radius: 4px !important;
-    background-color: hsl(var(--success));
+    background-color: var(--robot-primary);
     color: hsl(var(--white)) !important;
     cursor: pointer;
     padding-block: 5px;
