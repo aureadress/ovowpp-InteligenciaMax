@@ -1,0 +1,295 @@
+/* ================================================
+   🤖 PALETA COMPLETA - TONS DO ROBÔ AZUL
+   ================================================
+   Baseado no logo do robô azul/ciano
+   ================================================ */
+
+:root {
+    /* CORES PRINCIPAIS DO ROBÔ */
+    --robot-light: #B3E5FC;      /* Azul muito claro - fundo suave */
+    --robot-lighter: #81D4FA;    /* Azul claro - cards, áreas destacadas */
+    --robot-primary: #29B6F6;    /* Azul ciano PRINCIPAL - cor do robô */
+    --robot-medium: #039BE5;     /* Azul médio - botões, links */
+    --robot-dark: #0277BD;       /* Azul escuro - hover, active */
+    --robot-darker: #01579B;     /* Azul muito escuro - texto escuro */
+    
+    /* CORES COMPLEMENTARES */
+    --robot-accent: #00BCD4;     /* Ciano vibrante - destaques */
+    --robot-success: #26C6DA;    /* Ciano claro - sucesso */
+    --robot-info: #4FC3F7;       /* Azul info - notificações */
+    
+    /* GRADIENTES DO ROBÔ */
+    --gradient-primary: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%);
+    --gradient-light: linear-gradient(135deg, #81D4FA 0%, #29B6F6 100%);
+    --gradient-dark: linear-gradient(135deg, #0277BD 0%, #01579B 100%);
+    --gradient-accent: linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%);
+    
+    /* APLICAÇÃO NA INTERFACE */
+    --base-color: #29B6F6;
+    --base-h: 199;               /* Hue do azul ciano */
+    --base-s: 92%;               /* Saturação alta */
+    --base-l: 56%;               /* Luminosidade média */
+}
+
+/* ================================================
+   APLICAÇÃO DOS TONS DO ROBÔ
+   ================================================ */
+
+/* BOTÕES PRIMÁRIOS */
+.btn-primary,
+.btn--base {
+    background: var(--gradient-primary) !important;
+    border-color: var(--robot-primary) !important;
+    box-shadow: 0 4px 15px rgba(41, 182, 246, 0.3);
+}
+
+.btn-primary:hover,
+.btn--base:hover {
+    background: var(--gradient-dark) !important;
+    box-shadow: 0 6px 20px rgba(41, 182, 246, 0.4);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* LINKS E TEXTOS COLORIDOS */
+a,
+.text--base {
+    color: var(--robot-medium) !important;
+}
+
+a:hover {
+    color: var(--robot-dark) !important;
+}
+
+/* FUNDOS E CARDS */
+.bg--base {
+    background: var(--gradient-primary) !important;
+}
+
+.bg--base-light {
+    background-color: var(--robot-light) !important;
+}
+
+.card-header,
+.page-title {
+    background: var(--gradient-primary) !important;
+    color: white;
+}
+
+/* SIDEBAR / MENU LATERAL */
+.sidebar {
+    background: linear-gradient(180deg, var(--robot-darker) 0%, var(--robot-dark) 100%) !important;
+}
+
+.sidebar-menu li.active,
+.sidebar-menu li:hover {
+    background: var(--robot-primary) !important;
+    border-left: 4px solid var(--robot-light);
+}
+
+/* NAVBAR / CABEÇALHO */
+.navbar,
+.header {
+    background: var(--gradient-primary) !important;
+    box-shadow: 0 2px 10px rgba(41, 182, 246, 0.2);
+}
+
+/* BADGES E TAGS */
+.badge--primary,
+.badge--base {
+    background: var(--robot-primary) !important;
+    color: white;
+}
+
+.badge--success {
+    background: var(--robot-success) !important;
+}
+
+.badge--info {
+    background: var(--robot-info) !important;
+}
+
+/* INPUTS E FORMS */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--robot-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(41, 182, 246, 0.25) !important;
+}
+
+/* PROGRESSBAR */
+.progress-bar {
+    background: var(--gradient-primary) !important;
+}
+
+/* TABELAS - HEADER */
+.table thead th {
+    background: var(--gradient-light) !important;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(41, 182, 246, 0.1) !important;
+}
+
+/* ALERTAS E NOTIFICAÇÕES */
+.alert-info {
+    background-color: var(--robot-light) !important;
+    border-color: var(--robot-primary) !important;
+    color: var(--robot-darker) !important;
+}
+
+/* DASHBOARD CARDS */
+.dashboard-card,
+.widget-card {
+    border-top: 3px solid var(--robot-primary);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 5px 20px rgba(41, 182, 246, 0.3);
+    transform: translateY(-5px);
+}
+
+/* ÍCONES E SVG */
+.icon--primary,
+svg.text-primary {
+    color: var(--robot-primary) !important;
+    fill: var(--robot-primary) !important;
+}
+
+/* SCROLLBAR (Chrome/Edge) */
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--robot-dark);
+}
+
+/* BOTÕES SECUNDÁRIOS */
+.btn-outline-primary {
+    color: var(--robot-primary) !important;
+    border-color: var(--robot-primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background: var(--robot-primary) !important;
+    color: white !important;
+}
+
+/* LOADING / SPINNER */
+.spinner-border,
+.loader {
+    color: var(--robot-primary) !important;
+    border-color: var(--robot-primary) !important;
+}
+
+/* SWITCH / TOGGLE */
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--robot-primary) !important;
+    border-color: var(--robot-primary) !important;
+}
+
+/* TABS */
+.nav-tabs .nav-link.active {
+    border-bottom: 3px solid var(--robot-primary) !important;
+    color: var(--robot-primary) !important;
+}
+
+/* FOOTER */
+.footer {
+    background: var(--robot-darker) !important;
+    color: var(--robot-light);
+}
+
+/* TOOLTIP */
+.tooltip-inner {
+    background: var(--robot-dark) !important;
+}
+
+/* MODAL HEADER */
+.modal-header {
+    background: var(--gradient-primary) !important;
+    color: white;
+}
+
+/* DROPDOWN */
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: rgba(41, 182, 246, 0.1) !important;
+    color: var(--robot-dark) !important;
+}
+
+/* PAGINAÇÃO */
+.page-item.active .page-link {
+    background: var(--robot-primary) !important;
+    border-color: var(--robot-primary) !important;
+}
+
+.page-link {
+    color: var(--robot-medium) !important;
+}
+
+.page-link:hover {
+    background-color: var(--robot-light) !important;
+    color: var(--robot-dark) !important;
+}
+
+/* ================================================
+   EFEITOS ESPECIAIS - TEMA ROBÔ
+   ================================================ */
+
+/* Efeito de brilho suave */
+.glow-effect {
+    box-shadow: 0 0 20px rgba(41, 182, 246, 0.5),
+                0 0 40px rgba(41, 182, 246, 0.3);
+}
+
+/* Animação de gradiente */
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+    background: linear-gradient(270deg, #29B6F6, #039BE5, #00BCD4);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+}
+
+/* Efeito de onda (como água) */
+@keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.wave-effect {
+    animation: wave 3s ease-in-out infinite;
+}
+
+/* ================================================
+   DARK MODE (com tons do robô)
+   ================================================ */
+[data-theme="dark"] {
+    --robot-light: #01579B;
+    --robot-lighter: #0277BD;
+    --robot-primary: #29B6F6;
+    --robot-medium: #4FC3F7;
+    --robot-dark: #81D4FA;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+@media (max-width: 768px) {
+    .gradient-primary {
+        background: var(--robot-primary) !important;
+    }
+}
+
+/* ================================================
+   FIM DO TEMA ROBÔ AZUL 🤖
+   ================================================ */
