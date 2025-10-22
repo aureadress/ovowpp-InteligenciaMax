@@ -12,6 +12,10 @@
     <meta name="APP-DOMAIN" content="{{ route('home') }}">
 
     @include('partials.seo')
+    
+    <!-- Favicon Dinâmico -->
+    <link rel="shortcut icon" type="image/png" href="{{ siteFavicon() }}">
+    <link rel="icon" type="image/png" href="{{ siteFavicon() }}">
 
     <link href="{{ asset('assets/global/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/global/css/all.min.css') }}" rel="stylesheet">
@@ -24,7 +28,33 @@
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/main.css') }}">
 
     @stack('style')
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/color.php') }}?color={{ gs('base_color') }}">
+    
+    <!-- CSS Dinâmico do Tema -->
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/color.php') }}?color={{ gs('base_color') }}&v={{ time() }}">
+    
+    <!-- CSS Customizado do Tema -->
+    <link rel="stylesheet" href="{{ asset('assets/theme/theme-custom.css') }}?v={{ time() }}">
+    
+    <!-- Variáveis CSS Inline do Tema -->
+    <style>
+        :root {
+            --theme-primary: {{ themeColor('primary', '#29B6F6') }};
+            --theme-secondary: {{ themeColor('secondary', '#004AAD') }};
+            --theme-accent: {{ themeColor('accent', '#FF6600') }};
+            --theme-font-primary: {{ themeFont('primary') }};
+            --theme-font-heading: {{ themeFont('heading') }};
+            --theme-border-radius: {{ themeConfig('border_radius', '8px') }};
+            --theme-logo-height: {{ themeConfig('logo_height', '50px') }};
+        }
+        
+        body {
+            font-family: var(--theme-font-primary);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--theme-font-heading);
+        }
+    </style>
 </head>
 @php echo loadExtension('google-analytics') @endphp
 

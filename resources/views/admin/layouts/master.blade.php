@@ -6,7 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ gs()->siteName($pageTitle ?? '') }}</title>
+    
+    <!-- Favicon Dinâmico -->
     <link rel="shortcut icon" type="image/png" href="{{ siteFavicon() }}">
+    <link rel="icon" type="image/png" href="{{ siteFavicon() }}">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
@@ -22,6 +25,23 @@
     @stack('style-lib')
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/main.css') }}">
+    
+    <!-- CSS Customizado do Tema -->
+    <link rel="stylesheet" href="{{ asset('assets/theme/theme-custom.css') }}?v={{ time() }}">
+    
+    <!-- Variáveis CSS do Tema para Admin -->
+    <style>
+        :root {
+            --theme-primary: {{ themeColor('primary', '#29B6F6') }};
+            --theme-secondary: {{ themeColor('secondary', '#004AAD') }};
+            --theme-accent: {{ themeColor('accent', '#FF6600') }};
+            --theme-success: {{ themeColor('success', '#28a745') }};
+            --theme-warning: {{ themeColor('warning', '#ffc107') }};
+            --theme-danger: {{ themeColor('danger', '#dc3545') }};
+            --theme-info: {{ themeColor('info', '#17a2b8') }};
+        }
+    </style>
+    
     @stack('style')
 </head>
 

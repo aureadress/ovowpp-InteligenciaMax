@@ -75,12 +75,29 @@ function activeTemplateName()
 
 function siteLogo($type = null)
 {
+    // Verifica se existe configuração personalizada no tema
+    $themeKey = $type ? "logo_{$type}" : 'logo_light';
+    $themeLogo = config("theme.{$themeKey}");
+    
+    if ($themeLogo && file_exists(public_path($themeLogo))) {
+        return asset($themeLogo);
+    }
+    
+    // Fallback para o sistema original
     $name = $type ? "/logo_$type.png" : '/logo.png';
     return getImage(getFilePath('logoIcon') . $name);
 }
 
 function siteFavicon()
 {
+    // Verifica se existe configuração personalizada no tema
+    $themeFavicon = config('theme.favicon');
+    
+    if ($themeFavicon && file_exists(public_path($themeFavicon))) {
+        return asset($themeFavicon);
+    }
+    
+    // Fallback para o sistema original
     return getImage(getFilePath('logoIcon') . '/favicon.png');
 }
 
@@ -966,4 +983,93 @@ function getIntMessageType($messageType)
         'audio'    => Status::AUDIO_TYPE_MESSAGE,
         'url'      => Status::URL_TYPE_MESSAGE
     ][$messageType];
+}
+
+/**
+ * Funções auxiliares para configurações de tema
+ * Integração com config/theme.php
+ */
+
+if (!function_exists('themeLogo')) {
+    /**
+     * Retorna o caminho do logo baseado no contexto (light/dark)
+     * 
+     * @param string $type 'light', 'dark' ou 'icon'
+     * @return string
+     */
+    function themeLogo($type = 'light')
+    {
+        $key = $type === 'icon' ? 'logo_icon' : "logo_{$type}";
+        return asset(config("theme.{$key}", 'assets/images/logo_icon/logo.png'));
+    }
+}
+
+if (!function_exists('themeFavicon')) {
+    /**
+     * Retorna o caminho do favicon
+     * 
+     * @return string
+     */
+    function themeFavicon()
+    {
+        return asset(config('theme.favicon', 'assets/images/logo_icon/favicon.png'));
+    }
+}
+
+if (!function_exists('themeColor')) {
+    /**
+     * Retorna uma cor do tema
+     * 
+     * @param string $key Nome da cor (primary, secondary, accent, etc.)
+     * @param string $default Cor padrão se não encontrada
+     * @return string
+     */
+    function themeColor($key = 'primary', $default = '#29B6F6')
+    {
+        return config("theme.{$key}_color", $default);
+    }
+}
+
+if (!function_exists('themeGradient')) {
+    /**
+     * Retorna um gradiente CSS
+     * 
+     * @param string $angle Ângulo do gradiente (ex: '135deg')
+     * @return string
+     */
+    function themeGradient($angle = '135deg')
+    {
+        $start = config('theme.gradient_start', '#29B6F6');
+        $end = config('theme.gradient_end', '#039BE5');
+        return "linear-gradient({$angle}, {$start} 0%, {$end} 100%)";
+    }
+}
+
+if (!function_exists('themeFont')) {
+    /**
+     * Retorna a família de fonte configurada
+     * 
+     * @param string $type 'primary', 'secondary' ou 'heading'
+     * @return string
+     */
+    function themeFont($type = 'primary')
+    {
+        $key = "font_family_{$type}";
+        $default = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        return config("theme.{$key}", $default);
+    }
+}
+
+if (!function_exists('themeConfig')) {
+    /**
+     * Retorna qualquer configuração do tema
+     * 
+     * @param string $key Chave da configuração
+     * @param mixed $default Valor padrão
+     * @return mixed
+     */
+    function themeConfig($key, $default = null)
+    {
+        return config("theme.{$key}", $default);
+    }
 }
