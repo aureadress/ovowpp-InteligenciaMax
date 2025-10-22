@@ -201,6 +201,11 @@ class SiteController extends Controller
 
     public function placeholderImage($size = null)
     {
+        // SOLUÇÃO TEMPORÁRIA: Usar apenas SVG até identificar problema com GD no Railway
+        // SVG é mais leve, escalável e não depende de extensões PHP
+        return $this->placeholderImageSvg($size);
+        
+        /* CÓDIGO JPEG ORIGINAL (DESATIVADO TEMPORARIAMENTE)
         try {
             // Validar parâmetro size
             if (!$size || !str_contains($size, 'x')) {
@@ -260,9 +265,16 @@ class SiteController extends Controller
                 ->header('Cache-Control', 'public, max-age=31536000');
                 
         } catch (\Exception $e) {
+            // Logar erro para debug
+            \Illuminate\Support\Facades\Log::error('Placeholder image generation failed', [
+                'size' => $size,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             // Em caso de erro, retornar SVG
             return $this->placeholderImageSvg($size ?? '400x400');
         }
+        */
     }
 
     private function placeholderImageSvg($size = null)
