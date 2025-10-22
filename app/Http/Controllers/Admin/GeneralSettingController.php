@@ -169,6 +169,12 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('logo')) {
             try {
+                // Delete old logo before uploading new one
+                $oldLogo = $path . '/logo.png';
+                if (file_exists($oldLogo)) {
+                    @unlink($oldLogo);
+                }
+                
                 fileUploader($request->logo, $path, filename: 'logo.png');
             } catch (\Exception $exp) {
                 $notify[] = ['error', 'Couldn\'t upload the logo'];
@@ -177,6 +183,12 @@ class GeneralSettingController extends Controller
         }
         if ($request->hasFile('logo_dark')) {
             try {
+                // Delete old dark logo before uploading new one
+                $oldLogoDark = $path . '/logo_dark.png';
+                if (file_exists($oldLogoDark)) {
+                    @unlink($oldLogoDark);
+                }
+                
                 fileUploader($request->logo_dark, $path, filename: 'logo_dark.png');
             } catch (\Exception $exp) {
                 $notify[] = ['error', 'Couldn\'t upload the logo'];
@@ -186,6 +198,12 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('favicon')) {
             try {
+                // Delete old favicon before uploading new one
+                $oldFavicon = $path . '/favicon.png';
+                if (file_exists($oldFavicon)) {
+                    @unlink($oldFavicon);
+                }
+                
                 fileUploader($request->favicon, $path, filename: 'favicon.png');
             } catch (\Exception $exp) {
                 $notify[] = ['error', 'Couldn\'t upload the favicon'];
@@ -193,7 +211,8 @@ class GeneralSettingController extends Controller
             }
         }
         
-        // Update brand version for cache busting
+        // Update brand version for cache busting (CRITICAL!)
+        // This forces browsers to reload logos with new ?v=timestamp
         cache()->forever('brand_version', time());
         
         // Clear relevant caches
