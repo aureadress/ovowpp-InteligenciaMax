@@ -16,16 +16,20 @@ mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
 echo "🔑 Setting permissions..."
-chmod -R 777 storage bootstrap/cache 2>/dev/null || true
-chown -R $(whoami):$(whoami) storage bootstrap/cache 2>/dev/null || true
+chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+chmod -R 775 public/assets 2>/dev/null || true
+
+# Tentar corrigir proprietário se possível
+if [ -n "$(command -v chown)" ]; then
+    chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || \
+    chown -R $(whoami):$(whoami) storage bootstrap/cache 2>/dev/null || true
+fi
 
 echo "🧹 Clearing ALL caches (NO CACHING!)..."
-php artisan config:clear 2>/dev/null || echo "⚠️  Config clear skipped"
-php artisan cache:clear 2>/dev/null || echo "⚠️  Cache clear skipped"
-php artisan view:clear 2>/dev/null || echo "⚠️  View clear skipped"
+php artisan optimize:clear 2>&1 | grep -v "Failed" || true
 
 echo "========================================="
-echo "✅ All caches cleared successfully!"
+echo "✅ Caches cleared!"
 echo "🌐 Starting PHP server on port ${PORT:-8080}"
 echo "📍 Document root: /app (index.php na raiz)"
 echo "========================================="
