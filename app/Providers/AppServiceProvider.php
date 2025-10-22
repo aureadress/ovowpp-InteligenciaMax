@@ -7,6 +7,7 @@ use App\Lib\Searchable;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Forçar idioma PT-BR em toda a aplicação
+        App::setLocale('pt_BR');
+        
+        // Garantir que Carbon também use PT-BR para datas
+        if (class_exists('\Carbon\Carbon')) {
+            \Carbon\Carbon::setLocale('pt_BR');
+        }
+        
         Paginator::useBootstrapFive();
         
         Builder::macro("firstOrFailWithApi", function ($modelName = "data") {
