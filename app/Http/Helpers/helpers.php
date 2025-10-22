@@ -239,9 +239,22 @@ function getPageSections($arr = false)
 function getImage($image, $size = null, $isAvatar = false)
 {
     $clean = '';
+    
+    // Check if file exists
     if (file_exists($image) && is_file($image)) {
-        return asset($image) . $clean;
+        $assetUrl = asset($image);
+        
+        // Apply cache busting for logo/favicon files
+        if (strpos($image, 'logo_icon') !== false || 
+            strpos($image, 'logo.png') !== false || 
+            strpos($image, 'logo_dark.png') !== false || 
+            strpos($image, 'favicon.png') !== false) {
+            $assetUrl .= '?v=' . brandVersion();
+        }
+        
+        return $assetUrl . $clean;
     }
+    
     if ($isAvatar) {
         return asset('assets/images/avatar.jpg');
     }

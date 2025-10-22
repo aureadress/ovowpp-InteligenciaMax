@@ -24,3 +24,9 @@ yarn-error.log
 /install/*.sql
 ovowpp.zip
 .DS_Store
+
+# Ignore uploaded logos (user-specific brand assets)
+public/assets/images/logo_icon/*
+public/assets/images/inteligenciamax/*
+!public/assets/images/logo_icon/.gitkeep
+!public/assets/images/inteligenciamax/.gitkeep
