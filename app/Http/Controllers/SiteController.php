@@ -201,31 +201,66 @@ class SiteController extends Controller
 
     public function placeholderImage($size = null)
     {
-        $imgWidth  = explode('x', $size)[0];
-        $imgHeight = explode('x', $size)[1];
-        $text      = $imgWidth . '×' . $imgHeight;
-        $fontFile  = realpath('assets/font/solaimanLipi_bold.ttf');
-        $fontSize  = round(($imgWidth - 50) / 8);
-        if ($fontSize <= 9) {
-            $fontSize = 9;
-        }
-        if ($imgHeight < 100 && $fontSize > 30) {
-            $fontSize = 30;
-        }
+        try {
+            // Verificar se GD está disponível
+            if (!function_exists('imagecreatetruecolor')) {
+                // Retornar SVG como fallback
+                return $this->placeholderImageSvg($size);
+            }
 
-        $image     = imagecreatetruecolor($imgWidth, $imgHeight);
-        $colorFill = imagecolorallocate($image, 100, 100, 100);
-        $bgFill    = imagecolorallocate($image, 255, 255, 255);
-        imagefill($image, 0, 0, $bgFill);
-        $textBox    = imagettfbbox($fontSize, 0, $fontFile, $text);
-        $textWidth  = abs($textBox[4] - $textBox[0]);
-        $textHeight = abs($textBox[5] - $textBox[1]);
-        $textX      = ($imgWidth - $textWidth) / 2;
-        $textY      = ($imgHeight + $textHeight) / 2;
-        header('Content-Type: image/jpeg');
-        imagettftext($image, $fontSize, 0, $textX, $textY, $colorFill, $fontFile, $text);
-        imagejpeg($image);
-        imagedestroy($image);
+            $imgWidth  = explode('x', $size)[0];
+            $imgHeight = explode('x', $size)[1];
+            $text      = $imgWidth . '×' . $imgHeight;
+            $fontFile  = realpath('assets/font/solaimanLipi_bold.ttf');
+            
+            // Verificar se a fonte existe
+            if (!$fontFile || !file_exists($fontFile)) {
+                return $this->placeholderImageSvg($size);
+            }
+            
+            $fontSize  = round(($imgWidth - 50) / 8);
+            if ($fontSize <= 9) {
+                $fontSize = 9;
+            }
+            if ($imgHeight < 100 && $fontSize > 30) {
+                $fontSize = 30;
+            }
+
+            $image     = imagecreatetruecolor($imgWidth, $imgHeight);
+            $colorFill = imagecolorallocate($image, 100, 100, 100);
+            $bgFill    = imagecolorallocate($image, 255, 255, 255);
+            imagefill($image, 0, 0, $bgFill);
+            $textBox    = imagettfbbox($fontSize, 0, $fontFile, $text);
+            $textWidth  = abs($textBox[4] - $textBox[0]);
+            $textHeight = abs($textBox[5] - $textBox[1]);
+            $textX      = ($imgWidth - $textWidth) / 2;
+            $textY      = ($imgHeight + $textHeight) / 2;
+            header('Content-Type: image/jpeg');
+            imagettftext($image, $fontSize, 0, $textX, $textY, $colorFill, $fontFile, $text);
+            imagejpeg($image);
+            imagedestroy($image);
+        } catch (\Exception $e) {
+            // Em caso de erro, retornar SVG
+            return $this->placeholderImageSvg($size);
+        }
+    }
+
+    private function placeholderImageSvg($size = null)
+    {
+        $dimensions = explode('x', $size);
+        $width = $dimensions[0] ?? 400;
+        $height = $dimensions[1] ?? 400;
+        $text = $width . '×' . $height;
+        
+        $svg = <<<SVG
+<svg width="{$width}" height="{$height}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="{$width}" height="{$height}" fill="#f0f0f0"/>
+    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="#666" 
+          text-anchor="middle" dominant-baseline="middle">{$text}</text>
+</svg>
+SVG;
+        
+        return response($svg)->header('Content-Type', 'image/svg+xml');
     }
 
     public function maintenance()
