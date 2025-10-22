@@ -19,7 +19,10 @@ class AutomationController extends Controller
         $chatbots         = Chatbot::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(getPaginate());
         $accounts        = WhatsappAccount::where('user_id', $user->id)->get();
 
-        if ($accounts->isEmpty()) {
+        // Modo demonstração: sempre mostrar interface, mesmo sem WhatsApp conectado
+        $demoMode = env('CHATBOT_DEMO_MODE', true);
+        
+        if ($accounts->isEmpty() && !$demoMode) {
             $view   = 'Template::user.inbox.whatsapp_account_empty';
         } else {
             $view = 'Template::user.automation.index';
@@ -29,6 +32,8 @@ class AutomationController extends Controller
             'view'           => $view,
             'pageTitle'      => $pageTitle,
             'chatbots'       => $chatbots,
+            'demoMode'       => $demoMode && $accounts->isEmpty(),
+            'accounts'       => $accounts,
         ]);
     }
 
@@ -42,7 +47,10 @@ class AutomationController extends Controller
             $q->where('user_id', $user->id);
         })->with('whatsappAccount')->get();
 
-        if ($accounts->isEmpty()) {
+        // Modo demonstração: sempre mostrar interface, mesmo sem WhatsApp conectado
+        $demoMode = env('CHATBOT_DEMO_MODE', true);
+
+        if ($accounts->isEmpty() && !$demoMode) {
             $view   = 'Template::user.inbox.whatsapp_account_empty';
         } else {
             $view = 'Template::user.automation.welcome_message';
@@ -53,6 +61,7 @@ class AutomationController extends Controller
             'accounts'        => $availableAccounts,
             'welcomeMessages' => $welcomeMessages,
             'view'            => $view,
+            'demoMode'        => $demoMode && $accounts->isEmpty(),
         ]);
     }
 

@@ -1,6 +1,19 @@
 @extends($activeTemplate . 'layouts.master')
 @section('content')
     <div class="dashboard-container">
+        {{-- Alerta de modo demonstração --}}
+        @if(isset($demoMode) && $demoMode)
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="las la-info-circle fs-4"></i>
+                <strong>@lang('Modo Demonstração Ativo')</strong>
+                <p class="mb-0">@lang('Você está visualizando a interface em modo demonstração. Para usar chatbots reais, conecte uma conta WhatsApp primeiro.')</p>
+                <a href="{{ route('user.whatsapp.account.index') }}" class="btn btn-sm btn-primary mt-2">
+                    <i class="lab la-whatsapp"></i> @lang('Conectar WhatsApp')
+                </a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
         <div class="row gy-4">
             <div class="col-lg-12">
                 <div class="chatbot-item">
