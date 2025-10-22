@@ -172,6 +172,27 @@ try {
     echo '</div>';
     echo '</div>';
 
+    // Verificar quais colunas existem
+    echo '<div class="step">';
+    echo '<div class="step-title"><span class="icon">🔍</span>Verificando estrutura da tabela...</div>';
+    echo '</div>';
+
+    $columns = DB::select("SHOW COLUMNS FROM general_settings");
+    $columnNames = array_map(function($col) { return $col->Field; }, $columns);
+    
+    // Preparar dados para atualizar
+    $updateData = ['site_name' => 'Inteligência MAX'];
+    
+    // Adicionar system_name apenas se a coluna existir
+    if (in_array('system_name', $columnNames)) {
+        $updateData['system_name'] = 'inteligenciamax';
+    }
+    
+    // Adicionar system_title se existir
+    if (in_array('system_title', $columnNames)) {
+        $updateData['system_title'] = 'Inteligência MAX - Sistema de WhatsApp Marketing';
+    }
+
     // Atualizar o banco de dados
     echo '<div class="step">';
     echo '<div class="step-title"><span class="icon">🔄</span>Atualizando configurações...</div>';
@@ -179,10 +200,7 @@ try {
 
     $affected = DB::table('general_settings')
         ->where('id', 1)
-        ->update([
-            'site_name' => 'Inteligência MAX',
-            'system_name' => 'inteligenciamax'
-        ]);
+        ->update($updateData);
 
     if ($affected > 0) {
         echo '<div class="step success">';
@@ -204,10 +222,18 @@ try {
     echo '<span class="label">Nome do Site:</span> ';
     echo '<span class="value">' . htmlspecialchars($newSettings->site_name) . '</span>';
     echo '</div>';
-    echo '<div class="result-item">';
-    echo '<span class="label">Nome do Sistema:</span> ';
-    echo '<span class="value">' . htmlspecialchars($newSettings->system_name) . '</span>';
-    echo '</div>';
+    if (property_exists($newSettings, 'system_name')) {
+        echo '<div class="result-item">';
+        echo '<span class="label">Nome do Sistema:</span> ';
+        echo '<span class="value">' . htmlspecialchars($newSettings->system_name) . '</span>';
+        echo '</div>';
+    }
+    if (property_exists($newSettings, 'system_title')) {
+        echo '<div class="result-item">';
+        echo '<span class="label">Título do Sistema:</span> ';
+        echo '<span class="value">' . htmlspecialchars($newSettings->system_title) . '</span>';
+        echo '</div>';
+    }
     echo '</div>';
 
     // Próximos passos
