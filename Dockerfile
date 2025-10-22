@@ -1,5 +1,5 @@
-# Use PHP 8.3 CLI Alpine (mais leve)
-FROM php:8.3-cli-alpine
+# Use PHP 8.2 CLI Alpine (compatível com composer.json)
+FROM php:8.2-cli-alpine
 
 # Install system dependencies
 RUN apk add --no-cache \
