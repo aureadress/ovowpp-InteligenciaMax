@@ -18,38 +18,43 @@ Route::get('/criar-usuario-teste', function () {
             ->orWhere('email', $email)
             ->first();
         
+        $userData = [
+            'username' => $username,
+            'email' => $email,
+            'password' => $password,
+            'firstname' => 'Cliente',
+            'lastname' => 'Teste',
+            'country_code' => 'BR',
+            'country' => 'Brasil',
+            'mobile' => '11999999999',
+            'address' => json_encode([
+                'address' => 'Rua Teste, 123',
+                'city' => 'São Paulo',
+                'state' => 'SP',
+                'zip' => '01000-000',
+                'country' => 'Brasil'
+            ]),
+            'status' => 1,
+            'ev' => 1,
+            'sv' => 1,
+            'ts' => 0,
+            'tv' => 1,
+            'kv' => 1,
+            'profile_complete' => 1,
+            'ban_reason' => null,
+            'updated_at' => now()
+        ];
+        
         if ($user) {
             // Atualizar existente
             \Illuminate\Support\Facades\DB::table('users')
                 ->where('id', $user->id)
-                ->update([
-                    'password' => $password,
-                    'status' => 1,
-                    'ev' => 1,
-                    'sv' => 1,
-                    'ts' => 0,
-                    'tv' => 1,
-                    'updated_at' => now()
-                ]);
+                ->update($userData);
             $msg = 'Usuário ATUALIZADO com sucesso!';
         } else {
             // Criar novo
-            \Illuminate\Support\Facades\DB::table('users')->insert([
-                'username' => $username,
-                'email' => $email,
-                'password' => $password,
-                'firstname' => 'Cliente',
-                'lastname' => 'Teste',
-                'country_code' => 'BR',
-                'mobile' => '11999999999',
-                'status' => 1,
-                'ev' => 1,
-                'sv' => 1,
-                'ts' => 0,
-                'tv' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
+            $userData['created_at'] = now();
+            \Illuminate\Support\Facades\DB::table('users')->insert($userData);
             $msg = 'Usuário CRIADO com sucesso!';
         }
         
