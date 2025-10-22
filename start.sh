@@ -16,7 +16,8 @@ mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
 echo "🔑 Setting permissions..."
-chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+chmod -R 777 storage bootstrap/cache 2>/dev/null || true
+chown -R $(whoami):$(whoami) storage bootstrap/cache 2>/dev/null || true
 
 echo "🧹 Clearing ALL caches (NO CACHING!)..."
 php artisan config:clear 2>/dev/null || echo "⚠️  Config clear skipped"

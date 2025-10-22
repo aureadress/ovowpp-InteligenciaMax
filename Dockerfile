@@ -46,8 +46,9 @@ RUN mkdir -p storage/framework/cache \
     storage/logs \
     bootstrap/cache
 
-# Set permissions
-RUN chmod -R 775 storage bootstrap/cache
+# Set permissions (777 for Railway environment)
+RUN chmod -R 777 storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 
 # Make start script executable
 RUN chmod +x start.sh
