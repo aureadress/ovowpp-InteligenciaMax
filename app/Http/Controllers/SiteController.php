@@ -202,14 +202,25 @@ class SiteController extends Controller
     public function placeholderImage($size = null)
     {
         try {
+            // Validar parâmetro size
+            if (!$size || !str_contains($size, 'x')) {
+                return $this->placeholderImageSvg('400x400');
+            }
+
             // Verificar se GD está disponível
             if (!function_exists('imagecreatetruecolor')) {
-                // Retornar SVG como fallback
                 return $this->placeholderImageSvg($size);
             }
 
-            $imgWidth  = explode('x', $size)[0];
-            $imgHeight = explode('x', $size)[1];
+            $dimensions = explode('x', $size);
+            $imgWidth  = (int) ($dimensions[0] ?? 400);
+            $imgHeight = (int) ($dimensions[1] ?? 400);
+            
+            // Validar dimensões
+            if ($imgWidth < 1 || $imgHeight < 1 || $imgWidth > 2000 || $imgHeight > 2000) {
+                return $this->placeholderImageSvg('400x400');
+            }
+            
             $text      = $imgWidth . '×' . $imgHeight;
             $fontFile  = realpath('assets/font/solaimanLipi_bold.ttf');
             
@@ -235,32 +246,58 @@ class SiteController extends Controller
             $textHeight = abs($textBox[5] - $textBox[1]);
             $textX      = ($imgWidth - $textWidth) / 2;
             $textY      = ($imgHeight + $textHeight) / 2;
-            header('Content-Type: image/jpeg');
+            
+            // Capturar output da imagem em buffer
+            ob_start();
             imagettftext($image, $fontSize, 0, $textX, $textY, $colorFill, $fontFile, $text);
-            imagejpeg($image);
+            imagejpeg($image, null, 90);
+            $imageData = ob_get_clean();
             imagedestroy($image);
+            
+            // Retornar resposta Laravel adequada
+            return response($imageData)
+                ->header('Content-Type', 'image/jpeg')
+                ->header('Cache-Control', 'public, max-age=31536000');
+                
         } catch (\Exception $e) {
             // Em caso de erro, retornar SVG
-            return $this->placeholderImageSvg($size);
+            return $this->placeholderImageSvg($size ?? '400x400');
         }
     }
 
     private function placeholderImageSvg($size = null)
     {
+        // Validar e parsear tamanho
+        if (!$size || !str_contains($size, 'x')) {
+            $size = '400x400';
+        }
+        
         $dimensions = explode('x', $size);
-        $width = $dimensions[0] ?? 400;
-        $height = $dimensions[1] ?? 400;
+        $width = (int) ($dimensions[0] ?? 400);
+        $height = (int) ($dimensions[1] ?? 400);
+        
+        // Validar dimensões
+        if ($width < 1 || $height < 1) {
+            $width = 400;
+            $height = 400;
+        }
+        if ($width > 2000) $width = 2000;
+        if ($height > 2000) $height = 2000;
+        
         $text = $width . '×' . $height;
+        $fontSize = min(24, max(12, $width / 20));
         
         $svg = <<<SVG
 <svg width="{$width}" height="{$height}" xmlns="http://www.w3.org/2000/svg">
     <rect width="{$width}" height="{$height}" fill="#f0f0f0"/>
-    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="#666" 
+    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="{$fontSize}" fill="#666" 
           text-anchor="middle" dominant-baseline="middle">{$text}</text>
 </svg>
 SVG;
         
-        return response($svg)->header('Content-Type', 'image/svg+xml');
+        return response($svg)
+            ->header('Content-Type', 'image/svg+xml')
+            ->header('Cache-Control', 'public, max-age=31536000');
     }
 
     public function maintenance()
