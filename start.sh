@@ -32,5 +32,6 @@ echo "========================================="
 
 # Start PHP built-in server pointing to root directory
 # This project has index.php in root, not in public/
+# Remove index.php from command to allow static files to be served
 cd /app
-exec php -S 0.0.0.0:${PORT:-8080} -t /app index.php
+exec php -S 0.0.0.0:${PORT:-8080} -t /app
