@@ -51,4 +51,10 @@ function hexToHsl($hex)
 --base-h: <?php echo hexToHsl($color)['h']; ?>;
 --base-s: <?php echo hexToHsl($color)['s']; ?>%;
 --base-l: <?php echo hexToHsl($color)['l']; ?>%;
+
+/* Tons do Robô Azul - Paleta Completa */
+--robot-primary: #29B6F6;
+--robot-light: #81D4FA;
+--robot-dark: #0277BD;
+--robot-gradient: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%);
 }
