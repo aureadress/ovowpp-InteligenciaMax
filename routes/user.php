@@ -72,7 +72,7 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('add-device-token', 'addDeviceToken')->name('add.device.token');
 
                 Route::get('notification/settings', 'notificationSetting')->name('notification.setting');
-                Route::post('notification/settings', 'notificationSettingsUpdate')->name('notification.setting');
+                Route::post('notification/settings', 'notificationSettingsUpdate')->name('notification.setting.update');
             });
 
             // Profile setting
