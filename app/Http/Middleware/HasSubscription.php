@@ -20,12 +20,12 @@ class HasSubscription
         $user = getParentUser();
 
         if ($user->plan_id == Status::NO) {
-            $notify = "You cannot proceed without an active plan. Please purchase a plan to continue";
+            $notify = __("You cannot proceed without an active plan. Please purchase a plan to continue");
             return responseManager('subscription_required', $notify);
         }
 
         if (!userSubscriptionExpiredCheck($user)) {
-            $notify = "Your plan has expired. Please renew or purchase a new plan to regain access.";
+            $notify = __("Your plan has expired. Please renew or purchase a new plan to regain access.");
             if($request->ajax()){
                 return apiResponse("subscription_expired", "error", [$notify]);
             }

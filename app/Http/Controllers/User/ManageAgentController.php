@@ -11,7 +11,7 @@ class ManageAgentController extends Controller
 
     public function create()
     {
-        $pageTitle     = "Add Agent";
+        $pageTitle     = "Adicionar Agente";
         $info          = json_decode(json_encode(getIpInfo()), true);
         $mobileCode    = @implode(',', $info['code']);
         $countries     = json_decode(file_get_contents(resource_path('views/partials/country.json')));
