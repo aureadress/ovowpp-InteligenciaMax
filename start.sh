@@ -19,6 +19,16 @@ echo "🔑 Setting permissions..."
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 chmod -R 775 public/assets 2>/dev/null || true
 
+echo "🖼️ Checking brand logos..."
+# Ensure logo directory exists
+mkdir -p public/assets/images/logo_icon
+
+# Verify critical logo files exist (should be in Git now)
+if [ ! -f "public/assets/images/logo_icon/logo.png" ]; then
+    echo "⚠️ WARNING: Logo files missing! This should not happen."
+    echo "   Logos should be versioned in Git."
+fi
+
 # Tentar corrigir proprietário se possível
 if [ -n "$(command -v chown)" ]; then
     chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || \
