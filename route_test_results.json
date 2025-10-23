@@ -1,0 +1,170 @@
+{
+  "public": [
+    {
+      "url": "/",
+      "status": 200,
+      "result": "✅ OK",
+      "type": "success"
+    },
+    {
+      "url": "/pricing",
+      "status": 200,
+      "result": "✅ OK",
+      "type": "success"
+    },
+    {
+      "url": "/features",
+      "status": 200,
+      "result": "✅ OK",
+      "type": "success"
+    },
+    {
+      "url": "/blogs",
+      "status": 200,
+      "result": "✅ OK",
+      "type": "success"
+    },
+    {
+      "url": "/contact",
+      "status": 200,
+      "result": "✅ OK",
+      "type": "success"
+    },
+    {
+      "url": "/login",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/register",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    }
+  ],
+  "admin": [
+    {
+      "url": "/admin/dashboard",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    },
+    {
+      "url": "/admin/user/subscriptions",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/admin/pricing/plan",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/admin/user/data/contact",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    },
+    {
+      "url": "/admin/user/data/contact/list",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    },
+    {
+      "url": "/admin/user/data/contact/tag",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    },
+    {
+      "url": "/admin/user/data/campaign",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    },
+    {
+      "url": "/admin/user/data/chatbot",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    },
+    {
+      "url": "/admin/user/data/short-link",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/admin/users/active",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/admin",
+      "type": "redirect"
+    }
+  ],
+  "user": [
+    {
+      "url": "/user/dashboard",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/user/login",
+      "type": "redirect"
+    },
+    {
+      "url": "/user/contact",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/user/contact/list/create",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/user/contact/tag",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/user/campaign",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/user/chatbot",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/user/short-link",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    },
+    {
+      "url": "/user/agent/list",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/user/login",
+      "type": "redirect"
+    },
+    {
+      "url": "/user/agent/create",
+      "status": 302,
+      "result": "🔄 REDIRECT → http://inteligenciamax.com.br/user/login",
+      "type": "redirect"
+    },
+    {
+      "url": "/user/floater",
+      "status": 404,
+      "result": "❌ NOT FOUND",
+      "type": "error"
+    }
+  ]
+}
