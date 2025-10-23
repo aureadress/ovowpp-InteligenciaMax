@@ -2,17 +2,15 @@
 
 /* ========================= Css Variables Start ======================== */
 :root {
-  /* Font Family - JOST */
+  /* Font Family */
   --heading-font: "Jost", sans-serif;
   --body-font: "Jost", sans-serif;
-  
-  /* ========================= INTELIGÊNCIA MAX THEME COLORS ============================= */
-  
-  /* Base Color - AZUL PRINCIPAL INTELIGÊNCIA MAX */
-  --base-h: 207;           /* Azul tecnológico */
-  --base-s: 90%;           /* Saturação alta */
-  --base-l: 54%;           /* Luminosidade ideal */
-  color: #1565C0;          /* Cor principal */
+  /* ========================= Theme Color Start ============================= */
+  /* Base Color */
+  --base-h: 142;
+  --base-s: 70%;
+  --base-l: 49%;
+  color: #25d466;
   --base: var(--base-h) var(--base-s) var(--base-l);
   --base-d-100: var(--base-h) var(--base-s) calc(var(--base-l) - var(--base-l) * 0.1);
   --base-d-200: var(--base-h) var(--base-s) calc(var(--base-l) - var(--base-l) * 0.2);
@@ -35,10 +33,10 @@
   --base-l-900: var(--base-h) calc(var(--base-s)) calc(var(--base-l) + (100% - var(--base-l)) * 0.9);
   --base-l-1000: var(--base-h) calc(var(--base-s)) calc(var(--base-l) + (100% - var(--base-l)) * 1);
 
-  /* Base Two Color - AZUL CLARO COMPLEMENTAR */
-  --base-two-h: 199;       /* Azul elétrico */
-  --base-two-s: 100%;      /* Saturação máxima */
-  --base-two-l: 85%;       /* Luminosidade clara */
+  /* Base Two Color */
+  --base-two-h: 144;
+  --base-two-s: 67%;
+  --base-two-l: 92%;
   --base-two: var(--base-two-h) var(--base-two-s) var(--base-two-l);
   --base-two-d-100: var(--base-two-h) var(--base-two-s) calc(var(--base-two-l) - var(--base-two-l) * 0.1);
   --base-two-d-200: var(--base-two-h) var(--base-two-s) calc(var(--base-two-l) - var(--base-two-l) * 0.2);
@@ -61,36 +59,33 @@
   --base-two-l-900: var(--base-two-h) calc(var(--base-two-s)) calc(var(--base-two-l) + (100% - var(--base-two-l)) * 0.9);
   --base-two-l-1000: var(--base-two-h) calc(var(--base-two-s)) calc(var(--base-two-l) + (100% - var(--base-two-l)) * 1);
 
-  /* ========================= INTELIGÊNCIA MAX THEME COLORS END ============================= */
-  
+  /* ========================= Theme Color End ============================= */
   /* ========================= Color Variables Start =========================== */
   --white: 0 0% 100%;
-  --body-color: 199 100% 85%;        /* Azul claro para texto */
-  --heading-color: 207 90% 54%;      /* Azul principal para títulos */
+  --body-color: 144 67% 92%;
+  --heading-color: 144 67% 92%;
   --black: 0 0% 0%;
-  --body-bg: 220 100% 4%;            /* Fundo escuro tecnológico */
-  --section-bg: 210 100% 96%;        /* Seções claras */
-  --section-bg-two: 199 100% 92%;    /* Seções alternativas */
-  --title-color: 207 90% 20%;        /* Títulos escuros */
+  --body-bg: 140 100% 1%;
+  --section-bg: 240 14% 95%;
+  --section-bg-two: 144 66% 92%;
+  --title-color: 233 12% 13%;
 
   /* ================================ Box Shadow Start =============================== */
   --header-box-shadow: 0px -1px 15px 3px hsl(var(--black) / 0.3);
   --mobile-box-shadow: 0px -1px 5px 0px hsl(var(--black) / 0.92);
-  --box-shadow: 0px 2px 15px hsl(207 90% 54% / 0.15);
-  --btn-shadow: 0px 1px 2px 0px rgba(13, 71, 161, 0.05),
-    0px 1px 2px 0px rgba(21, 101, 192, 0.25),
-    0px -1px 1px 1px rgba(66, 165, 245, 0.25) inset,
+  --box-shadow: 0px 2px 15px hsl(var(--black) / 0.05);
+  --btn-shadow: 0px 1px 2px 0px rgba(16, 40, 20, 0.05),
+    0px 1px 2px 0px rgba(14, 62, 15, 0.25),
+    0px -1px 1px 1px rgba(35, 170, 79, 0.25) inset,
     0px 1px 1px 1px rgba(255, 255, 255, 0.25) inset,
-    0px 0px 0px 1px rgba(13, 71, 161, 1) inset;
+    0px 0px 0px 1px rgba(21, 128, 62, 1) inset;
 
   /* ================================ Box Shadow End =============================== */
-  
   /* ============================== Bootstrap Modifier Start ============================== */
-  
-  /* Primary Color - AZUL INTELIGÊNCIA MAX */
-  --primary-h: 207;        /* Azul principal */
-  --primary-s: 90%;        /* Saturação alta */
-  --primary-l: 54%;        /* Luminosidade ideal */
+  /* Primary Color */
+  --primary-h: 238;
+  --primary-s: 100%;
+  --primary-l: 40%;
   --primary: var(--primary-h) var(--primary-s) var(--primary-l);
   --primary-d-100: var(--primary-h) var(--primary-s) calc(var(--primary-l) - var(--primary-l) * 0.1);
   --primary-d-200: var(--primary-h) var(--primary-s) calc(var(--primary-l) - var(--primary-l) * 0.2);
@@ -103,10 +98,10 @@
   --primary-l-400: var(--primary-h) calc(var(--primary-s)) calc(var(--primary-l) + (100% - var(--primary-l)) * 0.4);
   --primary-l-500: var(--primary-h) calc(var(--primary-s)) calc(var(--primary-l) + (100% - var(--primary-l)) * 0.5);
 
-  /* Secondary Color - AZUL ESCURO */
-  --secondary-h: 220;      /* Azul navy */
-  --secondary-s: 100%;     /* Saturação máxima */
-  --secondary-l: 25%;      /* Escuro */
+  /* Secondary Color */
+  --secondary-h: 208;
+  --secondary-s: 7%;
+  --secondary-l: 46%;
   --secondary: var(--secondary-h) var(--secondary-s) var(--secondary-l);
   --secondary-d-100: var(--secondary-h) var(--secondary-s) calc(var(--secondary-l) - var(--secondary-l) * 0.1);
   --secondary-d-200: var(--secondary-h) var(--secondary-s) calc(var(--secondary-l) - var(--secondary-l) * 0.2);
@@ -119,10 +114,10 @@
   --secondary-l-400: var(--secondary-h) calc(var(--secondary-s)) calc(var(--secondary-l) + (100% - var(--secondary-l)) * 0.4);
   --secondary-l-500: var(--secondary-h) calc(var(--secondary-s)) calc(var(--secondary-l) + (100% - var(--secondary-l)) * 0.5);
 
-  /* Success Color - VERDE INTELIGENTE */
-  --success-h: 140;        /* Verde tech */
-  --success-s: 100%;       /* Saturação máxima */
-  --success-l: 40%;        /* Luminosidade média */
+  /* Success Color */
+  --success-h: 112;
+  --success-s: 100%;
+  --success-l: 40%;
   --success: var(--success-h) var(--success-s) var(--success-l);
   --success-d-100: var(--success-h) var(--success-s) calc(var(--success-l) - var(--success-l) * 0.1);
   --success-d-200: var(--success-h) var(--success-s) calc(var(--success-l) - var(--success-l) * 0.2);
@@ -135,10 +130,10 @@
   --success-l-400: var(--success-h) calc(var(--success-s)) calc(var(--success-l) + (100% - var(--success-l)) * 0.4);
   --success-l-500: var(--success-h) calc(var(--success-s)) calc(var(--success-l) + (100% - var(--success-l)) * 0.5);
 
-  /* Danger Color - VERMELHO SISTEMA */
-  --danger-h: 0;           /* Vermelho puro */
-  --danger-s: 84%;         /* Saturação alta */
-  --danger-l: 60%;         /* Luminosidade média */
+  /* Danger Color */
+  --danger-h: 0;
+  --danger-s: 96%;
+  --danger-l: 63%;
   --danger: var(--danger-h) var(--danger-s) var(--danger-l);
   --danger-d-100: var(--danger-h) var(--danger-s) calc(var(--danger-l) - var(--danger-l) * 0.1);
   --danger-d-200: var(--danger-h) var(--danger-s) calc(var(--danger-l) - var(--danger-l) * 0.2);
@@ -151,10 +146,10 @@
   --danger-l-400: var(--danger-h) calc(var(--danger-s)) calc(var(--danger-l) + (100% - var(--danger-l)) * 0.4);
   --danger-l-500: var(--danger-h) calc(var(--danger-s)) calc(var(--danger-l) + (100% - var(--danger-l)) * 0.5);
 
-  /* Warning Color - LARANJA TECH */
-  --warning-h: 30;         /* Laranja tecnológico */ 
-  --warning-s: 100%;       /* Saturação máxima */
-  --warning-l: 50%;        /* Luminosidade média */
+  /* Warning Color */
+  --warning-h: 40;
+  --warning-s: 100%;
+  --warning-l: 46%;
   --warning: var(--warning-h) var(--warning-s) var(--warning-l);
   --warning-d-100: var(--warning-h) var(--warning-s) calc(var(--warning-l) - var(--warning-l) * 0.1);
   --warning-d-200: var(--warning-h) var(--warning-s) calc(var(--warning-l) - var(--warning-l) * 0.2);
@@ -167,11 +162,11 @@
   --warning-l-400: var(--warning-h) calc(var(--warning-s)) calc(var(--warning-l) + (100% - var(--warning-l)) * 0.4);
   --warning-l-500: var(--warning-h) calc(var(--warning-s)) calc(var(--warning-l) + (100% - var(--warning-l)) * 0.5);
 
-  /* Info Color - CIANO INFORMATIVO */
-  --info-h: 187;           /* Ciano */
-  --info-s: 100%;          /* Saturação máxima */
-  --info-l: 50%;           /* Luminosidade média */
-  color: #00BCD4;          /* Cor ciano */
+  /* Info Color */
+  --info-h: 196;
+  --info-s: 100%;
+  --info-l: 50%;
+  color: #23aa4f33;
   --info: var(--info-h) var(--info-s) var(--info-l);
   --info-d-100: var(--info-h) var(--info-s) calc(var(--info-l) - var(--info-l) * 0.1);
   --info-d-200: var(--info-h) var(--info-s) calc(var(--info-l) - var(--info-l) * 0.2);
@@ -184,10 +179,10 @@
   --info-l-400: var(--info-h) calc(var(--info-s)) calc(var(--info-l) + (100% - var(--info-l)) * 0.4);
   --info-l-500: var(--info-h) calc(var(--info-s)) calc(var(--info-l) + (100% - var(--info-l)) * 0.5);
 
-  /* Dark Color - ESCURO TECNOLÓGICO */
-  --dark-h: 220;           /* Azul muito escuro */
-  --dark-s: 100%;          /* Saturação máxima */
-  --dark-l: 8%;            /* Muito escuro */
+  /* dark Color */
+  --dark-h: 233;
+  --dark-s: 12%;
+  --dark-l: 13%;
   --dark: var(--dark-h) var(--dark-s) var(--dark-l);
   --dark-d-100: var(--dark-h) var(--dark-s) calc(var(--dark-l) - var(--dark-l) * 0.1);
   --dark-d-200: var(--dark-h) var(--dark-s) calc(var(--dark-l) - var(--dark-l) * 0.2);
