@@ -86,11 +86,11 @@ Route::middleware('admin')->group(function () {
 
     // Role & Permission
     Route::controller('RoleController')->name('role.')->prefix('role')->group(function () {
-        Route::get('list', 'list')->name('list');
-        Route::post('create', 'save')->name('create');
-        Route::post('update/{id}', 'save')->name('update');
-        Route::get('permission/{id}', 'permission')->name('permission');
-        Route::post('permission/update/{id}', 'permissionUpdate')->name('permission.update');
+        Route::get('list', 'list')->name('list')->middleware('permission:view role,admin');
+        Route::post('create', 'save')->name('create')->middleware('permission:add role,admin');
+        Route::post('update/{id}', 'save')->name('update')->middleware('permission:edit role,admin');
+        Route::get('permission/{id}', 'permission')->name('permission')->middleware('permission:edit role,admin');
+        Route::post('permission/update/{id}', 'permissionUpdate')->name('permission.update')->middleware('permission:edit role,admin');
     });
 
     // Coupon
