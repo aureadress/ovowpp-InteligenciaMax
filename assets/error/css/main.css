@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+
 /* ========================= Css Variables Start ======================== */
 
 :root {
-    /* Font Family */
-    --heading-font: "Be Vietnam Pro", sans-serif;
-    --body-font: "Montserrat", sans-serif;
+    /* Font Family - JOST */
+    --heading-font: "Jost", sans-serif;
+    --body-font: "Jost", sans-serif;
     /*========================= Css Variables Start===========================*/
 
     --white: 0 0% 100%;

@@ -1,0 +1,205 @@
+/**
+ * JOST FONT WEIGHTS - Inteligência MAX
+ * Aplicação automática de pesos corretos
+ */
+
+/* Base: Peso normal (400) para todo o corpo */
+body {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Títulos: Peso bold (700) */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Jost", sans-serif;
+    font-weight: 700;
+}
+
+/* Texto enfatizado: Bold (700) */
+strong, b, .fw-bold, .font-weight-bold {
+    font-weight: 700 !important;
+}
+
+/* Texto semi-bold: SemiBold (600) */
+.fw-semibold, .font-weight-semibold {
+    font-weight: 600 !important;
+}
+
+/* Texto médio: Medium (500) */
+.fw-medium, .font-weight-medium {
+    font-weight: 500 !important;
+}
+
+/* Texto normal: Normal (400) */
+.fw-normal, .font-weight-normal {
+    font-weight: 400 !important;
+}
+
+/* Texto leve: Light (300) */
+.fw-light, .font-weight-light {
+    font-weight: 300 !important;
+}
+
+/* Botões: Medium (500) */
+.btn {
+    font-family: "Jost", sans-serif;
+    font-weight: 500;
+}
+
+/* Botões primários: SemiBold (600) */
+.btn-primary, .btn-success, .btn-danger, .btn-warning, .btn-info {
+    font-weight: 600;
+}
+
+/* Links: Normal (400), Bold (700) no hover */
+a {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+a:hover, a.active {
+    font-weight: 500;
+}
+
+/* Navegação: Medium (500) */
+.nav-link, .navbar-nav .nav-link {
+    font-family: "Jost", sans-serif;
+    font-weight: 500;
+}
+
+.nav-link.active {
+    font-weight: 600;
+}
+
+/* Sidebar: Normal (400), Bold (600) quando ativo */
+.sidebar-menu-list__link {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+.sidebar-menu-list__link.active {
+    font-weight: 600;
+}
+
+/* Breadcrumbs: Normal (400) */
+.breadcrumb-item {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+.breadcrumb-item.active {
+    font-weight: 500;
+}
+
+/* Cards: Títulos Bold (700) */
+.card-header, .card-title {
+    font-family: "Jost", sans-serif;
+    font-weight: 700;
+}
+
+.card-body {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Tabelas: Header Bold (600) */
+.table thead th {
+    font-family: "Jost", sans-serif;
+    font-weight: 600;
+}
+
+.table tbody td {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Formulários: Labels Medium (500) */
+label, .form-label {
+    font-family: "Jost", sans-serif;
+    font-weight: 500;
+}
+
+input, textarea, select, .form-control, .form-select {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Badges: SemiBold (600) */
+.badge {
+    font-family: "Jost", sans-serif;
+    font-weight: 600;
+}
+
+/* Alerts: Normal (400), Título Bold (700) */
+.alert {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+.alert-heading {
+    font-weight: 700;
+}
+
+/* Modais: Título Bold (700) */
+.modal-title {
+    font-family: "Jost", sans-serif;
+    font-weight: 700;
+}
+
+.modal-body {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Tooltips e Popovers: Normal (400) */
+.tooltip, .popover {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Dashboard widgets: Bold (700) para números/métricas */
+.dashboard-card__amount,
+.widget-card__amount {
+    font-family: "Jost", sans-serif;
+    font-weight: 700;
+}
+
+/* Parágrafo: Normal (400) */
+p {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Listas: Normal (400) */
+ul, ol, li {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Footer: Normal (400) */
+.footer {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+/* Paginação: Normal (400), Bold (600) quando ativo */
+.page-link {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+.page-item.active .page-link {
+    font-weight: 600;
+}
+
+/* Dropdown: Normal (400) */
+.dropdown-item {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+}
+
+.dropdown-item.active {
+    font-weight: 500;
+}

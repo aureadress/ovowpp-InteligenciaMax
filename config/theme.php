@@ -36,10 +36,10 @@ return [
     'logo_height' => env('APP_LOGO_HEIGHT', '50px'),
     'logo_width' => env('APP_LOGO_WIDTH', 'auto'),
     
-    // Tipografia
-    'font_family_primary' => env('APP_FONT_PRIMARY', 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'),
-    'font_family_secondary' => env('APP_FONT_SECONDARY', 'Montserrat, sans-serif'),
-    'font_family_heading' => env('APP_FONT_HEADING', 'Poppins, sans-serif'),
+    // Tipografia - JOST
+    'font_family_primary' => env('APP_FONT_PRIMARY', '"Jost", sans-serif'),
+    'font_family_secondary' => env('APP_FONT_SECONDARY', '"Jost", sans-serif'),
+    'font_family_heading' => env('APP_FONT_HEADING', '"Jost", sans-serif'),
     
     // Tamanhos de fonte base
     'font_size_base' => env('APP_FONT_SIZE', '14px'),

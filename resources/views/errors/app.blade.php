@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ siteFavicon() }}" type="image/x-icon">
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <script src="{{ asset('assets/admin/js/theme.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('assets/global/css/bootstrap.min.css') }}">
