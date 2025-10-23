@@ -14,7 +14,7 @@ class PricingPlanController extends Controller
 
     public function index()
     {
-        $pageTitle    = "Pricing Plan";
+        $pageTitle    = __("Pricing Plan");
         $pricingPlans = PricingPlan::orderBy('monthly_price')->paginate(getPaginate());
         return view('admin.plans.index', compact('pageTitle', 'pricingPlans'));
     }
@@ -37,10 +37,10 @@ class PricingPlanController extends Controller
         ]);
 
         if ($id) {
-            $message     = "Pricing plan updated successfully";
+            $message     = __("Pricing plan updated successfully");
             $pricingPlan = PricingPlan::findOrFail($id);
         } else {
-            $message     = "Pricing plan added successfully";
+            $message     = __("Pricing plan added successfully");
             $pricingPlan = new PricingPlan();
         }
 
