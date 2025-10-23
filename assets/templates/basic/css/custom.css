@@ -1,3 +1,179 @@
+/* ===== LAYOUT INTELIGÊNCIA MAX - CORES EXATAS DA IMAGEM =====
+   Aplicado: Background azul escuro com degradê
+   Botões: Azul ciano com efeitos de brilho
+   Padrão: Circuitos sutis no fundo
+   ============================================================= */
+
+:root {
+    /* CORES EXATAS DO LAYOUT DA IMAGEM */
+    --azul-fundo-escuro: #0B1426;
+    --azul-fundo-medio: #1A2B47;
+    --azul-fundo-claro: #0F1C3A;
+    --azul-botao: #00D4FF;
+    --azul-botao-hover: #00B8E6;
+    --branco-texto: #FFFFFF;
+    --azul-brilho: rgba(0, 212, 255, 0.4);
+    
+    /* SOBRESCREVER VARIÁVEIS EXISTENTES */
+    --robot-primary: #00D4FF;
+    --robot-medium: #00B8E6;
+    --robot-dark: #0277BD;
+    --main: 200, 100%, 50%;
+}
+
+/* FORÇAR BACKGROUND AZUL EM TODO O SITE */
+html,
+body,
+.main-wrapper,
+.dashboard-container,
+main,
+section,
+.container,
+.hero-section,
+.landing-page {
+    background: linear-gradient(135deg, var(--azul-fundo-escuro) 0%, var(--azul-fundo-medio) 50%, var(--azul-fundo-claro) 100%) !important;
+    color: var(--branco-texto) !important;
+    min-height: 100vh;
+}
+
+/* PADRÃO DE CIRCUITOS NO FUNDO */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.08) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 40% 60%, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px, 40px 40px, 80px 80px;
+    opacity: 0.4;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* BOTÕES COM EFEITO EXATO DA IMAGEM */
+.btn-primary,
+.btn--base,
+.btn--base.active,
+button[type="submit"],
+.cta-button,
+.main-button,
+.coupon-apply-button {
+    background: linear-gradient(45deg, var(--azul-botao) 0%, #0099CC 100%) !important;
+    color: var(--branco-texto) !important;
+    border: none !important;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    
+    box-shadow: 
+        0 0 25px var(--azul-brilho),
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+/* EFEITO HOVER DOS BOTÕES */
+.btn-primary:hover,
+.btn--base:hover,
+button[type="submit"]:hover,
+.cta-button:hover,
+.main-button:hover {
+    background: linear-gradient(45deg, var(--azul-botao-hover) 0%, #0088BB 100%) !important;
+    box-shadow: 
+        0 0 35px rgba(0, 212, 255, 0.7),
+        0 12px 30px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* BRILHO ANIMADO NOS BOTÕES */
+.btn-primary::before,
+.btn--base::before,
+button[type="submit"]::before,
+.cta-button::before,
+.main-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s;
+    opacity: 0;
+}
+
+.btn-primary:hover::before,
+.btn--base:hover::before,
+button[type="submit"]:hover::before,
+.cta-button:hover::before,
+.main-button:hover::before {
+    animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+    0% { 
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% { 
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* TEXTOS COM SOMBRA AZUL */
+h1, h2, h3, h4, h5, h6,
+.page-title,
+.card-header,
+.title-principal,
+.hero-title {
+    color: var(--branco-texto) !important;
+    text-shadow: 0 3px 20px var(--azul-brilho);
+}
+
+/* TEXTO GERAL */
+p, span, div, li, a,
+.text,
+.main-text,
+.hero-description {
+    color: var(--branco-texto) !important;
+}
+
+/* LINKS */
+a:not(.btn) {
+    color: var(--azul-botao) !important;
+    transition: all 0.3s ease;
+}
+
+a:not(.btn):hover {
+    color: var(--azul-botao-hover) !important;
+    text-shadow: 0 0 10px var(--azul-brilho);
+}
+
+/* CARDS E CONTAINERS */
+.card,
+.card-header,
+.modal-content,
+.payment-system-list {
+    background: rgba(26, 43, 71, 0.9) !important;
+    border: 1px solid var(--azul-botao);
+    backdrop-filter: blur(10px);
+}
+
 /* Copy Animation */
 .base-color {
     color: hsl(var(--main)) !important;
@@ -55,9 +231,6 @@
         opacity: 0;
     }
 }
-
-
-
 
 .cookies-card {
     width: 400px;
@@ -230,8 +403,6 @@
     color: #29B6F6;
 }
 
-
-
 .show-filter {
     display: none;
 }
@@ -246,8 +417,6 @@
         display: block;
     }
 }
-
-
 
 .gateway-card {
     padding: 15px;
@@ -837,7 +1006,6 @@ button .spinner-border {
     height: auto;
 }
 
-
 .coupon-apply-button {
     position: absolute;
     right: 0;
@@ -867,60 +1035,23 @@ button .spinner-border {
 }
 
 /* ================================================
-   🤖 TEMA ROBÔ AZUL - TONS DO LOGO
+    TEMA INTELIGÊNCIA MAX - LAYOUT EXATO DA IMAGEM
    ================================================
-   Paleta de cores baseada no robô azul/ciano
-   Aplicado em: 22/10/2025
+   Cores aplicadas: Azul escuro com degradê
+   Botões: Azul ciano com brilho
+   Efeitos: Padrão de circuitos
+   Data: 2025-10-23
    ================================================ */
 
-:root {
-    /* Tons do Robô Azul */
-    --robot-light: #B3E5FC;
-    --robot-lighter: #81D4FA;
-    --robot-primary: #29B6F6;
-    --robot-medium: #039BE5;
-    --robot-dark: #0277BD;
-    --robot-darker: #01579B;
-    
-    /* Gradientes */
-    --gradient-robot: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%);
-    --gradient-robot-light: linear-gradient(135deg, #81D4FA 0%, #29B6F6 100%);
-}
-
-/* Botões com gradiente do robô */
-.btn-primary,
-.btn--base,
-.btn--base.active {
-    background: var(--gradient-robot) !important;
-    border-color: var(--robot-primary) !important;
-    box-shadow: 0 4px 15px rgba(41, 182, 246, 0.3) !important;
-}
-
-.btn-primary:hover,
-.btn--base:hover {
-    background: linear-gradient(135deg, #0277BD 0%, #01579B 100%) !important;
-    box-shadow: 0 6px 20px rgba(41, 182, 246, 0.4) !important;
-    transform: translateY(-2px);
-}
-
-/* Cards e fundos */
+/* GRADIENTES PERSONALIZADOS */
 .bg--base,
 .page-title,
 .card-header.bg--base {
-    background: var(--gradient-robot) !important;
+    background: linear-gradient(45deg, var(--azul-botao) 0%, #0099CC 100%) !important;
 }
 
-/* Efeito de brilho do robô */
+/* EFEITO DE FOCO NOS BOTÕES */
 .btn-primary:focus,
 .btn--base:focus {
-    box-shadow: 0 0 0 0.2rem rgba(41, 182, 246, 0.5) !important;
-}
-
-/* Links */
-a:not(.btn) {
-    transition: color 0.3s ease;
-}
-
-a:not(.btn):hover {
-    color: var(--robot-medium) !important;
+    box-shadow: 0 0 0 0.2rem var(--azul-brilho) !important;
 }
