@@ -26,9 +26,12 @@ ovowpp.zip
 .DS_Store
 
 # Ignore uploaded logos (user-specific brand assets)
+# EXCEPT default logos (PNG/SVG files are versioned)
 public/assets/images/logo_icon/*
 public/assets/images/inteligenciamax/*
 assets/images/logo_icon/*
 !public/assets/images/logo_icon/.gitkeep
+!public/assets/images/logo_icon/*.png
+!public/assets/images/logo_icon/*.svg
 !public/assets/images/inteligenciamax/.gitkeep
 !assets/images/logo_icon/.gitkeep
