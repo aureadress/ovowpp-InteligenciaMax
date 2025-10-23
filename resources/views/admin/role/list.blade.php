@@ -52,13 +52,13 @@
             </button>
         </x-admin.ui.modal.header>
         <x-admin.ui.modal.body>
-            <form method="POST">
+            <form method="POST" autocomplete="off">
                 @csrf
                 <div class="form-group">
                     <label>@lang('Name')</label>
-                    <input type="text" class="form-control" name="name" required value="{{ old('name') }}">
+                    <input type="text" class="form-control" name="name" required value="{{ old('name') }}" autocomplete="off">
                 </div>
-                <div class="form-group">
+<div class="form-group">
                     <x-admin.ui.btn.modal />
                 </div>
             </form>

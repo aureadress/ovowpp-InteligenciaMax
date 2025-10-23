@@ -12,7 +12,7 @@ trait RoleOperation
     public function list()
     {
         $roles     = Role::searchable(['name'])->orderBy('id', getOrderBy())->get();
-        $pageTitle = 'Manage Role';
+        $pageTitle = 'Gerenciar Funções';
         $view      = "admin.role.list";
         return responseManager("roles", $pageTitle, 'success', compact('roles', 'view', 'pageTitle'));
     }
@@ -25,11 +25,11 @@ trait RoleOperation
 
         if ($id) {
             $role    = Role::findOrFail($id);
-            $message = "Role updated successfully";
+            $message = __('Role updated successfully');
             $remark  = "role-updated";
         } else {
             $role    = new Role();
-            $message = "Role added successfully";
+            $message = __('Role added successfully');
             $remark  = "role-added";
         }
 
@@ -44,7 +44,7 @@ trait RoleOperation
     public function permission($id)
     {
         $role                = Role::findOrFail($id);
-        $pageTitle           = 'Edit Permission - ' . $role->name;
+        $pageTitle           = __('Edit Permission') . ' - ' . $role->name;
         $view                = "admin.role.permission";
         $permissions         = Permission::get();
         $existingPermissions = $role->getAllPermissions();
@@ -67,7 +67,7 @@ trait RoleOperation
         $permissions = Permission::whereIn('id', $request->permissions ?? [])->pluck('id')->toArray();
         $role->syncPermissions($permissions ?? []);
 
-        $message = "Permission updated successfully";
+        $message = __('Permission updated successfully');
         return responseManager("role", $message, 'success', compact('role'));
     }
 }

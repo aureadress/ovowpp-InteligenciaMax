@@ -113,7 +113,7 @@
     "Add pricing plans based on your business needs. Use -1 in any limit field to allow unlimited access": "adicionar pricing plans based on your business needs. Use -1 in any limit field to allow unlimited access",
     "Add pricing plans based on your business needs. Use -1 in any limit field to allow unlimited access.": "adicionar pricing plans based on your business needs. Use -1 in any limit field to allow unlimited access.",
     "Add Project": "adicionar Project",
-    "Add Role": "adicionar Role",
+    "Add Role": "Adicionar Função",
     "Add Security Recommendation": "adicionar Security Recommendation",
     "Add Short Link": "adicionar Short Link",
     "Add site url": "adicionar site url",
@@ -559,7 +559,7 @@
     "Edit Plan": "editar plano",
     "Edit pricing plans based on your business needs. Use -1 in any limit field to allow unlimited access.": "editar pricing plans based on your business needs. Use -1 in any limit field to allow unlimited access.",
     "Edit Profile": "Editar Perfil",
-    "Edit Role": "editar Role",
+    "Edit Role": "Editar Função",
     "Edit Template": "Editar Modelo",
     "Email": "E-mail",
     "Email - Mobile": "e-mail - Mobile",
@@ -1999,5 +1999,10 @@
     "Enter address": "Digite o endereço",
     "Username already exists": "Nome de usuário já existe",
     "Email already exists": "E-mail já existe",
-    "Mobile already exists": "Celular já existe"
+    "Mobile already exists": "Celular já existe",
+    "Manage Role": "Gerenciar Funções",
+    "Role updated successfully": "Função atualizada com sucesso",
+    "Role added successfully": "Função adicionada com sucesso",
+    "Edit Permission": "Editar Permissões",
+    "Permission updated successfully": "Permissões atualizadas com sucesso"
 }
