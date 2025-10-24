@@ -999,3 +999,37 @@ a:not(.btn):hover {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 }
+
+/* ================================================
+   🎨 CORES AZUIS - APENAS FRONTEND (Landing + Login)
+   ================================================
+   Dashboard mantém as cores ORIGINAIS do banco de dados
+   ================================================ */
+
+/* Aplicar cores azuis APENAS nas páginas frontend (landing page e login) */
+body:has(.frontend) {
+    --base-h: 203 !important;
+    --base-s: 100% !important;
+    --base-l: 58% !important;
+}
+
+body:has(.account) {
+    --base-h: 203 !important;
+    --base-s: 100% !important;
+    --base-l: 58% !important;
+}
+
+/* Landing page e login usam cor azul */
+.frontend,
+.account {
+    --primary-color: #29B6F6 !important;
+    --primary-light: #4FC3F7 !important;
+    --primary-dark: #0288D1 !important;
+    --secondary-color: #004AAD !important;
+}
+
+/* Dashboard mantém as cores do banco de dados (VERDE original) */
+.dashboard {
+    /* Sem sobrescrita - usa valores do color.php */
+}
+
