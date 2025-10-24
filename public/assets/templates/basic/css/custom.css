@@ -926,18 +926,26 @@ a:not(.btn):hover {
 }
 
 /* ================================================
-   🎨 CORREÇÃO PÁGINA DE LOGIN
+   🎨 CORREÇÃO PÁGINA DE LOGIN - V2
    ================================================ */
 
-/* Remover fundo verde da imagem e aplicar filtro azul */
+/* REMOVER filtro da imagem - manter original */
 .account-thumb img {
-    filter: hue-rotate(150deg) saturate(0.8) brightness(0.9);
-    -webkit-filter: hue-rotate(150deg) saturate(0.8) brightness(0.9);
+    filter: none !important;
+    -webkit-filter: none !important;
 }
 
 /* Garantir que o fundo do login seja escuro */
 .account.section-shape {
     background: #0D1835 !important;
+}
+
+/* Corrigir header da página de login - remover verde */
+.account .header,
+.account .header.fixed-header {
+    background: linear-gradient(90deg, rgba(13, 24, 53, 0.95) 0%, rgba(26, 40, 56, 0.95) 100%) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 /* Footer sem degradê - fundo sólido */
