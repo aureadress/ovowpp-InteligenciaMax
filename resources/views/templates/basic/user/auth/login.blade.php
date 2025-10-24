@@ -80,3 +80,7 @@
         </div>
     </section>
 @endsection
+
+@push('script')
+<script src="{{ asset($activeTemplateTrue . 'js/header-scroll.js') }}?v={{ time() }}"></script>
+@endpush
