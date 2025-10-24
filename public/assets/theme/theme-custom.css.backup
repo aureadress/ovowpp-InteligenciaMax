@@ -1,0 +1,305 @@
+/**
+ * THEME CUSTOM CSS - InteligenciaMax
+ * 
+ * Este arquivo contém estilos personalizados que utilizam as variáveis CSS
+ * do tema definidas em config/theme.php
+ * 
+ * As variáveis disponíveis são:
+ * --theme-primary, --theme-secondary, --theme-accent
+ * --theme-success, --theme-warning, --theme-danger, --theme-info
+ * --theme-font-primary, --theme-font-heading
+ * --theme-border-radius, --theme-logo-height
+ * 
+ * Você pode sobrescrever estilos aqui sem modificar os arquivos core
+ */
+
+/* ============================================================================
+   COMPONENTES CUSTOMIZADOS
+   ============================================================================ */
+
+/* Botões com cores do tema */
+.btn-theme-primary {
+    background-color: var(--theme-primary, #29B6F6);
+    border-color: var(--theme-primary, #29B6F6);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-theme-primary:hover,
+.btn-theme-primary:focus {
+    background-color: var(--primary-dark, #039BE5);
+    border-color: var(--primary-dark, #039BE5);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-theme-secondary {
+    background-color: var(--theme-secondary, #004AAD);
+    border-color: var(--theme-secondary, #004AAD);
+    color: #fff;
+}
+
+.btn-theme-accent {
+    background-color: var(--theme-accent, #FF6600);
+    border-color: var(--theme-accent, #FF6600);
+    color: #fff;
+}
+
+/* Cards com cores do tema */
+.card-theme-primary {
+    border-left: 4px solid var(--theme-primary, #29B6F6);
+}
+
+.card-theme-primary .card-header {
+    background-color: var(--theme-primary, #29B6F6);
+    color: #fff;
+}
+
+.card-theme-secondary {
+    border-left: 4px solid var(--theme-secondary, #004AAD);
+}
+
+/* Badges */
+.badge-theme-primary {
+    background-color: var(--theme-primary, #29B6F6);
+    color: #fff;
+}
+
+.badge-theme-secondary {
+    background-color: var(--theme-secondary, #004AAD);
+    color: #fff;
+}
+
+.badge-theme-accent {
+    background-color: var(--theme-accent, #FF6600);
+    color: #fff;
+}
+
+/* Alerts customizados */
+.alert-theme-info {
+    background-color: rgba(41, 182, 246, 0.1);
+    border-color: var(--theme-primary, #29B6F6);
+    color: var(--theme-primary, #29B6F6);
+}
+
+/* Links */
+a.theme-link {
+    color: var(--theme-primary, #29B6F6);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a.theme-link:hover {
+    color: var(--primary-dark, #039BE5);
+    text-decoration: underline;
+}
+
+/* ============================================================================
+   NAVEGAÇÃO E SIDEBAR
+   ============================================================================ */
+
+/* Sidebar highlight */
+.sidebar-menu-list__item.active,
+.sidebar-menu-list__item:hover {
+    background-color: rgba(41, 182, 246, 0.1);
+}
+
+.sidebar-menu-list__link.active {
+    color: var(--theme-primary, #29B6F6) !important;
+}
+
+/* Menu ativo */
+.nav-pills .nav-link.active {
+    background-color: var(--theme-primary, #29B6F6);
+}
+
+/* ============================================================================
+   FORMULÁRIOS
+   ============================================================================ */
+
+/* Input focus com cor do tema */
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+    border-color: var(--theme-primary, #29B6F6);
+    box-shadow: 0 0 0 0.2rem rgba(41, 182, 246, 0.25);
+}
+
+/* Checkbox e Radio customizados */
+.form-check-input:checked {
+    background-color: var(--theme-primary, #29B6F6);
+    border-color: var(--theme-primary, #29B6F6);
+}
+
+/* ============================================================================
+   TABELAS
+   ============================================================================ */
+
+/* Header de tabela */
+.table-theme thead {
+    background-color: var(--theme-primary, #29B6F6);
+    color: #fff;
+}
+
+.table-theme tbody tr:hover {
+    background-color: rgba(41, 182, 246, 0.05);
+}
+
+/* ============================================================================
+   LOADING E SPINNERS
+   ============================================================================ */
+
+.spinner-theme {
+    border: 3px solid rgba(41, 182, 246, 0.2);
+    border-top-color: var(--theme-primary, #29B6F6);
+    border-radius: 50%;
+    animation: spinner-rotate 1s linear infinite;
+}
+
+@keyframes spinner-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================================================
+   GRADIENTES
+   ============================================================================ */
+
+.gradient-theme-primary {
+    background: var(--gradient-primary, linear-gradient(135deg, #29B6F6 0%, #039BE5 100%));
+}
+
+.gradient-theme-secondary {
+    background: var(--gradient-secondary, linear-gradient(135deg, #004AAD 0%, #002F6C 100%));
+}
+
+/* ============================================================================
+   UTILITÁRIOS
+   ============================================================================ */
+
+/* Cores de texto */
+.text-theme-primary {
+    color: var(--theme-primary, #29B6F6) !important;
+}
+
+.text-theme-secondary {
+    color: var(--theme-secondary, #004AAD) !important;
+}
+
+.text-theme-accent {
+    color: var(--theme-accent, #FF6600) !important;
+}
+
+/* Cores de fundo */
+.bg-theme-primary {
+    background-color: var(--theme-primary, #29B6F6) !important;
+    color: #fff;
+}
+
+.bg-theme-secondary {
+    background-color: var(--theme-secondary, #004AAD) !important;
+    color: #fff;
+}
+
+.bg-theme-accent {
+    background-color: var(--theme-accent, #FF6600) !important;
+    color: #fff;
+}
+
+/* Bordas */
+.border-theme-primary {
+    border-color: var(--theme-primary, #29B6F6) !important;
+}
+
+.border-theme-secondary {
+    border-color: var(--theme-secondary, #004AAD) !important;
+}
+
+/* ============================================================================
+   ANIMAÇÕES
+   ============================================================================ */
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================================================
+   RESPONSIVIDADE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .btn-theme-primary,
+    .btn-theme-secondary,
+    .btn-theme-accent {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
+    .card-theme-primary,
+    .card-theme-secondary {
+        border-left-width: 3px;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --theme-logo-height: 40px;
+    }
+}
+
+/* ============================================================================
+   MODO ESCURO
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+    .card-theme-primary,
+    .card-theme-secondary {
+        border-color: var(--theme-primary, #29B6F6);
+    }
+    
+    .bg-theme-primary,
+    .bg-theme-secondary {
+        filter: brightness(0.9);
+    }
+}
+
+/* Classe manual para modo escuro */
+.dark-mode .btn-theme-primary,
+.dark-mode .btn-theme-secondary,
+.dark-mode .btn-theme-accent {
+    filter: brightness(1.1);
+}
+
+.dark-mode .card-theme-primary .card-header,
+.dark-mode .card-theme-secondary .card-header {
+    filter: brightness(0.85);
+}
+/* Updated: 2025-10-22 23:43:30 */
