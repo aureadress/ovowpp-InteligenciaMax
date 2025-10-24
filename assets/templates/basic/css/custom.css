@@ -1006,31 +1006,34 @@ a:not(.btn):hover {
    Dashboard mantém as cores ORIGINAIS do banco de dados
    ================================================ */
 
-/* Aplicar cores azuis APENAS nas páginas frontend (landing page e login) */
-body:has(.frontend) {
-    --base-h: 203 !important;
-    --base-s: 100% !important;
-    --base-l: 58% !important;
+/* REMOVER sobrescrita de cores - deixar color.php controlar TUDO */
+/* O banco de dados deve estar com cor VERDE (25d466) */
+/* CSS abaixo aplica azul APENAS em elementos específicos do frontend */
+
+/* Landing page - botões e elementos azuis */
+.frontend .btn--base,
+.frontend .btn-primary,
+.frontend .bg--base {
+    background: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%) !important;
+    border-color: #29B6F6 !important;
 }
 
-body:has(.account) {
-    --base-h: 203 !important;
-    --base-s: 100% !important;
-    --base-l: 58% !important;
+.frontend .text--base,
+.frontend a.text--base {
+    color: #29B6F6 !important;
 }
 
-/* Landing page e login usam cor azul */
-.frontend,
-.account {
-    --primary-color: #29B6F6 !important;
-    --primary-light: #4FC3F7 !important;
-    --primary-dark: #0288D1 !important;
-    --secondary-color: #004AAD !important;
+/* Login page - botões e elementos azuis */
+.account .btn--base,
+.account .btn-primary,
+.account .bg--base {
+    background: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%) !important;
+    border-color: #29B6F6 !important;
 }
 
-/* Dashboard mantém as cores do banco de dados (VERDE original) */
-.dashboard {
-    /* Sem sobrescrita - usa valores do color.php */
+.account .text--base,
+.account a.text--base {
+    color: #29B6F6 !important;
 }
 
 
@@ -1086,5 +1089,42 @@ body:has(.account) {
     width: 24px;
     height: 24px;
     display: block;
+}
+
+
+/* ================================================
+   🔧 CORREÇÃO: GARANTIR VISIBILIDADE DOS ÍCONES
+   ================================================ */
+
+/* Garantir que ícones SVG do banco sejam visíveis */
+.feature-item__icon,
+.how-work-item__icon {
+    min-width: 48px;
+    min-height: 48px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-item__icon svg,
+.how-work-item__icon svg,
+.feature-item__icon i,
+.how-work-item__icon i {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Garantir que imagens de setas sejam visíveis */
+.how-work-item__shape {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.how-work-item__shape img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: 100%;
 }
 
