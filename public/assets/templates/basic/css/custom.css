@@ -924,3 +924,27 @@ a:not(.btn) {
 a:not(.btn):hover {
     color: var(--robot-medium) !important;
 }
+
+/* ================================================
+   🎨 CORREÇÃO PÁGINA DE LOGIN
+   ================================================ */
+
+/* Remover fundo verde da imagem e aplicar filtro azul */
+.account-thumb img {
+    filter: hue-rotate(150deg) saturate(0.8) brightness(0.9);
+    -webkit-filter: hue-rotate(150deg) saturate(0.8) brightness(0.9);
+}
+
+/* Garantir que o fundo do login seja escuro */
+.account.section-shape {
+    background: #0D1835 !important;
+}
+
+/* Footer sem degradê - fundo sólido */
+.footer-area {
+    background: #0D1835 !important;
+}
+
+.footer-area .shape-bg {
+    display: none !important;
+}
