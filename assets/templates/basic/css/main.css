@@ -65,7 +65,7 @@
   --body-color: 0 0% 95%;
   --heading-color: 0 0% 100%;
   --black: 0 0% 0%;
-  --body-bg: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
+  --body-bg: 210 35% 12%;
   --section-bg: 210 25% 15%;
   --section-bg-two: 210 30% 20%;
   --title-color: 0 0% 100%;
@@ -3467,7 +3467,9 @@ select option {
 .header {
   position: relative;
   z-index: 5;
-  background: hsl(var(--white) / 0.04);
+  background: linear-gradient(90deg, rgba(41, 182, 246, 0.08) 0%, rgba(3, 155, 229, 0.08) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   left: 0;
   right: 0;
   padding: 25px 0;
@@ -3476,7 +3478,9 @@ select option {
 @media screen and (max-width: 991px) {
   .header {
     top: 0px;
-    background-color: hsl(var(--body-bg));
+    background: linear-gradient(180deg, rgba(15, 25, 35, 0.98) 0%, rgba(26, 40, 56, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 15px 0;
     position: absolute;
     left: 0;
@@ -3497,7 +3501,9 @@ select option {
 }
 
 .header.fixed-header {
-  background-color: hsl(var(--body-bg));
+  background: linear-gradient(90deg, rgba(15, 25, 35, 0.95) 0%, rgba(26, 40, 56, 0.95) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   position: fixed;
   -webkit-transition: 0.3s linear;
   transition: 0.3s linear;
@@ -3505,7 +3511,7 @@ select option {
   -webkit-animation: slide-down 0.8s;
   animation: slide-down 0.8s;
   width: 100%;
-  border-bottom: 1px solid hsl(var(--body-color) / 0.1);
+  border-bottom: 1px solid rgba(41, 182, 246, 0.3);
 }
 
 @media screen and (max-width: 424px) {
@@ -4889,11 +4895,11 @@ div [class*="col"]:last-child .how-work-item__shape {
   background: -webkit-gradient(linear,
       right top,
       left top,
-      from(#1ea952),
-      to(#0b411f));
-  background: linear-gradient(270deg, #1ea952 0%, #0b411f 100%);
-  background: linear-gradient(270deg, #25d466 0%, #0b411f 100%);
-  background: linear-gradient(270deg, hsl(var(--base-d-200)) 0%, #0b411f 100%);
+      from(#29B6F6),
+      to(#004AAD));
+  background: linear-gradient(270deg, #29B6F6 0%, #004AAD 100%);
+  background: linear-gradient(270deg, #29B6F6 0%, #004AAD 100%);
+  background: linear-gradient(270deg, hsl(var(--base-d-200)) 0%, #004AAD 100%);
   border: 0;
 }
 
@@ -6309,7 +6315,7 @@ div [class*="col"]:last-child .how-work-item__shape {
   -webkit-transition: 0.25s linear;
   transition: 0.25s linear;
   width: 320px;
-  background: #000301;
+  background: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
   border-radius: 0;
   position: fixed;
   left: 0;
@@ -10989,7 +10995,7 @@ body:has(.select2-dark) .select2+.select2-container .select2-selection__arrow::a
     -webkit-transition: 0.25s linear;
     transition: 0.25s linear;
     width: 320px;
-    background: #000301;
+    background: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
     border-radius: 0;
     position: fixed;
     right: 0;
