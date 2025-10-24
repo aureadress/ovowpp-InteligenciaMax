@@ -65,7 +65,7 @@
   --body-color: 0 0% 95%;
   --heading-color: 0 0% 100%;
   --black: 0 0% 0%;
-  --body-bg: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
+  --body-bg: 210 35% 12%;
   --section-bg: 210 25% 15%;
   --section-bg-two: 210 30% 20%;
   --title-color: 0 0% 100%;
@@ -3467,7 +3467,9 @@ select option {
 .header {
   position: relative;
   z-index: 5;
-  background: hsl(var(--white) / 0.04);
+  background: linear-gradient(90deg, rgba(41, 182, 246, 0.08) 0%, rgba(3, 155, 229, 0.08) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   left: 0;
   right: 0;
   padding: 25px 0;
@@ -3476,7 +3478,9 @@ select option {
 @media screen and (max-width: 991px) {
   .header {
     top: 0px;
-    background-color: hsl(var(--body-bg));
+    background: linear-gradient(180deg, rgba(15, 25, 35, 0.98) 0%, rgba(26, 40, 56, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 15px 0;
     position: absolute;
     left: 0;
@@ -3497,7 +3501,9 @@ select option {
 }
 
 .header.fixed-header {
-  background-color: hsl(var(--body-bg));
+  background: linear-gradient(90deg, rgba(15, 25, 35, 0.95) 0%, rgba(26, 40, 56, 0.95) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   position: fixed;
   -webkit-transition: 0.3s linear;
   transition: 0.3s linear;
@@ -3505,7 +3511,7 @@ select option {
   -webkit-animation: slide-down 0.8s;
   animation: slide-down 0.8s;
   width: 100%;
-  border-bottom: 1px solid hsl(var(--body-color) / 0.1);
+  border-bottom: 1px solid rgba(41, 182, 246, 0.3);
 }
 
 @media screen and (max-width: 424px) {
@@ -3990,20 +3996,14 @@ main:has(.shape-bg) {
 /* ================================= Header Css End =========================== */
 /* ============= Footer Start Here ======================= */
 .footer-area {
-  background-color: hsl(var(--heading-color) / 0.1);
+  background: #0D1835;
   margin-top: auto;
   position: relative;
   overflow: hidden;
 }
 
 .footer-area .shape-bg {
-  left: 50%;
-  top: -167px;
-  -webkit-transform: rotate(340deg);
-  transform: rotate(340deg);
-  height: 500px;
-  -webkit-filter: blur(100px);
-  filter: blur(100px);
+  display: none !important;
 }
 
 @media screen and (max-width: 1199px) {
@@ -4012,33 +4012,15 @@ main:has(.shape-bg) {
   }
 }
 
-.footer-area .shape-bg.two {
-  left: -30px;
-  -webkit-transform: rotate(210deg);
-  transform: rotate(210deg);
-  bottom: -200px;
-  top: unset;
-}
-
-@media screen and (max-width: 767px) {
-  .footer-area .shape-bg.two {
-    left: -142px;
-    bottom: -350px;
-  }
-}
-
-@media screen and (max-width: 424px) {
-  .footer-area .shape-bg.two {
-    display: none;
-  }
+/* Shapes removidos - footer agora tem fundo sólido #0D1835 */
+.footer-area .shape-bg.two,
+.footer-area .shape-bg.three,
+.footer-area .shape-bg.four {
+  display: none !important;
 }
 
 .footer-area .shape-bg.three {
-  left: unset;
-  right: 0px;
-  -webkit-transform: rotate(210deg);
-  transform: rotate(210deg);
-  top: -230px;
+  display: none !important;
 }
 
 .footer-area .shape-bg.four {
@@ -4541,24 +4523,14 @@ main:has(.shape-bg) {
   position: absolute;
   content: "";
   width: 100%;
-  height: 550px;
+  height: 100%;
   top: 0;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  background-color: #072d15;
-  background-color: hsl(var(--base-d-400) / 0.4);
-  -webkit-filter: blur(200px);
-  filter: blur(200px);
+  left: 0;
+  background: linear-gradient(180deg, #0D1835 0%, #1a2838 100%);
   z-index: -1;
 }
 
-@media screen and (max-width: 767px) {
-  .banner-bg::after {
-    -webkit-filter: blur(80px);
-    filter: blur(80px);
-  }
-}
+/* Fundo escuro #0D1835 aplicado - blur removido para manter sólido */
 
 .section-shape {
   position: relative;
@@ -4889,11 +4861,11 @@ div [class*="col"]:last-child .how-work-item__shape {
   background: -webkit-gradient(linear,
       right top,
       left top,
-      from(#1ea952),
-      to(#0b411f));
-  background: linear-gradient(270deg, #1ea952 0%, #0b411f 100%);
-  background: linear-gradient(270deg, #25d466 0%, #0b411f 100%);
-  background: linear-gradient(270deg, hsl(var(--base-d-200)) 0%, #0b411f 100%);
+      from(#29B6F6),
+      to(#004AAD));
+  background: linear-gradient(270deg, #29B6F6 0%, #004AAD 100%);
+  background: linear-gradient(270deg, #29B6F6 0%, #004AAD 100%);
+  background: linear-gradient(270deg, hsl(var(--base-d-200)) 0%, #004AAD 100%);
   border: 0;
 }
 
@@ -6309,7 +6281,7 @@ div [class*="col"]:last-child .how-work-item__shape {
   -webkit-transition: 0.25s linear;
   transition: 0.25s linear;
   width: 320px;
-  background: #000301;
+  background: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
   border-radius: 0;
   position: fixed;
   left: 0;
@@ -7498,11 +7470,14 @@ body:has(.select2-dark) .select2+.select2-container .select2-selection__arrow::a
 }
 
 .account-inner {
-  background-color: hsl(var(--body-color) / 0.1);
+  background: linear-gradient(135deg, rgba(13, 24, 53, 0.9) 0%, rgba(26, 40, 56, 0.9) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 30px;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #c1c9d033;
+  border: 1px solid rgba(41, 182, 246, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 @media screen and (max-width: 991px) {
@@ -10989,7 +10964,7 @@ body:has(.select2-dark) .select2+.select2-container .select2-selection__arrow::a
     -webkit-transition: 0.25s linear;
     transition: 0.25s linear;
     width: 320px;
-    background: #000301;
+    background: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
     border-radius: 0;
     position: fixed;
     right: 0;

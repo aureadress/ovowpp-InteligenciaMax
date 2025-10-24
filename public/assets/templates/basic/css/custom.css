@@ -924,3 +924,35 @@ a:not(.btn) {
 a:not(.btn):hover {
     color: var(--robot-medium) !important;
 }
+
+/* ================================================
+   🎨 CORREÇÃO PÁGINA DE LOGIN - V2
+   ================================================ */
+
+/* REMOVER filtro da imagem - manter original */
+.account-thumb img {
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
+/* Garantir que o fundo do login seja escuro */
+.account.section-shape {
+    background: #0D1835 !important;
+}
+
+/* Corrigir header da página de login - remover verde */
+.account .header,
+.account .header.fixed-header {
+    background: linear-gradient(90deg, rgba(13, 24, 53, 0.95) 0%, rgba(26, 40, 56, 0.95) 100%) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+/* Footer sem degradê - fundo sólido */
+.footer-area {
+    background: #0D1835 !important;
+}
+
+.footer-area .shape-bg {
+    display: none !important;
+}
