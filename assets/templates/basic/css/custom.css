@@ -1033,3 +1033,58 @@ body:has(.account) {
     /* Sem sobrescrita - usa valores do color.php */
 }
 
+
+/* ================================================
+   🎨 CORREÇÃO: SETAS AZUIS (antes estava verde)
+   ================================================ */
+
+/* Alterar cor da seta de verde para azul #29B6F6 */
+.how-work-item__shape img {
+    /* Filtro que converte verde para azul */
+    filter: hue-rotate(180deg) saturate(1.5) brightness(1.1);
+    -webkit-filter: hue-rotate(180deg) saturate(1.5) brightness(1.1);
+}
+
+/* Garantir que setas apareçam apenas no frontend */
+.frontend .how-work-item__shape img {
+    filter: hue-rotate(180deg) saturate(1.5) brightness(1.1);
+}
+
+
+/* ================================================
+   🎨 ÍCONES - CORES INTELIGÊNCIA MAX (Landing Page)
+   ================================================ */
+
+/* Ícones dos cards de feature - AZUL apenas no frontend */
+.frontend .feature-item__icon {
+    background: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(41, 182, 246, 0.3);
+}
+
+.frontend .feature-item__icon svg {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* Ícones do How It Works - AZUL apenas no frontend */
+.frontend .how-work-item__icon {
+    background: linear-gradient(135deg, #29B6F6 0%, #039BE5 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(41, 182, 246, 0.3);
+}
+
+.frontend .how-work-item__icon svg,
+.frontend .how-work-item__icon i {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+/* Garantir visibilidade dos ícones SVG */
+.frontend .feature-item__icon svg,
+.frontend .how-work-item__icon svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
