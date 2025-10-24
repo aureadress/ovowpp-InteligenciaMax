@@ -1,3 +1,14 @@
+/* ================================================
+   🎨 FONTE GLOBAL - JOST (Inteligência MAX)
+   ================================================ */
+* {
+    font-family: 'Jost', sans-serif !important;
+}
+
+body, html, input, textarea, select, button, a, p, span, div, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Jost', sans-serif !important;
+}
+
 /* Copy Animation */
 .base-color {
     color: hsl(var(--main)) !important;
