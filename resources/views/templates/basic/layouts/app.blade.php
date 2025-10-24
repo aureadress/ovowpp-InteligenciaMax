@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="{{ asset('assets/global/css/line-awesome.min.css') }}">
 
     @stack('style-lib')
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom-animation.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom-animation.css') }}?v={{ filemtime(public_path($activeTemplateTrue . 'css/custom-animation.css')) }}">
 
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom.css') }}?v=1">
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom.css') }}?v={{ filemtime(public_path($activeTemplateTrue . 'css/custom.css')) }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/main.css') }}?v={{ filemtime(public_path($activeTemplateTrue . 'css/main.css')) }}">
 
     @stack('style')
     
