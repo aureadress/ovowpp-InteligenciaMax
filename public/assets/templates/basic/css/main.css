@@ -4889,11 +4889,11 @@ div [class*="col"]:last-child .how-work-item__shape {
   background: -webkit-gradient(linear,
       right top,
       left top,
-      from(#1ea952),
-      to(#0b411f));
-  background: linear-gradient(270deg, #1ea952 0%, #0b411f 100%);
-  background: linear-gradient(270deg, #25d466 0%, #0b411f 100%);
-  background: linear-gradient(270deg, hsl(var(--base-d-200)) 0%, #0b411f 100%);
+      from(#29B6F6),
+      to(#004AAD));
+  background: linear-gradient(270deg, #29B6F6 0%, #004AAD 100%);
+  background: linear-gradient(270deg, #29B6F6 0%, #004AAD 100%);
+  background: linear-gradient(270deg, hsl(var(--base-d-200)) 0%, #004AAD 100%);
   border: 0;
 }
 
