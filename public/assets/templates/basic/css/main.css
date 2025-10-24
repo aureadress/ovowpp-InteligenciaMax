@@ -6315,7 +6315,7 @@ div [class*="col"]:last-child .how-work-item__shape {
   -webkit-transition: 0.25s linear;
   transition: 0.25s linear;
   width: 320px;
-  background: #000301;
+  background: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
   border-radius: 0;
   position: fixed;
   left: 0;
@@ -10995,7 +10995,7 @@ body:has(.select2-dark) .select2+.select2-container .select2-selection__arrow::a
     -webkit-transition: 0.25s linear;
     transition: 0.25s linear;
     width: 320px;
-    background: #000301;
+    background: linear-gradient(180deg, #0f1923 0%, #1a2838 100%);
     border-radius: 0;
     position: fixed;
     right: 0;
