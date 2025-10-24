@@ -3996,20 +3996,14 @@ main:has(.shape-bg) {
 /* ================================= Header Css End =========================== */
 /* ============= Footer Start Here ======================= */
 .footer-area {
-  background-color: hsl(var(--heading-color) / 0.1);
+  background: #0D1835;
   margin-top: auto;
   position: relative;
   overflow: hidden;
 }
 
 .footer-area .shape-bg {
-  left: 50%;
-  top: -167px;
-  -webkit-transform: rotate(340deg);
-  transform: rotate(340deg);
-  height: 500px;
-  -webkit-filter: blur(100px);
-  filter: blur(100px);
+  display: none !important;
 }
 
 @media screen and (max-width: 1199px) {
@@ -4018,33 +4012,15 @@ main:has(.shape-bg) {
   }
 }
 
-.footer-area .shape-bg.two {
-  left: -30px;
-  -webkit-transform: rotate(210deg);
-  transform: rotate(210deg);
-  bottom: -200px;
-  top: unset;
-}
-
-@media screen and (max-width: 767px) {
-  .footer-area .shape-bg.two {
-    left: -142px;
-    bottom: -350px;
-  }
-}
-
-@media screen and (max-width: 424px) {
-  .footer-area .shape-bg.two {
-    display: none;
-  }
+/* Shapes removidos - footer agora tem fundo sólido #0D1835 */
+.footer-area .shape-bg.two,
+.footer-area .shape-bg.three,
+.footer-area .shape-bg.four {
+  display: none !important;
 }
 
 .footer-area .shape-bg.three {
-  left: unset;
-  right: 0px;
-  -webkit-transform: rotate(210deg);
-  transform: rotate(210deg);
-  top: -230px;
+  display: none !important;
 }
 
 .footer-area .shape-bg.four {
