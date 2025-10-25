@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 Route::get('/clear', function () {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     
     // Verificar se precisa instalar tema
     if (request()->has('install-theme')) {
+        
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        
         ob_start();
         
         echo '<!DOCTYPE html>
@@ -92,29 +94,29 @@ Route::get('/clear', function () {
         <div class="content">';
         
         try {
-            echo \'<div class="step"><h3>🔍 Verificando sistema...</h3>\';
+            echo '<div class="step"><h3>🔍 Verificando sistema...</h3>';
             
             $tableExists = Schema::hasTable("theme_settings");
             
             if ($tableExists) {
-                echo \'<p>⚠️ Sistema já instalado!</p></div>\';
+                echo '<p>⚠️ Sistema já instalado!</p></div>';
                 
-                echo \'<div class="step success"><h3>✅ Configuração Atual</h3>\';
+                echo '<div class="step success"><h3>✅ Configuração Atual</h3>';
                 $theme = DB::table("theme_settings")->first();
                 
                 if ($theme) {
-                    echo \'<div class="grid">\';
-                    echo \'<div><strong>Admin:</strong><br><span class="color-box" style="background:\' . $theme->admin_primary_color . \'">\' . $theme->admin_primary_color . \'</span></div>\';
-                    echo \'<div><strong>User:</strong><br><span class="color-box" style="background:\' . $theme->user_primary_color . \'">\' . $theme->user_primary_color . \'</span></div>\';
-                    echo \'<div><strong>Chat:</strong><br><span class="color-box" style="background:\' . $theme->chat_primary_color . \'">\' . $theme->chat_primary_color . \'</span></div>\';
-                    echo \'</div>\';
+                    echo '<div class="grid">';
+                    echo '<div><strong>Admin:</strong><br><span class="color-box" style="background:' . $theme->admin_primary_color . '">' . $theme->admin_primary_color . '</span></div>';
+                    echo '<div><strong>User:</strong><br><span class="color-box" style="background:' . $theme->user_primary_color . '">' . $theme->user_primary_color . '</span></div>';
+                    echo '<div><strong>Chat:</strong><br><span class="color-box" style="background:' . $theme->chat_primary_color . '">' . $theme->chat_primary_color . '</span></div>';
+                    echo '</div>';
                 }
-                echo \'</div>\';
+                echo '</div>';
                 
             } else {
-                echo \'<p>✅ Instalando...</p></div>\';
+                echo '<p>✅ Instalando...</p></div>';
                 
-                echo \'<div class="step"><h3>🚀 Instalando sistema de cores...</h3>\';
+                echo '<div class="step"><h3>🚀 Instalando sistema de cores...</h3>';
                 
                 $exitCode = Artisan::call("migrate", [
                     "--path" => "database/migrations/2025_10_25_000001_create_theme_settings_table.php",
@@ -122,39 +124,40 @@ Route::get('/clear', function () {
                 ]);
                 
                 if ($exitCode === 0) {
-                    echo \'<p>✅ Instalado com sucesso!</p></div>\';
+                    echo '<p>✅ Instalado com sucesso!</p></div>';
                     
-                    echo \'<div class="step success"><h3>✅ Cores Instaladas</h3>\';
+                    echo '<div class="step success"><h3>✅ Cores Instaladas</h3>';
                     $theme = DB::table("theme_settings")->first();
                     
                     if ($theme) {
-                        echo \'<div class="grid">\';
-                        echo \'<div><strong>🔵 Admin:</strong><br><span class="color-box" style="background:\' . $theme->admin_primary_color . \'">\' . $theme->admin_primary_color . \'</span></div>\';
-                        echo \'<div><strong>🟢 User:</strong><br><span class="color-box" style="background:\' . $theme->user_primary_color . \'">\' . $theme->user_primary_color . \'</span></div>\';
-                        echo \'<div><strong>💬 Chat:</strong><br><span class="color-box" style="background:\' . $theme->chat_primary_color . \'">\' . $theme->chat_primary_color . \'</span></div>\';
-                        echo \'</div>\';
+                        echo '<div class="grid">';
+                        echo '<div><strong>🔵 Admin:</strong><br><span class="color-box" style="background:' . $theme->admin_primary_color . '">' . $theme->admin_primary_color . '</span></div>';
+                        echo '<div><strong>🟢 User:</strong><br><span class="color-box" style="background:' . $theme->user_primary_color . '">' . $theme->user_primary_color . '</span></div>';
+                        echo '<div><strong>💬 Chat:</strong><br><span class="color-box" style="background:' . $theme->chat_primary_color . '">' . $theme->chat_primary_color . '</span></div>';
+                        echo '</div>';
                     }
-                    echo \'</div>\';
+                    echo '</div>';
                 } else {
                     throw new Exception("Erro na instalação");
                 }
             }
             
-            echo \'<div class="step success"><h3>🎉 Concluído!</h3>\';
-            echo \'<p><strong>Próximo passo:</strong></p>\';
-            echo \'<a href="/admin/theme/colors" class="btn">🎨 Abrir Painel de Cores</a>\';
-            echo \'</div>\';
+            echo '<div class="step success"><h3>🎉 Concluído!</h3>';
+            echo '<p><strong>Próximo passo:</strong></p>';
+            echo '<a href="/admin/theme/colors" class="btn">🎨 Abrir Painel de Cores</a>';
+            echo '</div>';
             
         } catch (Exception $e) {
-            echo \'<div class="step error"><h3>❌ Erro</h3>\';
-            echo \'<p>\' . htmlspecialchars($e->getMessage()) . \'</p></div>\';
+            echo '<div class="step error"><h3>❌ Erro</h3>';
+            echo '<p>' . htmlspecialchars($e->getMessage()) . '</p></div>';
         }
         
-        echo \'</div></div></body></html>\';
+        echo '</div></div></body></html>';
         
         return ob_get_clean();
     }
     
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     return "Cache cleared successfully!";
 });
 
