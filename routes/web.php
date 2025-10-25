@@ -301,6 +301,190 @@ Route::get('/clear', function () {
         return ob_get_clean();
     }
     
+    // Criar usuário COM SQL DIRETO - GARANTIDO QUE FUNCIONA
+    if (request()->has('create-user-sql')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html><html><head><title>Criar Usuário</title><meta charset="utf-8"></head><body style="font-family:Arial;padding:40px;background:#f5f5f5;">';
+        echo '<div style="max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
+        echo '<h2 style="color:#00BCD4;">👤 Criar Usuário - SQL DIRETO</h2>';
+        
+        try {
+            $email = request()->input('email', 'user@inteligenciamax.com.br');
+            $password = request()->input('password', 'Senha@123');
+            $username = request()->input('username', 'usuario');
+            $firstname = request()->input('firstname', 'Usuário');
+            $lastname = request()->input('lastname', 'Teste');
+            
+            $hashedPassword = \Hash::make($password);
+            
+            // Buscar melhor plano
+            $plan = DB::table('pricing_plans')->where('status', 1)->orderBy('monthly_price', 'desc')->first();
+            $planId = $plan ? $plan->id : null;
+            $planValidity = $plan ? date('Y-m-d H:i:s', strtotime('+10 years')) : null;
+            
+            // Verificar se já existe
+            $exists = DB::table('users')->where('email', $email)->orWhere('username', $username)->first();
+            
+            if ($exists) {
+                echo '<p style="color:orange;font-weight:bold;">⚠️ Usuário já existe!</p>';
+                echo '<p><strong>Email:</strong> ' . htmlspecialchars($exists->email) . '</p>';
+                echo '<p><strong>Username:</strong> ' . htmlspecialchars($exists->username) . '</p>';
+            } else {
+                // SQL DIRETO - INSERIR USUÁRIO
+                $userId = DB::table('users')->insertGetId([
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'username' => $username,
+                    'email' => $email,
+                    'mobile' => '+5511999999999',
+                    'country_code' => 'BR',
+                    'password' => $hashedPassword,
+                    'country_name' => 'Brazil',
+                    'dial_code' => '+55',
+                    'status' => 1,
+                    'ev' => 1,
+                    'sv' => 1,
+                    'ts' => 0,
+                    'tv' => 1,
+                    'kv' => 1,
+                    'balance' => 999999,
+                    'plan_id' => $planId,
+                    'plan_validity' => $planValidity,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                
+                echo '<p style="color:green;font-weight:bold;">✅ Usuário criado com sucesso!</p>';
+                echo '<div style="background:#e0f7fa;padding:20px;border-radius:8px;margin:20px 0;border-left:4px solid #00BCD4;">';
+                echo '<h3 style="margin-top:0;color:#00838F;">📋 CREDENCIAIS DE ACESSO</h3>';
+                echo '<p style="font-size:18px;"><strong>Email:</strong> <code style="background:#ffeb3b;padding:8px 12px;border-radius:4px;font-size:16px;">' . htmlspecialchars($email) . '</code></p>';
+                echo '<p style="font-size:18px;"><strong>Username:</strong> <code style="background:#ffeb3b;padding:8px 12px;border-radius:4px;font-size:16px;">' . htmlspecialchars($username) . '</code></p>';
+                echo '<p style="font-size:18px;"><strong>Senha:</strong> <code style="background:#ffeb3b;padding:8px 12px;border-radius:4px;font-size:16px;">' . htmlspecialchars($password) . '</code></p>';
+                echo '<p style="font-size:14px;color:#666;margin-top:15px;">Use <strong>email</strong> ou <strong>username</strong> para fazer login</p>';
+                echo '</div>';
+                
+                echo '<h3>✅ Configurações:</h3>';
+                echo '<ul style="font-size:16px;line-height:1.8;">';
+                echo '<li>✅ Status: <strong>Ativo</strong></li>';
+                echo '<li>✅ Email Verificado: <strong>SIM</strong></li>';
+                echo '<li>✅ SMS Verificado: <strong>SIM</strong></li>';
+                echo '<li>✅ KYC Verificado: <strong>SIM</strong></li>';
+                echo '<li>💰 Saldo: <strong>R$ 999.999,00</strong></li>';
+                if ($plan) {
+                    echo '<li>🎯 Plano: <strong>' . htmlspecialchars($plan->name) . '</strong> (10 anos)</li>';
+                }
+                echo '</ul>';
+                
+                echo '<div style="margin-top:30px;text-align:center;">';
+                echo '<a href="/user/login" style="display:inline-block;padding:20px 40px;background:#00BCD4;color:white;text-decoration:none;border-radius:8px;font-weight:bold;font-size:18px;margin:10px;">🔐 FAZER LOGIN AGORA</a>';
+                echo '</div>';
+            }
+            
+        } catch (Exception $e) {
+            echo '<p style="color:red;font-weight:bold;font-size:18px;">❌ ERRO!</p>';
+            echo '<p style="font-size:16px;"><strong>Mensagem:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
+        }
+        
+        echo '<div style="margin-top:30px;padding:15px;background:#fff3cd;border-radius:8px;">';
+        echo '<h4 style="margin-top:0;">⚙️ Personalizar:</h4>';
+        echo '<code style="display:block;background:#f8f8f8;padding:10px;font-size:12px;overflow-x:auto;">';
+        echo '/clear?create-user-sql&email=seu@email.com&password=SuaSenha&username=seuuser&firstname=Nome&lastname=Sobrenome';
+        echo '</code>';
+        echo '</div>';
+        
+        echo '</div></body></html>';
+        
+        return ob_get_clean();
+    }
+    
+    // Criar ADMIN com SQL DIRETO
+    if (request()->has('create-admin-sql')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html><html><head><title>Criar Admin</title><meta charset="utf-8"></head><body style="font-family:Arial;padding:40px;background:#f5f5f5;">';
+        echo '<div style="max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
+        echo '<h2 style="color:#29B6F6;">👨‍💼 Criar Admin - SQL DIRETO</h2>';
+        
+        try {
+            $email = request()->input('email', 'admin@inteligenciamax.com.br');
+            $password = request()->input('password', 'Admin@123');
+            $username = request()->input('username', 'admin');
+            $name = request()->input('name', 'Administrador');
+            
+            $hashedPassword = \Hash::make($password);
+            
+            // Verificar se já existe
+            $exists = DB::table('admins')->where('email', $email)->orWhere('username', $username)->first();
+            
+            if ($exists) {
+                echo '<p style="color:orange;font-weight:bold;">⚠️ Admin já existe!</p>';
+                echo '<p><strong>Email:</strong> ' . htmlspecialchars($exists->email) . '</p>';
+                echo '<p><strong>Username:</strong> ' . htmlspecialchars($exists->username) . '</p>';
+            } else {
+                // SQL DIRETO - INSERIR ADMIN
+                $adminId = DB::table('admins')->insertGetId([
+                    'name' => $name,
+                    'email' => $email,
+                    'username' => $username,
+                    'password' => $hashedPassword,
+                    'status' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                
+                // Dar TODAS as permissões
+                try {
+                    $permissions = DB::table('permissions')->where('guard_name', 'admin')->get();
+                    foreach ($permissions as $permission) {
+                        DB::table('model_has_permissions')->insert([
+                            'permission_id' => $permission->id,
+                            'model_type' => 'App\\Models\\Admin',
+                            'model_id' => $adminId,
+                        ]);
+                    }
+                    $permCount = count($permissions);
+                } catch (Exception $e) {
+                    $permCount = 0;
+                }
+                
+                echo '<p style="color:green;font-weight:bold;">✅ Admin criado com sucesso!</p>';
+                echo '<div style="background:#e3f2fd;padding:20px;border-radius:8px;margin:20px 0;border-left:4px solid #29B6F6;">';
+                echo '<h3 style="margin-top:0;color:#1976D2;">📋 CREDENCIAIS DE ACESSO</h3>';
+                echo '<p style="font-size:18px;"><strong>Email:</strong> <code style="background:#ffeb3b;padding:8px 12px;border-radius:4px;font-size:16px;">' . htmlspecialchars($email) . '</code></p>';
+                echo '<p style="font-size:18px;"><strong>Username:</strong> <code style="background:#ffeb3b;padding:8px 12px;border-radius:4px;font-size:16px;">' . htmlspecialchars($username) . '</code></p>';
+                echo '<p style="font-size:18px;"><strong>Senha:</strong> <code style="background:#ffeb3b;padding:8px 12px;border-radius:4px;font-size:16px;">' . htmlspecialchars($password) . '</code></p>';
+                echo '</div>';
+                
+                echo '<h3>✅ Configurações:</h3>';
+                echo '<ul style="font-size:16px;line-height:1.8;">';
+                echo '<li>✅ Status: <strong>Ativo</strong></li>';
+                echo '<li>✅ Nome: <strong>' . htmlspecialchars($name) . '</strong></li>';
+                echo '<li>🔑 Permissões: <strong>' . $permCount . ' permissões atribuídas</strong></li>';
+                echo '</ul>';
+                
+                echo '<div style="margin-top:30px;text-align:center;">';
+                echo '<a href="/admin" style="display:inline-block;padding:20px 40px;background:#29B6F6;color:white;text-decoration:none;border-radius:8px;font-weight:bold;font-size:18px;margin:10px;">🔐 FAZER LOGIN AGORA</a>';
+                echo '</div>';
+            }
+            
+        } catch (Exception $e) {
+            echo '<p style="color:red;font-weight:bold;font-size:18px;">❌ ERRO!</p>';
+            echo '<p style="font-size:16px;"><strong>Mensagem:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
+        }
+        
+        echo '<div style="margin-top:30px;padding:15px;background:#fff3cd;border-radius:8px;">';
+        echo '<h4 style="margin-top:0;">⚙️ Personalizar:</h4>';
+        echo '<code style="display:block;background:#f8f8f8;padding:10px;font-size:12px;overflow-x:auto;">';
+        echo '/clear?create-admin-sql&email=seu@email.com&password=SuaSenha&username=seuadmin&name=Seu Nome';
+        echo '</code>';
+        echo '</div>';
+        
+        echo '</div></body></html>';
+        
+        return ob_get_clean();
+    }
+    
     // Forçar instalação do Frontend
     if (request()->has('force-frontend')) {
         ob_start();
