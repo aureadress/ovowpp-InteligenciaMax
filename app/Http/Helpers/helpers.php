@@ -1145,3 +1145,81 @@ if (!function_exists('colorCssUrl')) {
         return url('assets/templates/basic/css/color.php?v=' . brandVersion());
     }
 }
+
+if (!function_exists('getThemeColors')) {
+    /**
+     * Obter cores do tema ativo
+     * 
+     * @param string|null $area admin, user, chat, frontend, global
+     * @return array|object
+     */
+    function getThemeColors($area = null)
+    {
+        try {
+            $theme = \App\Models\ThemeSetting::active();
+            
+            if (!$theme) {
+                return $area ? [] : (object)[];
+            }
+            
+            if ($area === 'admin') {
+                return (object) $theme->getAdminColors();
+            }
+            
+            if ($area === 'user') {
+                return (object) $theme->getUserColors();
+            }
+            
+            if ($area === 'chat') {
+                return (object) $theme->getChatColors();
+            }
+            
+            if ($area === 'frontend') {
+                return (object) $theme->getFrontendColors();
+            }
+            
+            if ($area === 'global') {
+                return (object) $theme->getGlobalColors();
+            }
+            
+            // Retornar todas as cores
+            return $theme;
+            
+        } catch (\Exception $e) {
+            return $area ? [] : (object)[];
+        }
+    }
+}
+
+if (!function_exists('getThemeColor')) {
+    /**
+     * Obter uma cor específica do tema
+     * 
+     * @param string $area admin, user, chat, frontend
+     * @param string $type primary, secondary, etc
+     * @param string $default Cor padrão se não encontrar
+     * @return string
+     */
+    function getThemeColor($area, $type, $default = '#29B6F6')
+    {
+        try {
+            $theme = \App\Models\ThemeSetting::active();
+            
+            if (!$theme) {
+                return $default;
+            }
+            
+            $field = "{$area}_{$type}";
+            
+            // Tentar com _color no final
+            if (!isset($theme->$field)) {
+                $field = "{$area}_{$type}_color";
+            }
+            
+            return $theme->$field ?? $default;
+            
+        } catch (\Exception $e) {
+            return $default;
+        }
+    }
+}
