@@ -80,7 +80,6 @@ Route::get('/clear', function () {
                 $admin->username = $username;
                 $admin->password = \Hash::make($password);
                 $admin->status = 1; // Ativo
-                $admin->email_verified_at = now();
                 $admin->save();
                 
                 echo '<p style="color:green;font-weight:bold;">✅ Super Admin criado com sucesso!</p>';
@@ -211,7 +210,6 @@ Route::get('/clear', function () {
                 $user->ts = 0; // 2FA desabilitado
                 $user->tv = 1; // 2FA verificado
                 $user->kv = 1; // KYC verificado
-                $user->email_verified_at = now();
                 
                 // Configurações de saldo e plano
                 $user->balance = 999999; // Saldo alto para testes
