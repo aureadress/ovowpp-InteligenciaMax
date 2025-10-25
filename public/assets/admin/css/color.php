@@ -15,22 +15,24 @@ $kernel->bootstrap();
 header('Content-Type: text/css; charset=utf-8');
 header('Cache-Control: public, max-age=3600'); // Cache for 1 hour
 
-// Get color from settings
+// Get colors from theme_settings using helper function
 try {
-    $general = app('App\Models\GeneralSetting')->first();
-    $baseColor = $general->base_color ?? '29B6F6';
+    $adminColors = getThemeColors('admin');
     
-    // Ensure it's a valid hex color
-    $baseColor = ltrim($baseColor, '#');
-    if (!preg_match('/^[a-fA-F0-9]{6}$/', $baseColor)) {
-        $baseColor = '29B6F6'; // Fallback
-    }
-    
-    $primaryColor = '#' . $baseColor;
+    // Extract colors with fallbacks
+    $primaryColor = $adminColors->primary ?? '#29B6F6';
+    $secondaryColor = $adminColors->secondary ?? '#004AAD';
+    $accentColor = $adminColors->accent ?? '#FF6600';
+    $sidebarBg = $adminColors->sidebar_bg ?? '#1a1d29';
+    $sidebarText = $adminColors->sidebar_text ?? '#ffffff';
     
 } catch (Exception $e) {
-    // Fallback color if database error
+    // Fallback colors if database error
     $primaryColor = '#29B6F6';
+    $secondaryColor = '#004AAD';
+    $accentColor = '#FF6600';
+    $sidebarBg = '#1a1d29';
+    $sidebarText = '#ffffff';
 }
 
 // Generate lighter and darker shades
@@ -51,13 +53,29 @@ $primaryLight = adjustBrightness($primaryColor, 40);
 $primaryDark = adjustBrightness($primaryColor, -40);
 $primaryRgb = implode(', ', sscanf($primaryColor, "#%02x%02x%02x"));
 
+$secondaryRgb = implode(', ', sscanf($secondaryColor, "#%02x%02x%02x"));
+$accentRgb = implode(', ', sscanf($accentColor, "#%02x%02x%02x"));
+
 ?>
 :root {
+    /* Admin Primary Colors */
     --primary-color: <?php echo $primaryColor; ?>;
     --primary-color-rgb: <?php echo $primaryRgb; ?>;
     --primary-light: <?php echo $primaryLight; ?>;
     --primary-dark: <?php echo $primaryDark; ?>;
     --base-color: <?php echo $primaryColor; ?>;
+    
+    /* Admin Secondary Colors */
+    --secondary-color: <?php echo $secondaryColor; ?>;
+    --secondary-color-rgb: <?php echo $secondaryRgb; ?>;
+    
+    /* Admin Accent Colors */
+    --accent-color: <?php echo $accentColor; ?>;
+    --accent-color-rgb: <?php echo $accentRgb; ?>;
+    
+    /* Admin Sidebar Colors */
+    --sidebar-bg: <?php echo $sidebarBg; ?>;
+    --sidebar-text: <?php echo $sidebarText; ?>;
 }
 
 /* Primary color applications */
@@ -106,9 +124,45 @@ a:hover {
     box-shadow: 0 0 0 0.2rem rgba(<?php echo $primaryRgb; ?>, 0.25);
 }
 
-/* Sidebar active */
-.sidebar .menu-item.active {
+/* Sidebar Styling */
+.sidebar,
+.navbar-wrapper__left,
+.sidebar-menu {
+    background-color: <?php echo $sidebarBg; ?> !important;
+}
+
+.sidebar .menu-item,
+.sidebar .menu-link,
+.sidebar-menu li a {
+    color: <?php echo $sidebarText; ?> !important;
+}
+
+.sidebar .menu-item.active,
+.sidebar .menu-item:hover {
     background-color: <?php echo $primaryColor; ?>;
+    color: #ffffff !important;
+}
+
+.sidebar .menu-item.active .menu-link,
+.sidebar .menu-item:hover .menu-link {
+    color: #ffffff !important;
+}
+
+/* Secondary Color Applications */
+.btn-secondary,
+.bg-secondary,
+.badge-secondary {
+    background-color: <?php echo $secondaryColor; ?> !important;
+    border-color: <?php echo $secondaryColor; ?> !important;
+}
+
+/* Accent Color Applications */
+.btn-accent,
+.bg-accent,
+.badge-accent,
+.text-accent {
+    background-color: <?php echo $accentColor; ?> !important;
+    color: #ffffff !important;
 }
 
 /* Pagination */

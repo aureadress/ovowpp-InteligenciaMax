@@ -12,17 +12,23 @@ if (file_exists(__DIR__ . '/../../../../bootstrap/app.php')) {
         $app = require_once __DIR__ . '/../../../../bootstrap/app.php';
         $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
         
+        // Carrega as cores do User Dashboard e Global do theme_settings
+        $userColors = getThemeColors('user');
+        $globalColors = getThemeColors('global');
+        
         // Carrega as configurações de tema
         $themeConfig = [
-            'primary' => env('APP_PRIMARY_COLOR', '#29B6F6'),
-            'secondary' => env('APP_SECONDARY_COLOR', '#004AAD'),
-            'accent' => env('APP_ACCENT_COLOR', '#FF6600'),
-            'success' => env('APP_SUCCESS_COLOR', '#28a745'),
-            'warning' => env('APP_WARNING_COLOR', '#ffc107'),
-            'danger' => env('APP_DANGER_COLOR', '#dc3545'),
-            'info' => env('APP_INFO_COLOR', '#17a2b8'),
-            'gradient_start' => env('APP_GRADIENT_START', '#29B6F6'),
-            'gradient_end' => env('APP_GRADIENT_END', '#039BE5'),
+            'primary' => $userColors->primary ?? '#29B6F6',
+            'secondary' => $userColors->secondary ?? '#004AAD',
+            'accent' => $userColors->accent ?? '#FF6600',
+            'sidebar_bg' => $userColors->sidebar_bg ?? '#f8f9fa',
+            'sidebar_text' => $userColors->sidebar_text ?? '#212529',
+            'success' => $globalColors->success ?? '#28a745',
+            'warning' => $globalColors->warning ?? '#ffc107',
+            'danger' => $globalColors->danger ?? '#dc3545',
+            'info' => $globalColors->info ?? '#17a2b8',
+            'gradient_start' => $userColors->primary ?? '#29B6F6',
+            'gradient_end' => $userColors->secondary ?? '#039BE5',
         ];
         $configLoaded = true;
     } catch (Exception $e) {
@@ -149,6 +155,10 @@ $gradientEnd = $configLoaded ? $themeConfig['gradient_end'] : $primaryDark;
     --warning-color: <?php echo $warningColor; ?>;
     --danger-color: <?php echo $dangerColor; ?>;
     --info-color: <?php echo $infoColor; ?>;
+    
+    /* Sidebar do User Dashboard */
+    --user-sidebar-bg: <?php echo $configLoaded ? $themeConfig['sidebar_bg'] : '#f8f9fa'; ?>;
+    --user-sidebar-text: <?php echo $configLoaded ? $themeConfig['sidebar_text'] : '#212529'; ?>;
 
     /* Gradientes */
     --gradient-primary: linear-gradient(135deg, <?php echo $gradientStart; ?> 0%, <?php echo $gradientEnd; ?> 100%);
@@ -292,4 +302,31 @@ a:hover {
 .dropdown-item.active,
 .dropdown-item:active {
     background-color: var(--primary-color);
+}
+
+/* User Dashboard Sidebar */
+.user-sidebar,
+.user-menu,
+.dashboard-sidebar {
+    background-color: var(--user-sidebar-bg) !important;
+}
+
+.user-sidebar .menu-item,
+.user-sidebar .menu-link,
+.user-menu li a {
+    color: var(--user-sidebar-text) !important;
+}
+
+.user-sidebar .menu-item.active,
+.user-sidebar .menu-item:hover {
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+/* Accent Color Applications */
+.btn-accent,
+.bg-accent,
+.badge-accent {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
 }
