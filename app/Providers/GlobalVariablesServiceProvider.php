@@ -89,6 +89,13 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             ]);
         });
 
+        // Compartilhar $admin com TODAS as views do admin
+        view()->composer('admin.*', function ($view) {
+            $view->with([
+                'admin' => Auth::guard('admin')->user()
+            ]);
+        });
+
         view()->share($viewShare);
     }
 }
