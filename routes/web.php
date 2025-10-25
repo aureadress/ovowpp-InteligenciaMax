@@ -118,10 +118,18 @@ Route::get('/clear', function () {
                 
                 echo '<div class="step"><h3>🚀 Instalando sistema de cores...</h3>';
                 
-                $exitCode = Artisan::call("migrate", [
+                // Executar ambas as migrations
+                $exitCode1 = Artisan::call("migrate", [
                     "--path" => "database/migrations/2025_10_25_000001_create_theme_settings_table.php",
                     "--force" => true
                 ]);
+                
+                $exitCode2 = Artisan::call("migrate", [
+                    "--path" => "database/migrations/2025_10_25_000002_add_frontend_colors_to_theme_settings.php",
+                    "--force" => true
+                ]);
+                
+                $exitCode = ($exitCode1 === 0 && $exitCode2 === 0) ? 0 : 1;
                 
                 if ($exitCode === 0) {
                     echo '<p>✅ Instalado com sucesso!</p></div>';
