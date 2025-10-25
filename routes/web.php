@@ -7,6 +7,155 @@ use Illuminate\Support\Facades\Schema;
 
 Route::get('/clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    
+    // Verificar se precisa instalar tema
+    if (request()->has('install-theme')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html>
+<html>
+<head>
+    <title>🎨 Instalação de Cores</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 30px auto; 
+            background: white; 
+            border-radius: 16px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            padding: 40px; 
+            text-align: center; 
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .step { 
+            background: #f8f9fa; 
+            padding: 25px; 
+            margin: 20px 0; 
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        .step h3 { color: #667eea; margin-bottom: 15px; font-size: 1.3em; }
+        .success { background: #d4edda; border-left-color: #28a745; }
+        .success h3 { color: #28a745; }
+        .error { background: #f8d7da; border-left-color: #dc3545; }
+        .error h3 { color: #dc3545; }
+        .color-box {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 8px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Instalação de Cores</h1>
+            <p>Sistema de Cores Isoladas</p>
+        </div>
+        <div class="content">';
+        
+        try {
+            echo \'<div class="step"><h3>🔍 Verificando sistema...</h3>\';
+            
+            $tableExists = Schema::hasTable("theme_settings");
+            
+            if ($tableExists) {
+                echo \'<p>⚠️ Sistema já instalado!</p></div>\';
+                
+                echo \'<div class="step success"><h3>✅ Configuração Atual</h3>\';
+                $theme = DB::table("theme_settings")->first();
+                
+                if ($theme) {
+                    echo \'<div class="grid">\';
+                    echo \'<div><strong>Admin:</strong><br><span class="color-box" style="background:\' . $theme->admin_primary_color . \'">\' . $theme->admin_primary_color . \'</span></div>\';
+                    echo \'<div><strong>User:</strong><br><span class="color-box" style="background:\' . $theme->user_primary_color . \'">\' . $theme->user_primary_color . \'</span></div>\';
+                    echo \'<div><strong>Chat:</strong><br><span class="color-box" style="background:\' . $theme->chat_primary_color . \'">\' . $theme->chat_primary_color . \'</span></div>\';
+                    echo \'</div>\';
+                }
+                echo \'</div>\';
+                
+            } else {
+                echo \'<p>✅ Instalando...</p></div>\';
+                
+                echo \'<div class="step"><h3>🚀 Instalando sistema de cores...</h3>\';
+                
+                $exitCode = Artisan::call("migrate", [
+                    "--path" => "database/migrations/2025_10_25_000001_create_theme_settings_table.php",
+                    "--force" => true
+                ]);
+                
+                if ($exitCode === 0) {
+                    echo \'<p>✅ Instalado com sucesso!</p></div>\';
+                    
+                    echo \'<div class="step success"><h3>✅ Cores Instaladas</h3>\';
+                    $theme = DB::table("theme_settings")->first();
+                    
+                    if ($theme) {
+                        echo \'<div class="grid">\';
+                        echo \'<div><strong>🔵 Admin:</strong><br><span class="color-box" style="background:\' . $theme->admin_primary_color . \'">\' . $theme->admin_primary_color . \'</span></div>\';
+                        echo \'<div><strong>🟢 User:</strong><br><span class="color-box" style="background:\' . $theme->user_primary_color . \'">\' . $theme->user_primary_color . \'</span></div>\';
+                        echo \'<div><strong>💬 Chat:</strong><br><span class="color-box" style="background:\' . $theme->chat_primary_color . \'">\' . $theme->chat_primary_color . \'</span></div>\';
+                        echo \'</div>\';
+                    }
+                    echo \'</div>\';
+                } else {
+                    throw new Exception("Erro na instalação");
+                }
+            }
+            
+            echo \'<div class="step success"><h3>🎉 Concluído!</h3>\';
+            echo \'<p><strong>Próximo passo:</strong></p>\';
+            echo \'<a href="/admin/theme/colors" class="btn">🎨 Abrir Painel de Cores</a>\';
+            echo \'</div>\';
+            
+        } catch (Exception $e) {
+            echo \'<div class="step error"><h3>❌ Erro</h3>\';
+            echo \'<p>\' . htmlspecialchars($e->getMessage()) . \'</p></div>\';
+        }
+        
+        echo \'</div></div></body></html>\';
+        
+        return ob_get_clean();
+    }
+    
+    return "Cache cleared successfully!";
 });
 
 // Rota para instalar sistema de cores
