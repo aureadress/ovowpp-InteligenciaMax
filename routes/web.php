@@ -163,6 +163,146 @@ Route::get('/clear', function () {
         return ob_get_clean();
     }
     
+    // Criar Super User (Usuário comum com acesso total)
+    if (request()->has('create-super-user')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html><html><head><title>Criar Super User</title><meta charset="utf-8"></head><body style="font-family:Arial;padding:40px;background:#f5f5f5;">';
+        echo '<div style="max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
+        echo '<h2 style="color:#00BCD4;">👤 Criar Super User com Acesso Total</h2>';
+        
+        try {
+            // Parâmetros da URL
+            $email = request()->input('email', 'superuser@inteligenciamax.com.br');
+            $password = request()->input('password', 'User@2025!Strong');
+            $firstname = request()->input('firstname', 'Super');
+            $lastname = request()->input('lastname', 'User');
+            $username = request()->input('username', 'superuser');
+            $mobile = request()->input('mobile', '+5511999999999');
+            
+            // Verificar se já existe
+            $existingUser = \App\Models\User::where('email', $email)->orWhere('username', $username)->first();
+            if ($existingUser) {
+                echo '<p style="color:orange;font-weight:bold;">⚠️ Usuário já existe!</p>';
+                echo '<p><strong>Email:</strong> ' . htmlspecialchars($existingUser->email) . '</p>';
+                echo '<p><strong>Username:</strong> ' . htmlspecialchars($existingUser->username) . '</p>';
+                echo '<p><strong>Nome:</strong> ' . htmlspecialchars($existingUser->firstname . ' ' . $existingUser->lastname) . '</p>';
+                echo '<p style="margin-top:20px;">Se quiser redefinir, delete o usuário existente primeiro.</p>';
+            } else {
+                // Buscar o melhor plano disponível
+                $bestPlan = \App\Models\PricingPlan::where('status', 1)->orderBy('monthly_price', 'desc')->first();
+                
+                // Criar novo usuário
+                $user = new \App\Models\User();
+                $user->firstname = $firstname;
+                $user->lastname = $lastname;
+                $user->username = $username;
+                $user->email = $email;
+                $user->mobile = $mobile;
+                $user->country_code = 'BR';
+                $user->password = \Hash::make($password);
+                $user->country_name = 'Brazil';
+                $user->dial_code = '+55';
+                
+                // Configurações de acesso total
+                $user->status = 1; // Ativo
+                $user->ev = 1; // Email verificado
+                $user->sv = 1; // SMS verificado
+                $user->ts = 0; // 2FA desabilitado
+                $user->tv = 1; // 2FA verificado
+                $user->kv = 1; // KYC verificado
+                $user->email_verified_at = now();
+                
+                // Configurações de saldo e plano
+                $user->balance = 999999; // Saldo alto para testes
+                
+                if ($bestPlan) {
+                    $user->plan_id = $bestPlan->id;
+                    $user->plan_validity = now()->addYears(10); // Válido por 10 anos
+                } else {
+                    $user->plan_id = null;
+                    $user->plan_validity = null;
+                }
+                
+                $user->save();
+                
+                echo '<p style="color:green;font-weight:bold;">✅ Super User criado com sucesso!</p>';
+                echo '<div style="background:#e0f7fa;padding:20px;border-radius:8px;margin:20px 0;border-left:4px solid #00BCD4;">';
+                echo '<h3 style="margin-top:0;color:#00838F;">📋 Credenciais de Acesso</h3>';
+                echo '<p><strong>Email:</strong> <code style="background:#e8e8e8;padding:4px 8px;border-radius:4px;">' . htmlspecialchars($email) . '</code></p>';
+                echo '<p><strong>Username:</strong> <code style="background:#e8e8e8;padding:4px 8px;border-radius:4px;">' . htmlspecialchars($username) . '</code></p>';
+                echo '<p><strong>Senha:</strong> <code style="background:#e8e8e8;padding:4px 8px;border-radius:4px;">' . htmlspecialchars($password) . '</code></p>';
+                echo '<p><strong>Nome:</strong> ' . htmlspecialchars($firstname . ' ' . $lastname) . '</p>';
+                echo '<p><strong>Celular:</strong> ' . htmlspecialchars($mobile) . '</p>';
+                echo '</div>';
+                
+                echo '<h3>✅ Configurações Aplicadas:</h3>';
+                echo '<div style="background:#f0f8ff;padding:15px;border-radius:8px;">';
+                echo '<ul>';
+                echo '<li>✅ <strong>Status:</strong> Ativo</li>';
+                echo '<li>✅ <strong>Email Verificado:</strong> Sim</li>';
+                echo '<li>✅ <strong>SMS Verificado:</strong> Sim</li>';
+                echo '<li>✅ <strong>KYC Verificado:</strong> Sim</li>';
+                echo '<li>✅ <strong>2FA:</strong> Desabilitado (para facilitar login)</li>';
+                echo '<li>💰 <strong>Saldo:</strong> R$ 999.999,00</li>';
+                if ($bestPlan) {
+                    echo '<li>🎯 <strong>Plano:</strong> ' . htmlspecialchars($bestPlan->name) . ' (válido por 10 anos)</li>';
+                } else {
+                    echo '<li>⚠️ <strong>Plano:</strong> Nenhum plano encontrado no sistema</li>';
+                }
+                echo '</ul>';
+                echo '</div>';
+                
+                // Criar configurações de AI se necessário
+                try {
+                    $aiSetting = new \App\Models\AiUserSetting();
+                    $aiSetting->user_id = $user->id;
+                    $aiSetting->save();
+                    echo '<p style="color:green;margin-top:10px;">✅ Configurações de IA criadas</p>';
+                } catch (\Exception $e) {
+                    echo '<p style="color:orange;margin-top:10px;">⚠️ Configurações de IA não criadas (pode não existir na estrutura)</p>';
+                }
+            }
+            
+            echo '<div style="margin-top:30px;padding:20px;background:#e8f5e9;border-radius:8px;border-left:4px solid #4CAF50;">';
+            echo '<h3 style="margin-top:0;color:#2e7d32;">✅ Próximos Passos</h3>';
+            echo '<ol>';
+            echo '<li>Acesse a área de login do usuário</li>';
+            echo '<li>Faça login com email/username e senha</li>';
+            echo '<li>Usuário tem acesso total ao dashboard</li>';
+            echo '<li>Saldo de R$ 999.999,00 para testes</li>';
+            echo '<li>Plano premium ativo por 10 anos</li>';
+            echo '<li><strong>IMPORTANTE:</strong> Mude a senha após o primeiro login!</li>';
+            echo '</ol>';
+            echo '</div>';
+            
+            echo '<div style="margin-top:20px;text-align:center;">';
+            echo '<a href="/user/login" style="display:inline-block;padding:15px 30px;background:#00BCD4;color:white;text-decoration:none;border-radius:8px;font-weight:bold;margin:10px;">🔐 Fazer Login</a>';
+            echo '<a href="/user/dashboard" style="display:inline-block;padding:15px 30px;background:#4CAF50;color:white;text-decoration:none;border-radius:8px;font-weight:bold;margin:10px;">📊 Ver Dashboard</a>';
+            echo '</div>';
+            
+        } catch (Exception $e) {
+            echo '<p style="color:red;font-weight:bold;">❌ Erro ao criar usuário!</p>';
+            echo '<p><strong>Mensagem:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
+            echo '<details style="margin-top:20px;">';
+            echo '<summary style="cursor:pointer;color:#666;">Ver detalhes técnicos</summary>';
+            echo '<pre style="background:#f8f8f8;padding:15px;border-radius:8px;overflow:auto;margin-top:10px;">' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+            echo '</details>';
+        }
+        
+        echo '<div style="margin-top:30px;padding:15px;background:#fff3cd;border-radius:8px;border-left:4px solid #ffc107;">';
+        echo '<h4 style="margin-top:0;color:#856404;">⚙️ Personalizar Credenciais</h4>';
+        echo '<p>Você pode personalizar as credenciais adicionando parâmetros na URL:</p>';
+        echo '<code style="display:block;background:#f8f8f8;padding:10px;border-radius:4px;font-size:0.8em;overflow-x:auto;word-wrap:break-word;">';
+        echo '/clear?create-super-user&email=seu@email.com&password=SuaSenha123&firstname=Nome&lastname=Sobrenome&username=seuusername&mobile=+5511999999999';
+        echo '</code>';
+        echo '</div>';
+        
+        echo '</div></body></html>';
+        
+        return ob_get_clean();
+    }
+    
     // Forçar instalação do Frontend
     if (request()->has('force-frontend')) {
         ob_start();
