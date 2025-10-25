@@ -15,6 +15,9 @@ Route::get('/clear', function () {
         echo '<div style="max-width:800px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
         echo '<h2 style="color:#29B6F6;">🎨 Gerando Arquivos CSS Estáticos</h2>';
         
+        $success = false;
+        $errorMessage = '';
+        
         try {
             $theme = \App\Models\ThemeSetting::active();
             
@@ -27,21 +30,48 @@ Route::get('/clear', function () {
             $reflector = new \ReflectionClass($controller);
             $method = $reflector->getMethod('generateStaticCSS');
             $method->setAccessible(true);
-            $method->invoke($controller, $theme);
+            $success = $method->invoke($controller, $theme);
             
-            echo '<p style="color:green;font-weight:bold;">✅ Arquivos CSS gerados com sucesso!</p>';
-            echo '<ul>';
-            echo '<li><code>public/assets/admin/css/theme-colors.css</code></li>';
-            echo '<li><code>public/assets/templates/basic/css/theme-colors.css</code></li>';
-            echo '<li><code>public/assets/templates/basic/css/frontend-colors.css</code></li>';
+            if ($success) {
+                echo '<p style="color:green;font-weight:bold;">✅ Arquivos CSS gerados com sucesso!</p>';
+            } else {
+                echo '<p style="color:red;font-weight:bold;">❌ Falha ao gerar arquivos CSS!</p>';
+                echo '<p>Verifique os logs do Laravel para mais detalhes.</p>';
+            }
+            
+            // Verificar existência dos arquivos
+            echo '<h3 style="margin-top:20px;color:#333;">📁 Verificação de Arquivos:</h3>';
+            echo '<ul style="list-style:none;padding:0;">';
+            
+            $files = [
+                'public/assets/admin/css/theme-colors.css',
+                'public/assets/templates/basic/css/theme-colors.css',
+                'public/assets/templates/basic/css/frontend-colors.css',
+            ];
+            
+            foreach ($files as $file) {
+                $fullPath = base_path($file);
+                $exists = file_exists($fullPath);
+                $icon = $exists ? '✅' : '❌';
+                $color = $exists ? 'green' : 'red';
+                $status = $exists ? 'Existe' : 'Não encontrado';
+                
+                echo '<li style="padding:8px;margin:5px 0;background:#f8f8f8;border-radius:5px;">';
+                echo '<span style="color:' . $color . ';font-weight:bold;">' . $icon . '</span> ';
+                echo '<code>' . htmlspecialchars($file) . '</code> - ';
+                echo '<span style="color:' . $color . ';">' . $status . '</span>';
+                echo '</li>';
+            }
+            
             echo '</ul>';
+            
             echo '<p style="margin-top:20px;">As cores do banco de dados foram convertidas em arquivos CSS estáticos.</p>';
             echo '<a href="/admin/dashboard" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#29B6F6;color:white;text-decoration:none;border-radius:8px;">✨ Ver Dashboard Admin</a>';
             echo ' ';
             echo '<a href="/" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#4CAF50;color:white;text-decoration:none;border-radius:8px;">🌐 Ver Site Público</a>';
             
         } catch (Exception $e) {
-            echo '<p style="color:red;">❌ Erro: ' . htmlspecialchars($e->getMessage()) . '</p>';
+            echo '<p style="color:red;font-weight:bold;">❌ Erro: ' . htmlspecialchars($e->getMessage()) . '</p>';
             echo '<pre style="background:#f8f8f8;padding:15px;border-radius:8px;overflow:auto;">' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
         }
         
