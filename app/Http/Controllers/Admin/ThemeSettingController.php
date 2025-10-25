@@ -151,7 +151,19 @@ class ThemeSettingController extends Controller
         $theme->save();
         
         // Gerar arquivos CSS estáticos
-        $this->generateStaticCSS($theme);
+        try {
+            $cssGenerated = $this->generateStaticCSS($theme);
+            \Log::info('Theme CSS Generation', [
+                'success' => $cssGenerated,
+                'theme_id' => $theme->id,
+                'timestamp' => now(),
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Theme CSS Generation Failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
 
         $notify[] = ['success', 'Cores atualizadas com sucesso! Recarregue a página para ver as mudanças.'];
         return response()->json([
@@ -234,14 +246,29 @@ class ThemeSettingController extends Controller
     private function generateStaticCSS($theme)
     {
         try {
+            // Check write permissions
+            $paths = [
+                public_path('assets/admin/css'),
+                public_path('assets/templates/basic/css'),
+            ];
+            
+            foreach ($paths as $path) {
+                if (!is_writable($path)) {
+                    throw new \Exception("Directory not writable: {$path}");
+                }
+            }
+            
             // 1. Generate Admin CSS
             $this->generateAdminCSS($theme);
+            \Log::info('Admin CSS generated');
             
             // 2. Generate User/Frontend CSS
             $this->generateUserCSS($theme);
+            \Log::info('User CSS generated');
             
             // 3. Generate Frontend Public CSS
             $this->generateFrontendCSS($theme);
+            \Log::info('Frontend CSS generated');
             
             return true;
         } catch (\Exception $e) {
