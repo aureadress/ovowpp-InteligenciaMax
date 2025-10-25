@@ -300,6 +300,700 @@
                             </div>
                         </div>
 
+
+                        <hr class="my-5">
+
+                        <!-- Frontend Public Colors -->
+                        <div class="color-section mb-5">
+                            <div class="section-header mb-4">
+                                <h4 class="section-title">
+                                    <i class="las la-globe-americas text-primary"></i>
+                                    Frontend Público (Home, Landing Pages)
+                                </h4>
+                                <p class="text-muted small">Cores das páginas públicas acessíveis sem login</p>
+                            </div>
+                            
+                            <!-- Botões -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-hand-pointer"></i> Botões
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Botão Primário</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_btn_primary" 
+                                                       value="{{ $theme->frontend_btn_primary ?? '#29B6F6' }}"
+                                                       title="Cor do botão primário">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_btn_primary ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor principal dos botões de ação</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Botão Primário (Hover)</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_btn_primary_hover" 
+                                                       value="{{ $theme->frontend_btn_primary_hover ?? '#0288D1' }}"
+                                                       title="Cor ao passar o mouse">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_btn_primary_hover ?? '#0288D1' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor ao passar o mouse sobre o botão</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Botão Secundário</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_btn_secondary" 
+                                                       value="{{ $theme->frontend_btn_secondary ?? '#6c757d' }}"
+                                                       title="Cor do botão secundário">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_btn_secondary ?? '#6c757d' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de botões secundários</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Botão Secundário (Hover)</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_btn_secondary_hover" 
+                                                       value="{{ $theme->frontend_btn_secondary_hover ?? '#5a6268' }}"
+                                                       title="Cor ao passar o mouse">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_btn_secondary_hover ?? '#5a6268' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor ao passar mouse no botão secundário</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto dos Botões</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_btn_text" 
+                                                       value="{{ $theme->frontend_btn_text ?? '#ffffff' }}"
+                                                       title="Cor do texto dos botões">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_btn_text ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do texto dentro dos botões</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Header/Navbar -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-bars"></i> Cabeçalho / Menu de Navegação
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Fundo do Header</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_header_bg" 
+                                                       value="{{ $theme->frontend_header_bg ?? '#ffffff' }}"
+                                                       title="Cor de fundo do header">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_header_bg ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo do cabeçalho</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto do Header</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_header_text" 
+                                                       value="{{ $theme->frontend_header_text ?? '#212529' }}"
+                                                       title="Cor do texto do header">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_header_text ?? '#212529' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do texto no cabeçalho</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Links do Header</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_header_link" 
+                                                       value="{{ $theme->frontend_header_link ?? '#29B6F6' }}"
+                                                       title="Cor dos links do header">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_header_link ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor dos links de navegação</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Links do Header (Hover)</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_header_link_hover" 
+                                                       value="{{ $theme->frontend_header_link_hover ?? '#0288D1' }}"
+                                                       title="Cor ao passar o mouse">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_header_link_hover ?? '#0288D1' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor ao passar mouse nos links</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-th"></i> Rodapé
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Fundo do Rodapé</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_footer_bg" 
+                                                       value="{{ $theme->frontend_footer_bg ?? '#212529' }}"
+                                                       title="Cor de fundo do rodapé">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_footer_bg ?? '#212529' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo do footer</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto do Rodapé</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_footer_text" 
+                                                       value="{{ $theme->frontend_footer_text ?? '#ffffff' }}"
+                                                       title="Cor do texto do rodapé">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_footer_text ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do texto no footer</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Links do Rodapé</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_footer_link" 
+                                                       value="{{ $theme->frontend_footer_link ?? '#29B6F6' }}"
+                                                       title="Cor dos links do rodapé">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_footer_link ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor dos links no footer</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Links do Rodapé (Hover)</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_footer_link_hover" 
+                                                       value="{{ $theme->frontend_footer_link_hover ?? '#0288D1' }}"
+                                                       title="Cor ao passar o mouse">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_footer_link_hover ?? '#0288D1' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor ao passar mouse nos links</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Background & Gradiente -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-fill-drip"></i> Fundo da Página & Gradiente
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Cor de Fundo</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_bg_color" 
+                                                       value="{{ $theme->frontend_bg_color ?? '#ffffff' }}"
+                                                       title="Cor de fundo da página">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_bg_color ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo principal</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Gradiente - Início</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_bg_gradient_start" 
+                                                       value="{{ $theme->frontend_bg_gradient_start ?? '#29B6F6' }}"
+                                                       title="Cor inicial do gradiente">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_bg_gradient_start ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de início do gradiente</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Gradiente - Fim</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_bg_gradient_end" 
+                                                       value="{{ $theme->frontend_bg_gradient_end ?? '#0288D1' }}"
+                                                       title="Cor final do gradiente">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_bg_gradient_end ?? '#0288D1' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fim do gradiente</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Usar Gradiente?</label>
+                                            <div class="form-check form-switch" style="padding-top: 10px;">
+                                                <input class="form-check-input" type="checkbox" role="switch" 
+                                                       name="frontend_use_gradient" 
+                                                       id="useGradient"
+                                                       value="1"
+                                                       {{ ($theme->frontend_use_gradient ?? false) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="useGradient">
+                                                    Ativar fundo em gradiente
+                                                </label>
+                                            </div>
+                                            <small class="text-muted">Usar gradiente ao invés de cor sólida</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cards/Seções -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-layer-group"></i> Cards e Seções
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Fundo dos Cards</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_card_bg" 
+                                                       value="{{ $theme->frontend_card_bg ?? '#ffffff' }}"
+                                                       title="Cor de fundo dos cards">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_card_bg ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo dos cartões</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Borda dos Cards</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_card_border" 
+                                                       value="{{ $theme->frontend_card_border ?? '#dee2e6' }}"
+                                                       title="Cor da borda dos cards">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_card_border ?? '#dee2e6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor das bordas dos cartões</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Sombra dos Cards</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_card_shadow" 
+                                                       value="{{ substr($theme->frontend_card_shadow ?? '#00000020', 0, 7) }}"
+                                                       title="Cor da sombra dos cards">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_card_shadow ?? '#00000020' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor da sombra (pode ter transparência)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Textos -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-font"></i> Textos e Títulos
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto Principal</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_text_primary" 
+                                                       value="{{ $theme->frontend_text_primary ?? '#212529' }}"
+                                                       title="Cor do texto principal">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_text_primary ?? '#212529' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor principal do texto</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto Secundário</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_text_secondary" 
+                                                       value="{{ $theme->frontend_text_secondary ?? '#6c757d' }}"
+                                                       title="Cor do texto secundário">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_text_secondary ?? '#6c757d' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de textos secundários</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Títulos (H1, H2, H3)</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_heading_color" 
+                                                       value="{{ $theme->frontend_heading_color ?? '#212529' }}"
+                                                       title="Cor dos títulos">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_heading_color ?? '#212529' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor dos cabeçalhos e títulos</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Links -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-link"></i> Links
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Cor dos Links</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_link_color" 
+                                                       value="{{ $theme->frontend_link_color ?? '#29B6F6' }}"
+                                                       title="Cor dos links">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_link_color ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor dos links no conteúdo</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Links (Hover)</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_link_hover" 
+                                                       value="{{ $theme->frontend_link_hover ?? '#0288D1' }}"
+                                                       title="Cor ao passar o mouse">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_link_hover ?? '#0288D1' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor ao passar mouse nos links</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modais -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-window-restore"></i> Modais / Pop-ups
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Fundo do Modal</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_modal_bg" 
+                                                       value="{{ $theme->frontend_modal_bg ?? '#ffffff' }}"
+                                                       title="Cor de fundo do modal">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_modal_bg ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo dos modais</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Cabeçalho do Modal</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_modal_header_bg" 
+                                                       value="{{ $theme->frontend_modal_header_bg ?? '#29B6F6' }}"
+                                                       title="Cor do cabeçalho">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_modal_header_bg ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do topo do modal</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto do Cabeçalho</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_modal_header_text" 
+                                                       value="{{ $theme->frontend_modal_header_text ?? '#ffffff' }}"
+                                                       title="Cor do texto do cabeçalho">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_modal_header_text ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do texto no topo</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Overlay de Fundo</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_modal_overlay" 
+                                                       value="{{ substr($theme->frontend_modal_overlay ?? '#00000080', 0, 7) }}"
+                                                       title="Cor do overlay">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_modal_overlay ?? '#00000080' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do fundo escuro atrás do modal</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bordas -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-border-style"></i> Bordas e Cantos
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Cor das Bordas</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_border_color" 
+                                                       value="{{ $theme->frontend_border_color ?? '#dee2e6' }}"
+                                                       title="Cor das bordas">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_border_color ?? '#dee2e6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor padrão de todas as bordas</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Arredondamento (0-99px)</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" 
+                                                       name="frontend_border_radius" 
+                                                       value="{{ $theme->frontend_border_radius ?? '8' }}"
+                                                       min="0"
+                                                       max="99"
+                                                       title="Raio de arredondamento">
+                                                <span class="input-group-text">px</span>
+                                            </div>
+                                            <small class="text-muted">Arredondamento dos cantos (0 = reto, 50 = muito arredondado)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hero Section -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-image"></i> Seção Hero (Banner Principal)
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Fundo do Hero</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_hero_bg" 
+                                                       value="{{ $theme->frontend_hero_bg ?? '#29B6F6' }}"
+                                                       title="Cor de fundo do hero">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_hero_bg ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo do banner principal</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Texto do Hero</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_hero_text" 
+                                                       value="{{ $theme->frontend_hero_text ?? '#ffffff' }}"
+                                                       title="Cor do texto do hero">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_hero_text ?? '#ffffff' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor do texto no banner</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Overlay do Hero</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_hero_overlay" 
+                                                       value="{{ substr($theme->frontend_hero_overlay ?? '#00000040', 0, 7) }}"
+                                                       title="Cor do overlay">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_hero_overlay ?? '#00000040' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Camada semi-transparente sobre imagem</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Features/Destaques -->
+                            <div class="subsection mb-4">
+                                <h5 class="subsection-title mb-3">
+                                    <i class="las la-star"></i> Features / Destaques
+                                </h5>
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Fundo das Features</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_feature_bg" 
+                                                       value="{{ $theme->frontend_feature_bg ?? '#f8f9fa' }}"
+                                                       title="Cor de fundo das features">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_feature_bg ?? '#f8f9fa' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor de fundo dos blocos de destaque</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Ícones das Features</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_feature_icon" 
+                                                       value="{{ $theme->frontend_feature_icon ?? '#29B6F6' }}"
+                                                       title="Cor dos ícones">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_feature_icon ?? '#29B6F6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor dos ícones de destaque</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="color-picker-group">
+                                            <label class="form-label">Borda das Features</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" 
+                                                       name="frontend_feature_border" 
+                                                       value="{{ $theme->frontend_feature_border ?? '#dee2e6' }}"
+                                                       title="Cor da borda das features">
+                                                <input type="text" class="form-control" 
+                                                       value="{{ $theme->frontend_feature_border ?? '#dee2e6' }}"
+                                                       readonly>
+                                            </div>
+                                            <small class="text-muted">Cor da borda dos blocos</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <hr class="my-5">
 
                         <!-- Global Colors -->
@@ -467,6 +1161,71 @@
                 </div>
             </div>
         </div>
+
+        <!-- Frontend Preview -->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="las la-eye"></i> Pré-visualização do Frontend Público
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <!-- Header Preview -->
+                        <div class="col-md-6">
+                            <div class="preview-card">
+                                <div class="preview-header" style="background: {{ $theme->frontend_header_bg ?? '#ffffff' }}; color: {{ $theme->frontend_header_text ?? '#212529' }}; padding: 15px; border-bottom: 1px solid {{ $theme->frontend_border_color ?? '#dee2e6' }};">
+                                    <strong>Cabeçalho</strong>
+                                    <a href="#" style="color: {{ $theme->frontend_header_link ?? '#29B6F6' }}; margin-left: 15px;">Link</a>
+                                </div>
+                                <div class="preview-body" style="padding: 20px; background: {{ $theme->frontend_bg_color ?? '#ffffff' }};">
+                                    <h5 style="color: {{ $theme->frontend_heading_color ?? '#212529' }};">Título</h5>
+                                    <p style="color: {{ $theme->frontend_text_primary ?? '#212529' }}; margin: 10px 0;">
+                                        Texto principal do conteúdo.
+                                    </p>
+                                    <p style="color: {{ $theme->frontend_text_secondary ?? '#6c757d' }}; font-size: 0.9em;">
+                                        Texto secundário menor.
+                                    </p>
+                                    <button class="btn btn-sm" style="background: {{ $theme->frontend_btn_primary ?? '#29B6F6' }}; color: {{ $theme->frontend_btn_text ?? '#ffffff' }}; border: none; border-radius: {{ $theme->frontend_border_radius ?? '8' }}px; padding: 8px 16px;">
+                                        Botão Primário
+                                    </button>
+                                </div>
+                                <div class="preview-footer" style="background: {{ $theme->frontend_footer_bg ?? '#212529' }}; color: {{ $theme->frontend_footer_text ?? '#ffffff' }}; padding: 15px;">
+                                    <strong>Rodapé</strong>
+                                    <a href="#" style="color: {{ $theme->frontend_footer_link ?? '#29B6F6' }}; margin-left: 15px;">Link</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card & Modal Preview -->
+                        <div class="col-md-6">
+                            <div style="background: {{ $theme->frontend_card_bg ?? '#ffffff' }}; border: 1px solid {{ $theme->frontend_card_border ?? '#dee2e6' }}; border-radius: {{ $theme->frontend_border_radius ?? '8' }}px; padding: 20px; box-shadow: 0 2px 8px {{ $theme->frontend_card_shadow ?? '#00000020' }};">
+                                <h6 style="color: {{ $theme->frontend_heading_color ?? '#212529' }}; margin-bottom: 10px;">
+                                    <i class="las la-star" style="color: {{ $theme->frontend_feature_icon ?? '#29B6F6' }};"></i>
+                                    Card / Feature
+                                </h6>
+                                <p style="color: {{ $theme->frontend_text_primary ?? '#212529' }}; font-size: 0.9em; margin-bottom: 15px;">
+                                    Exemplo de card com bordas e sombra.
+                                </p>
+                                <a href="#" style="color: {{ $theme->frontend_link_color ?? '#29B6F6' }};">Link de exemplo</a>
+                            </div>
+                            
+                            <div style="margin-top: 20px; background: {{ $theme->frontend_modal_bg ?? '#ffffff' }}; border: 2px solid {{ $theme->frontend_modal_header_bg ?? '#29B6F6' }}; border-radius: {{ $theme->frontend_border_radius ?? '8' }}px; overflow: hidden;">
+                                <div style="background: {{ $theme->frontend_modal_header_bg ?? '#29B6F6' }}; color: {{ $theme->frontend_modal_header_text ?? '#ffffff' }}; padding: 10px 15px;">
+                                    <strong>Modal / Pop-up</strong>
+                                </div>
+                                <div style="padding: 15px;">
+                                    <p style="color: {{ $theme->frontend_text_primary ?? '#212529' }}; font-size: 0.85em; margin: 0;">
+                                        Exemplo de janela modal
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -486,6 +1245,20 @@
     .section-title {
         font-size: 1.3rem;
         font-weight: 600;
+        margin-bottom: 0;
+    }
+    
+    .subsection {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #29B6F6;
+    }
+    
+    .subsection-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #495057;
         margin-bottom: 0;
     }
     
