@@ -1307,10 +1307,23 @@
 </style>
 @endpush
 
+@push('script-lib')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
+
 @push('script')
 <script>
     (function($) {
         "use strict";
+        
+        // Inicializar SweetAlert Toast PRIMEIRO
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
         
         // Sincronizar color picker com input de texto
         $('input[type="color"]').on('input', function() {
@@ -1368,7 +1381,7 @@
             $btn.html('<i class="las la-spinner la-spin"></i> Salvando...').prop('disabled', true);
             
             $.ajax({
-                url: "{{ route('admin.theme.colors.update') }}",
+                url: "{{ secure_url(route('admin.theme.colors.update', [], false)) }}",
                 method: 'POST',
                 data: $form.serialize(),
                 success: function(response) {
@@ -1403,15 +1416,6 @@
                     $btn.html(originalText).prop('disabled', false);
                 }
             });
-        });
-        
-        // Inicializar SweetAlert Toast
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
         });
         
     })(jQuery);
