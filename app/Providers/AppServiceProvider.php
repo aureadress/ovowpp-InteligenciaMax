@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Forçar HTTPS em produção
+        if ($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
+        
         // Forçar idioma PT-BR em toda a aplicação
         App::setLocale('pt_BR');
         
