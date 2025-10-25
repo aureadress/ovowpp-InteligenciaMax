@@ -26,6 +26,9 @@
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/main.css') }}">
     
+    <!-- Admin Dashboard Theme Colors (Static CSS) -->
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/theme-colors.css') }}?v={{ time() }}">
+    
     <!-- CSS Customizado do Tema -->
     <link rel="stylesheet" href="{{ asset('assets/theme/theme-custom.css') }}?v={{ time() }}">
     

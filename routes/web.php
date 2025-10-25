@@ -7,6 +7,49 @@ use Illuminate\Support\Facades\Schema;
 
 Route::get('/clear', function () {
     
+    // Gerar arquivos CSS estáticos a partir do banco de dados
+    if (request()->has('generate-theme-css')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html><html><head><title>Gerar CSS</title><meta charset="utf-8"></head><body style="font-family:Arial;padding:40px;background:#f5f5f5;">';
+        echo '<div style="max-width:800px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
+        echo '<h2 style="color:#29B6F6;">🎨 Gerando Arquivos CSS Estáticos</h2>';
+        
+        try {
+            $theme = \App\Models\ThemeSetting::active();
+            
+            if (!$theme) {
+                throw new Exception('Nenhuma configuração de tema encontrada no banco de dados!');
+            }
+            
+            // Chamar o controller para gerar os CSS
+            $controller = new \App\Http\Controllers\Admin\ThemeSettingController();
+            $reflector = new \ReflectionClass($controller);
+            $method = $reflector->getMethod('generateStaticCSS');
+            $method->setAccessible(true);
+            $method->invoke($controller, $theme);
+            
+            echo '<p style="color:green;font-weight:bold;">✅ Arquivos CSS gerados com sucesso!</p>';
+            echo '<ul>';
+            echo '<li><code>public/assets/admin/css/theme-colors.css</code></li>';
+            echo '<li><code>public/assets/templates/basic/css/theme-colors.css</code></li>';
+            echo '<li><code>public/assets/templates/basic/css/frontend-colors.css</code></li>';
+            echo '</ul>';
+            echo '<p style="margin-top:20px;">As cores do banco de dados foram convertidas em arquivos CSS estáticos.</p>';
+            echo '<a href="/admin/dashboard" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#29B6F6;color:white;text-decoration:none;border-radius:8px;">✨ Ver Dashboard Admin</a>';
+            echo ' ';
+            echo '<a href="/" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#4CAF50;color:white;text-decoration:none;border-radius:8px;">🌐 Ver Site Público</a>';
+            
+        } catch (Exception $e) {
+            echo '<p style="color:red;">❌ Erro: ' . htmlspecialchars($e->getMessage()) . '</p>';
+            echo '<pre style="background:#f8f8f8;padding:15px;border-radius:8px;overflow:auto;">' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+        }
+        
+        echo '</div></body></html>';
+        
+        return ob_get_clean();
+    }
+    
     // Forçar instalação do Frontend
     if (request()->has('force-frontend')) {
         ob_start();
