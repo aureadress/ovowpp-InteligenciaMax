@@ -99,7 +99,27 @@ Route::get('/clear', function () {
             $tableExists = Schema::hasTable("theme_settings");
             
             if ($tableExists) {
-                echo '<p>⚠️ Sistema já instalado!</p></div>';
+                // Verificar se precisa adicionar campos do Frontend
+                $needsFrontend = !Schema::hasColumn('theme_settings', 'frontend_btn_primary');
+                
+                if ($needsFrontend) {
+                    echo '<p>⚠️ Sistema instalado, adicionando cores do Frontend...</p></div>';
+                    
+                    echo '<div class="step"><h3>🚀 Adicionando 37 cores do Frontend...</h3>';
+                    
+                    $exitCode = Artisan::call("migrate", [
+                        "--path" => "database/migrations/2025_10_25_000002_add_frontend_colors_to_theme_settings.php",
+                        "--force" => true
+                    ]);
+                    
+                    if ($exitCode === 0) {
+                        echo '<p>✅ Cores do Frontend adicionadas!</p></div>';
+                    } else {
+                        throw new Exception("Erro ao adicionar cores do Frontend");
+                    }
+                } else {
+                    echo '<p>⚠️ Sistema completamente instalado!</p></div>';
+                }
                 
                 echo '<div class="step success"><h3>✅ Configuração Atual</h3>';
                 $theme = DB::table("theme_settings")->first();
