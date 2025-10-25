@@ -1,0 +1,175 @@
+/* ============================================================================
+   FRONTEND PUBLIC COLORS - Auto-generated from theme_settings
+   Generated at: 2025-10-25 05:37:00
+   ============================================================================ */
+
+:root {
+    /* Botões */
+    --frontend-btn-primary: #29B6F6;
+    --frontend-btn-primary-hover: #0288D1;
+    --frontend-btn-secondary: #6c757d;
+    --frontend-btn-secondary-hover: #5a6268;
+    --frontend-btn-text: #ffffff;
+    
+    /* Header/Navbar */
+    --frontend-header-bg: #ffffff;
+    --frontend-header-text: #212529;
+    --frontend-header-link: #29B6F6;
+    --frontend-header-link-hover: #0288D1;
+    
+    /* Footer */
+    --frontend-footer-bg: #212529;
+    --frontend-footer-text: #ffffff;
+    --frontend-footer-link: #29B6F6;
+    --frontend-footer-link-hover: #0288D1;
+    
+    /* Background & Gradient */
+    --frontend-bg-color: #ffffff;
+    --frontend-bg-gradient-start: #29B6F6;
+    --frontend-bg-gradient-end: #0288D1;
+    
+    /* Cards/Sections */
+    --frontend-card-bg: #ffffff;
+    --frontend-card-border: #dee2e6;
+    --frontend-card-shadow: #00000020;
+    
+    /* Text */
+    --frontend-text-primary: #212529;
+    --frontend-text-secondary: #6c757d;
+    --frontend-heading-color: #212529;
+    
+    /* Links */
+    --frontend-link-color: #29B6F6;
+    --frontend-link-hover: #0288D1;
+    
+    /* Modals */
+    --frontend-modal-bg: #ffffff;
+    --frontend-modal-header-bg: #29B6F6;
+    --frontend-modal-header-text: #ffffff;
+    --frontend-modal-overlay: #00000080;
+    
+    /* Borders */
+    --frontend-border-color: #dee2e6;
+    --frontend-border-radius: 8px;
+    
+    /* Hero Section */
+    --frontend-hero-bg: #29B6F6;
+    --frontend-hero-text: #ffffff;
+    --frontend-hero-overlay: #00000040;
+    
+    /* Features */
+    --frontend-feature-bg: #f8f9fa;
+    --frontend-feature-icon: #29B6F6;
+    --frontend-feature-border: #dee2e6;
+}
+
+/* ========== APLICAÇÃO DAS CORES NO FRONTEND ========== */
+
+/* Background do Site */
+body.frontend,
+main.frontend {
+    background-color: var(--frontend-bg-color);
+}
+
+/* Gradiente de Fundo (se ativado) */
+body.frontend.use-gradient {
+    background: linear-gradient(135deg, var(--frontend-bg-gradient-start) 0%, var(--frontend-bg-gradient-end) 100%);
+}
+
+/* Botões Primários */
+.btn-primary,
+.frontend .btn-primary {
+    background-color: var(--frontend-btn-primary) !important;
+    border-color: var(--frontend-btn-primary) !important;
+    color: var(--frontend-btn-text) !important;
+}
+
+.btn-primary:hover,
+.frontend .btn-primary:hover {
+    background-color: var(--frontend-btn-primary-hover) !important;
+    border-color: var(--frontend-btn-primary-hover) !important;
+}
+
+/* Botões Secundários */
+.btn-secondary,
+.frontend .btn-secondary {
+    background-color: var(--frontend-btn-secondary) !important;
+    border-color: var(--frontend-btn-secondary) !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary:hover,
+.frontend .btn-secondary:hover {
+    background-color: var(--frontend-btn-secondary-hover) !important;
+    border-color: var(--frontend-btn-secondary-hover) !important;
+}
+
+/* Header/Navbar */
+.header,
+.navbar,
+.top-header {
+    background-color: var(--frontend-header-bg) !important;
+    color: var(--frontend-header-text) !important;
+}
+
+.header a,
+.navbar a,
+.navbar-nav .nav-link {
+    color: var(--frontend-header-link) !important;
+}
+
+.header a:hover,
+.navbar a:hover,
+.navbar-nav .nav-link:hover {
+    color: var(--frontend-header-link-hover) !important;
+}
+
+/* Footer */
+.footer,
+footer {
+    background-color: var(--frontend-footer-bg) !important;
+    color: var(--frontend-footer-text) !important;
+}
+
+.footer a,
+footer a {
+    color: var(--frontend-footer-link) !important;
+}
+
+.footer a:hover,
+footer a:hover {
+    color: var(--frontend-footer-link-hover) !important;
+}
+
+/* Cards */
+.card,
+.frontend .card {
+    background-color: var(--frontend-card-bg) !important;
+    border-color: var(--frontend-card-border) !important;
+    box-shadow: 0 4px 8px var(--frontend-card-shadow);
+    border-radius: var(--frontend-border-radius);
+}
+
+/* Hero Section */
+.hero-section,
+.banner-section,
+.hero {
+    background-color: var(--frontend-hero-bg) !important;
+    color: var(--frontend-hero-text) !important;
+}
+
+/* Features/Services */
+.feature-item,
+.service-item,
+.features .card {
+    background-color: var(--frontend-feature-bg) !important;
+    border-color: var(--frontend-feature-border) !important;
+}
+
+.feature-item .icon,
+.service-item .icon,
+.feature-icon {
+    color: var(--frontend-feature-icon) !important;
+}
+
+/* Generated at: 2025-10-25 05:37:00 */

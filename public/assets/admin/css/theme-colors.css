@@ -1,0 +1,125 @@
+/* ============================================================================
+   ADMIN DASHBOARD COLORS - Auto-generated from theme_settings
+   Generated at: 2025-10-25 05:37:00
+   ============================================================================ */
+
+:root {
+    /* Admin Primary Colors */
+    --primary-color: #29B6F6;
+    --primary-color-rgb: 41, 182, 246;
+    --primary-light: #51c4f8;
+    --primary-dark: #0a91ce;
+    --base-color: #29B6F6;
+    
+    /* Admin Secondary Colors */
+    --secondary-color: #004AAD;
+    --secondary-color-rgb: 0, 74, 173;
+    
+    /* Admin Accent Colors */
+    --accent-color: #FF6600;
+    --accent-color-rgb: 255, 102, 0;
+    
+    /* Admin Sidebar Colors */
+    --sidebar-bg: #1a1d29;
+    --sidebar-text: #ffffff;
+}
+
+/* Primary color applications */
+.btn-primary,
+.bg-primary,
+.badge-primary {
+    background-color: #29B6F6 !important;
+    border-color: #29B6F6 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #0a91ce !important;
+    border-color: #0a91ce !important;
+}
+
+.text-primary {
+    color: #29B6F6 !important;
+}
+
+.border-primary {
+    border-color: #29B6F6 !important;
+}
+
+/* Links */
+a {
+    color: #29B6F6;
+}
+
+a:hover {
+    color: #0a91ce;
+}
+
+/* Custom elements */
+.custom-primary {
+    color: #29B6F6;
+}
+
+.custom-primary-bg {
+    background-color: #29B6F6;
+}
+
+/* Form controls focus */
+.form-control:focus {
+    border-color: #29B6F6;
+    box-shadow: 0 0 0 0.2rem rgba(41, 182, 246, 0.25);
+}
+
+/* Sidebar Styling */
+.sidebar,
+.navbar-wrapper__left,
+.sidebar-menu {
+    background-color: #1a1d29 !important;
+}
+
+.sidebar .menu-item,
+.sidebar .menu-link,
+.sidebar-menu li a {
+    color: #ffffff !important;
+}
+
+.sidebar .menu-item.active,
+.sidebar .menu-item:hover {
+    background-color: #29B6F6;
+    color: #ffffff !important;
+}
+
+.sidebar .menu-item.active .menu-link,
+.sidebar .menu-item:hover .menu-link {
+    color: #ffffff !important;
+}
+
+/* Secondary Color Applications */
+.btn-secondary,
+.bg-secondary,
+.badge-secondary {
+    background-color: #004AAD !important;
+    border-color: #004AAD !important;
+}
+
+/* Accent Color Applications */
+.btn-accent,
+.bg-accent,
+.badge-accent,
+.text-accent {
+    background-color: #FF6600 !important;
+    color: #ffffff !important;
+}
+
+/* Pagination */
+.pagination .page-item.active .page-link {
+    background-color: #29B6F6;
+    border-color: #29B6F6;
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: #29B6F6;
+}
+
+/* Generated at: 2025-10-25 05:37:00 */

@@ -1,0 +1,115 @@
+/* ============================================================================
+   USER DASHBOARD COLORS - Auto-generated from theme_settings
+   Generated at: 2025-10-25 05:37:00
+   ============================================================================ */
+
+:root {
+    /* Cores Base (HSL) */
+    --base-h: 199;
+    --base-s: 91%;
+    --base-l: 56%;
+
+    /* Cores Primárias */
+    --primary-color: #00BCD4;
+    --primary-light: #33c9dc;
+    --primary-dark: #0097a7;
+    --secondary-color: #0097A7;
+    --accent-color: #FF5722;
+
+    /* Cores de Status */
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    
+    /* Sidebar do User Dashboard */
+    --user-sidebar-bg: #263238;
+    --user-sidebar-text: #ffffff;
+
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, #00BCD4 0%, #0097a7 100%);
+    --gradient-secondary: linear-gradient(135deg, #0097A7 0%, #0097a7 100%);
+}
+
+/* Aplicação das cores nos componentes */
+.btn-primary,
+.badge-primary,
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--primary-dark) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.btn-secondary,
+.badge-secondary,
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.btn-success,
+.badge-success,
+.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.btn-warning,
+.badge-warning,
+.bg-warning {
+    background-color: var(--warning-color) !important;
+}
+
+.btn-danger,
+.badge-danger,
+.bg-danger {
+    background-color: var(--danger-color) !important;
+}
+
+.btn-info,
+.badge-info,
+.bg-info {
+    background-color: var(--info-color) !important;
+}
+
+/* User Dashboard Sidebar */
+.user-sidebar,
+.user-menu,
+.dashboard-sidebar {
+    background-color: var(--user-sidebar-bg) !important;
+}
+
+.user-sidebar .menu-item,
+.user-sidebar .menu-link,
+.user-menu li a {
+    color: var(--user-sidebar-text) !important;
+}
+
+.user-sidebar .menu-item.active,
+.user-sidebar .menu-item:hover {
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+/* Accent Color Applications */
+.btn-accent,
+.bg-accent,
+.badge-accent {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
+}
+
+/* Generated at: 2025-10-25 05:37:00 */
