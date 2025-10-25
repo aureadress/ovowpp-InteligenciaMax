@@ -297,6 +297,13 @@ Route::middleware('admin')->group(function () {
         Route::get('pusher-configuration', 'pusherConfiguration')->name('setting.pusher.configuration')->middleware('permission:pusher configuration,admin');
         Route::post('pusher-configuration', 'pusherConfigurationUpdate')->middleware('permission:pusher configuration,admin');
 
+        // Theme Color Settings
+        Route::controller('ThemeSettingController')->prefix('theme')->name('theme.')->group(function () {
+            Route::get('colors', 'index')->name('colors')->middleware('permission:update general settings,admin');
+            Route::post('colors/update', 'update')->name('colors.update')->middleware('permission:update general settings,admin');
+            Route::get('colors/reset', 'reset')->name('colors.reset')->middleware('permission:update general settings,admin');
+            Route::get('colors/get', 'getColors')->name('colors.get');
+        });
 
         Route::get('setting/social/credentials', 'socialiteCredentials')->name('setting.socialite.credentials')->middleware('permission:social login settings,admin');
         Route::post('setting/social/credentials/update/{key}', 'updateSocialiteCredential')->name('setting.socialite.credentials.update')->middleware('permission:social login settings,admin');

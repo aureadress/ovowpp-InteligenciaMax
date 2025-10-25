@@ -892,6 +892,7 @@
                 "admin.setting.app.*",
                 "admin.maintenance.mode",
                 "admin.setting.brand",
+                "admin.theme.*",
                 "admin.ai-assistant.*"
             ],
             "permission": [
@@ -980,6 +981,31 @@
                     ],
                     "permission": [
                         "update brand settings"
+                    ]
+                },
+                {
+                    "title": "Theme Colors",
+                    "icon": "las la-palette",
+                    "route_name": "admin.theme.colors",
+                    "menu_active": "admin.theme.colors",
+                    "keyword": [
+                        "colors",
+                        "theme colors",
+                        "color customization",
+                        "color settings",
+                        "admin colors",
+                        "user colors",
+                        "chat colors",
+                        "theme customization",
+                        "color scheme",
+                        "visual settings",
+                        "design colors",
+                        "dashboard colors",
+                        "color picker",
+                        "color palette"
+                    ],
+                    "permission": [
+                        "update general settings"
                     ]
                 },
                 {
