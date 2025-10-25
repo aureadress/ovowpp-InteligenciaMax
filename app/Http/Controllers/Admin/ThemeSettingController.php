@@ -33,35 +33,76 @@ class ThemeSettingController extends Controller
      */
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        // Validação dinâmica de cores (aceita hex #RRGGBB ou com transparência #RRGGBBAA)
+        $colorRegex = 'required|regex:/^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$/';
+        
+        $rules = [
             // Admin colors
-            'admin_primary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'admin_secondary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'admin_accent_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'admin_sidebar_bg' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'admin_sidebar_text' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
+            'admin_primary_color' => $colorRegex,
+            'admin_secondary_color' => $colorRegex,
+            'admin_accent_color' => $colorRegex,
+            'admin_sidebar_bg' => $colorRegex,
+            'admin_sidebar_text' => $colorRegex,
             
             // User colors
-            'user_primary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'user_secondary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'user_accent_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'user_sidebar_bg' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'user_sidebar_text' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
+            'user_primary_color' => $colorRegex,
+            'user_secondary_color' => $colorRegex,
+            'user_accent_color' => $colorRegex,
+            'user_sidebar_bg' => $colorRegex,
+            'user_sidebar_text' => $colorRegex,
             
             // Chat colors
-            'chat_primary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'chat_secondary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'chat_bubble_sent' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'chat_bubble_received' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'chat_header_bg' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
+            'chat_primary_color' => $colorRegex,
+            'chat_secondary_color' => $colorRegex,
+            'chat_bubble_sent' => $colorRegex,
+            'chat_bubble_received' => $colorRegex,
+            'chat_header_bg' => $colorRegex,
             
             // Global colors
-            'success_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'warning_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'danger_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-            'info_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
-        ], [
+            'success_color' => $colorRegex,
+            'warning_color' => $colorRegex,
+            'danger_color' => $colorRegex,
+            'info_color' => $colorRegex,
+        ];
+        
+        // Adicionar validações do Frontend (se existirem no request)
+        $frontendFields = [
+            'frontend_btn_primary', 'frontend_btn_primary_hover', 'frontend_btn_secondary', 
+            'frontend_btn_secondary_hover', 'frontend_btn_text', 'frontend_header_bg',
+            'frontend_header_text', 'frontend_header_link', 'frontend_header_link_hover',
+            'frontend_footer_bg', 'frontend_footer_text', 'frontend_footer_link',
+            'frontend_footer_link_hover', 'frontend_bg_color', 'frontend_bg_gradient_start',
+            'frontend_bg_gradient_end', 'frontend_card_bg', 'frontend_card_border',
+            'frontend_card_shadow', 'frontend_text_primary', 'frontend_text_secondary',
+            'frontend_heading_color', 'frontend_link_color', 'frontend_link_hover',
+            'frontend_modal_bg', 'frontend_modal_header_bg', 'frontend_modal_header_text',
+            'frontend_modal_overlay', 'frontend_border_color', 'frontend_hero_bg',
+            'frontend_hero_text', 'frontend_hero_overlay', 'frontend_feature_bg',
+            'frontend_feature_icon', 'frontend_feature_border',
+        ];
+        
+        foreach ($frontendFields as $field) {
+            if ($request->has($field)) {
+                $rules[$field] = $colorRegex;
+            }
+        }
+        
+        // Campo especial: border radius (0-99)
+        if ($request->has('frontend_border_radius')) {
+            $rules['frontend_border_radius'] = 'required|integer|min:0|max:99';
+        }
+        
+        // Campo especial: usar gradiente (boolean)
+        if ($request->has('frontend_use_gradient')) {
+            $rules['frontend_use_gradient'] = 'required|boolean';
+        }
+        
+        $validator = Validator::make($request->all(), $rules, [
             'regex' => 'O campo :attribute deve ser uma cor hexadecimal válida (ex: #29B6F6)',
+            'integer' => 'O campo :attribute deve ser um número inteiro',
+            'min' => 'O campo :attribute deve ser no mínimo :min',
+            'max' => 'O campo :attribute deve ser no máximo :max',
+            'boolean' => 'O campo :attribute deve ser verdadeiro ou falso',
         ]);
 
         if ($validator->fails()) {
@@ -79,8 +120,8 @@ class ThemeSettingController extends Controller
             $theme->is_active = true;
         }
 
-        // Update all colors
-        $theme->fill($request->only([
+        // Campos que serão atualizados (todos os fillable do model)
+        $updateFields = array_merge([
             'admin_primary_color',
             'admin_secondary_color',
             'admin_accent_color',
@@ -103,8 +144,10 @@ class ThemeSettingController extends Controller
             'warning_color',
             'danger_color',
             'info_color',
-        ]));
-
+        ], $frontendFields, ['frontend_border_radius', 'frontend_use_gradient']);
+        
+        // Atualizar apenas os campos presentes no request
+        $theme->fill($request->only($updateFields));
         $theme->save();
 
         $notify[] = ['success', 'Cores atualizadas com sucesso! Recarregue a página para ver as mudanças.'];
