@@ -7,6 +7,38 @@ use Illuminate\Support\Facades\Schema;
 
 Route::get('/clear', function () {
     
+    // Forçar instalação do Frontend
+    if (request()->has('force-frontend')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html><html><head><title>Instalar Frontend</title><meta charset="utf-8"></head><body style="font-family:Arial;padding:40px;background:#f5f5f5;">';
+        echo '<div style="max-width:800px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
+        echo '<h2 style="color:#29B6F6;">🎨 Instalando Cores do Frontend</h2>';
+        
+        try {
+            echo '<p>Executando migration...</p>';
+            
+            $exitCode = Artisan::call("migrate", [
+                "--path" => "database/migrations/2025_10_25_000002_add_frontend_colors_to_theme_settings.php",
+                "--force" => true
+            ]);
+            
+            if ($exitCode === 0) {
+                echo '<p style="color:green;font-weight:bold;">✅ Migration executada com sucesso!</p>';
+                echo '<p>37 campos de cores do Frontend foram adicionados.</p>';
+                echo '<a href="/admin/theme/colors" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#29B6F6;color:white;text-decoration:none;border-radius:8px;">🎨 Ir para Painel de Cores</a>';
+            } else {
+                echo '<p style="color:red;">❌ Erro ao executar migration.</p>';
+            }
+        } catch (Exception $e) {
+            echo '<p style="color:red;">❌ Erro: ' . htmlspecialchars($e->getMessage()) . '</p>';
+        }
+        
+        echo '</div></body></html>';
+        
+        return ob_get_clean();
+    }
+    
     // Verificar se precisa instalar tema
     if (request()->has('install-theme')) {
         
