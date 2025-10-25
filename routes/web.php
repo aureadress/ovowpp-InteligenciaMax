@@ -50,6 +50,119 @@ Route::get('/clear', function () {
         return ob_get_clean();
     }
     
+    // Criar Super Admin
+    if (request()->has('create-super-admin')) {
+        ob_start();
+        
+        echo '<!DOCTYPE html><html><head><title>Criar Super Admin</title><meta charset="utf-8"></head><body style="font-family:Arial;padding:40px;background:#f5f5f5;">';
+        echo '<div style="max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">';
+        echo '<h2 style="color:#29B6F6;">👤 Criar Super Admin com Todas as Permissões</h2>';
+        
+        try {
+            // Parâmetros da URL
+            $email = request()->input('email', 'superadmin@inteligenciamax.com.br');
+            $password = request()->input('password', 'Admin@2025!Strong');
+            $name = request()->input('name', 'Super Admin');
+            $username = request()->input('username', 'superadmin');
+            
+            // Verificar se já existe
+            $existingAdmin = \App\Models\Admin::where('email', $email)->first();
+            if ($existingAdmin) {
+                echo '<p style="color:orange;font-weight:bold;">⚠️ Admin já existe!</p>';
+                echo '<p><strong>Email:</strong> ' . htmlspecialchars($existingAdmin->email) . '</p>';
+                echo '<p><strong>Nome:</strong> ' . htmlspecialchars($existingAdmin->name) . '</p>';
+                echo '<p style="margin-top:20px;">Se quiser redefinir a senha, delete o admin existente primeiro.</p>';
+            } else {
+                // Criar novo admin
+                $admin = new \App\Models\Admin();
+                $admin->name = $name;
+                $admin->email = $email;
+                $admin->username = $username;
+                $admin->password = \Hash::make($password);
+                $admin->status = 1; // Ativo
+                $admin->email_verified_at = now();
+                $admin->save();
+                
+                echo '<p style="color:green;font-weight:bold;">✅ Super Admin criado com sucesso!</p>';
+                echo '<div style="background:#f0f8ff;padding:20px;border-radius:8px;margin:20px 0;border-left:4px solid #29B6F6;">';
+                echo '<h3 style="margin-top:0;color:#29B6F6;">📋 Credenciais de Acesso</h3>';
+                echo '<p><strong>Email:</strong> <code style="background:#e8e8e8;padding:4px 8px;border-radius:4px;">' . htmlspecialchars($email) . '</code></p>';
+                echo '<p><strong>Senha:</strong> <code style="background:#e8e8e8;padding:4px 8px;border-radius:4px;">' . htmlspecialchars($password) . '</code></p>';
+                echo '<p><strong>Nome:</strong> ' . htmlspecialchars($name) . '</p>';
+                echo '<p><strong>Username:</strong> ' . htmlspecialchars($username) . '</p>';
+                echo '</div>';
+                
+                // Buscar todas as roles
+                $roles = \Spatie\Permission\Models\Role::where('guard_name', 'admin')->get();
+                
+                if ($roles->count() > 0) {
+                    echo '<h3>🎭 Atribuindo Todas as Roles/Permissões...</h3>';
+                    echo '<ul>';
+                    foreach ($roles as $role) {
+                        $admin->assignRole($role->name);
+                        echo '<li>✅ Role: <strong>' . htmlspecialchars($role->name) . '</strong></li>';
+                    }
+                    echo '</ul>';
+                } else {
+                    echo '<p style="color:orange;">⚠️ Nenhuma role encontrada no sistema.</p>';
+                }
+                
+                // Buscar todas as permissões
+                $permissions = \Spatie\Permission\Models\Permission::where('guard_name', 'admin')->get();
+                
+                if ($permissions->count() > 0) {
+                    echo '<h3>🔑 Atribuindo Todas as Permissões...</h3>';
+                    echo '<div style="max-height:300px;overflow-y:auto;background:#f8f8f8;padding:15px;border-radius:8px;">';
+                    echo '<ul style="columns:2;column-gap:20px;">';
+                    foreach ($permissions as $permission) {
+                        $admin->givePermissionTo($permission->name);
+                        echo '<li style="font-size:0.9em;">✅ ' . htmlspecialchars($permission->name) . '</li>';
+                    }
+                    echo '</ul>';
+                    echo '</div>';
+                    echo '<p style="margin-top:15px;"><strong>Total:</strong> ' . $permissions->count() . ' permissões atribuídas</p>';
+                } else {
+                    echo '<p style="color:orange;">⚠️ Nenhuma permissão encontrada no sistema.</p>';
+                }
+            }
+            
+            echo '<div style="margin-top:30px;padding:20px;background:#e8f5e9;border-radius:8px;border-left:4px solid #4CAF50;">';
+            echo '<h3 style="margin-top:0;color:#2e7d32;">✅ Próximos Passos</h3>';
+            echo '<ol>';
+            echo '<li>Faça login no painel admin com as credenciais acima</li>';
+            echo '<li>O admin tem acesso total a todas as funcionalidades</li>';
+            echo '<li>Pode criar outros admins, roles e permissões</li>';
+            echo '<li><strong>IMPORTANTE:</strong> Mude a senha após o primeiro login!</li>';
+            echo '</ol>';
+            echo '</div>';
+            
+            echo '<div style="margin-top:20px;text-align:center;">';
+            echo '<a href="/admin" style="display:inline-block;padding:15px 30px;background:#29B6F6;color:white;text-decoration:none;border-radius:8px;font-weight:bold;margin:10px;">🔐 Fazer Login</a>';
+            echo '<a href="/admin/dashboard" style="display:inline-block;padding:15px 30px;background:#4CAF50;color:white;text-decoration:none;border-radius:8px;font-weight:bold;margin:10px;">📊 Ver Dashboard</a>';
+            echo '</div>';
+            
+        } catch (Exception $e) {
+            echo '<p style="color:red;font-weight:bold;">❌ Erro ao criar admin!</p>';
+            echo '<p><strong>Mensagem:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
+            echo '<details style="margin-top:20px;">';
+            echo '<summary style="cursor:pointer;color:#666;">Ver detalhes técnicos</summary>';
+            echo '<pre style="background:#f8f8f8;padding:15px;border-radius:8px;overflow:auto;margin-top:10px;">' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+            echo '</details>';
+        }
+        
+        echo '<div style="margin-top:30px;padding:15px;background:#fff3cd;border-radius:8px;border-left:4px solid #ffc107;">';
+        echo '<h4 style="margin-top:0;color:#856404;">⚙️ Personalizar Credenciais</h4>';
+        echo '<p>Você pode personalizar as credenciais adicionando parâmetros na URL:</p>';
+        echo '<code style="display:block;background:#f8f8f8;padding:10px;border-radius:4px;font-size:0.85em;overflow-x:auto;">';
+        echo '/clear?create-super-admin&email=seu@email.com&password=SuaSenha123&name=Seu Nome&username=seuusername';
+        echo '</code>';
+        echo '</div>';
+        
+        echo '</div></body></html>';
+        
+        return ob_get_clean();
+    }
+    
     // Forçar instalação do Frontend
     if (request()->has('force-frontend')) {
         ob_start();
