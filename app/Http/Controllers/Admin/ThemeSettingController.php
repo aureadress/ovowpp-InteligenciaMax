@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ThemeSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class ThemeSettingController extends Controller
 {
@@ -246,29 +247,27 @@ class ThemeSettingController extends Controller
     private function generateStaticCSS($theme)
     {
         try {
-            // Check write permissions
+            // Ensure target directories exist
             $paths = [
                 public_path('assets/admin/css'),
                 public_path('assets/templates/basic/css'),
             ];
             
             foreach ($paths as $path) {
-                if (!is_writable($path)) {
-                    throw new \Exception("Directory not writable: {$path}");
-                }
+                File::ensureDirectoryExists($path);
             }
             
             // 1. Generate Admin CSS
             $this->generateAdminCSS($theme);
-            \Log::info('Admin CSS generated');
+            \Log::info('Admin CSS generated successfully', ['path' => 'public/assets/admin/css/theme-colors.css']);
             
             // 2. Generate User/Frontend CSS
             $this->generateUserCSS($theme);
-            \Log::info('User CSS generated');
+            \Log::info('User CSS generated successfully', ['path' => 'public/assets/templates/basic/css/theme-colors.css']);
             
             // 3. Generate Frontend Public CSS
             $this->generateFrontendCSS($theme);
-            \Log::info('Frontend CSS generated');
+            \Log::info('Frontend CSS generated successfully', ['path' => 'public/assets/templates/basic/css/frontend-colors.css']);
             
             return true;
         } catch (\Exception $e) {
@@ -424,9 +423,14 @@ a:hover {
 /* Generated at: {$this->getCurrentTimestamp()} */
 CSS;
         
-        // Save to file
+        // Save to file with error checking
         $path = public_path('assets/admin/css/theme-colors.css');
-        file_put_contents($path, $css);
+        File::ensureDirectoryExists(dirname($path));
+        
+        $result = file_put_contents($path, $css);
+        if ($result === false) {
+            throw new \RuntimeException("Failed to write admin CSS file: {$path}");
+        }
     }
     
     /**
@@ -571,7 +575,12 @@ CSS;
 CSS;
         
         $path = public_path('assets/templates/basic/css/theme-colors.css');
-        file_put_contents($path, $css);
+        File::ensureDirectoryExists(dirname($path));
+        
+        $result = file_put_contents($path, $css);
+        if ($result === false) {
+            throw new \RuntimeException("Failed to write user CSS file: {$path}");
+        }
     }
     
     /**
@@ -760,7 +769,12 @@ footer a:hover {
 CSS;
         
         $path = public_path('assets/templates/basic/css/frontend-colors.css');
-        file_put_contents($path, $css);
+        File::ensureDirectoryExists(dirname($path));
+        
+        $result = file_put_contents($path, $css);
+        if ($result === false) {
+            throw new \RuntimeException("Failed to write frontend CSS file: {$path}");
+        }
     }
     
     /**
