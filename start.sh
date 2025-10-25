@@ -38,6 +38,22 @@ fi
 echo "🧹 Clearing ALL caches (NO CACHING!)..."
 php artisan optimize:clear 2>&1 | grep -v "Failed" || true
 
+echo "🎨 Generating theme CSS files..."
+# Generate static CSS files from database colors
+php artisan tinker --execute="
+\$theme = \App\Models\ThemeSetting::active();
+if (\$theme) {
+    \$controller = new \App\Http\Controllers\Admin\ThemeSettingController();
+    \$reflector = new \ReflectionClass(\$controller);
+    \$method = \$reflector->getMethod('generateStaticCSS');
+    \$method->setAccessible(true);
+    \$method->invoke(\$controller, \$theme);
+    echo '✅ Theme CSS files generated successfully!\n';
+} else {
+    echo '⚠️ No theme settings found, using default CSS files from Git.\n';
+}
+" 2>&1 | grep -E "✅|⚠️" || echo "⚠️ CSS generation skipped (using Git defaults)"
+
 echo "========================================="
 echo "✅ Caches cleared!"
 echo "🌐 Starting PHP server on port ${PORT:-8080}"
