@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
             return $data;
         });
 
-        Builder::macro("findOrFailWithApi", function ($modelName = "data", $id) {
+        Builder::macro("findOrFailWithApi", function ($id, $modelName = "data") {
             $data = $this->where("id", $id)->first();
             if (!$data) {
                 throw new \Exception("custom_not_found_exception || The $modelName is not found", 404);
