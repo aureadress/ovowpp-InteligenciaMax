@@ -1,10 +1,12 @@
-# ---------- Estágio 1: Builder ----------
+# ------------------------------------------------------------------
+# Estágio 1: Builder (compila e instala dependências)
+# ------------------------------------------------------------------
 FROM php:8.2-fpm AS builder
 
-# Define o diretório de trabalho principal
+# Define o diretório de trabalho
 WORKDIR /var/www/html
 
-# Instala as dependências do sistema necessárias para as extensões PHP
+# Instala dependências de build (zip é crítico para a extensão zip)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -16,43 +18,45 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instala as extensões PHP necessárias
+# Instala extensões PHP necessárias
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip xml dom
 
 # Instala o Composer globalmente
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Otimização de cache: Copia apenas os arquivos do Composer primeiro
-COPY Laravel/core/composer.json Laravel/core/composer.lock./core/
+# Copia somente o código-fonte do Laravel (onde está o composer.json)
+COPY Laravel/core /var/www/html
 
-# Define o diretório de trabalho para a pasta 'core' e instala as dependências
-WORKDIR /var/www/html/core
-RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
+# Instala as dependências PHP em modo produção
+RUN cd /var/www/html && composer install --no-interaction --no-progress --no-dev --optimize-autoloader
 
-# Volta para o diretório raiz do app e copia o restante dos arquivos da aplicação
-WORKDIR /var/www/html
-COPY Laravel/..
-
-# ---------- Estágio 2: Runtime ----------
+# ------------------------------------------------------------------
+# Estágio 2: Imagem final de produção
+# ------------------------------------------------------------------
 FROM php:8.2-fpm
+
+# Define o diretório de trabalho
 WORKDIR /var/www/html
 
-# Instala apenas as dependências de tempo de execução mínimas
+# Instala dependências de runtime mínimas
 RUN apt-get update && apt-get install -y \
-    libfreetype6 libjpeg62-turbo libpng16-16 libzip4 libxml2 \
+    libfreetype6 \
+    libjpeg62-turbo \
+    libpng16-16 \
+    libzip4 \
+    libxml2 \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copia as extensões e os arquivos da aplicação do estágio de construção
+# Copia extensões PHP e aplicação do estágio builder
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 COPY --from=builder /var/www/html /var/www/html
 
-# Garante as permissões corretas
+# Ajusta permissões de arquivos
 RUN chown -R www-data:www-data /var/www/html
 
-# Expõe a porta que a Railway usará
+# Expõe a porta padrão do Railway
 EXPOSE 8080
-# O comando de inicialização original do seu Dockerfile.
-# Ele assume que o servidor web (Caddy/FrankenPHP) servirá a partir do diretório raiz /var/www/html
-# e que o index.php está lá.
-CMD ["php-fpm"]
+
+# Comando para iniciar o Laravel via Artisan (usa variável $PORT do Railway)
+CMD ["bash", "-lc", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
