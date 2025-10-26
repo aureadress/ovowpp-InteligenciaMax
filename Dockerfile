@@ -22,15 +22,25 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instala extensões PHP necessárias
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install pdo_mysql bcmath ctype dom exif fileinfo gd mbstring pcntl session tokenizer xml zip
+# Configura e instala extensão GD (separadamente)
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
+# Instala extensões PHP (SEPARADAS em grupos menores)
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install xml
+RUN docker-php-ext-install dom
+RUN docker-php-ext-install exif
+RUN docker-php-ext-install pcntl
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copia arquivos do Composer
-COPY Laravel/core/composer.json Laravel/core/composer.lock ./core/
+COPY core/composer.json core/composer.lock ./core/
 
 # Instala dependências PHP
 WORKDIR /var/www/html/core
@@ -38,12 +48,7 @@ RUN composer install --no-interaction --no-progress --no-dev --optimize-autoload
 
 # Copia toda a aplicação
 WORKDIR /var/www/html
-COPY Laravel/ .
-
-# Otimizações Laravel
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+COPY . .
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
@@ -103,5 +108,4 @@ autorestart=true' > /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 8080
 
-# Inicia Supervisor (gerencia PHP-FPM + Nginx)
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
