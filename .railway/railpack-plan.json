@@ -27,13 +27,14 @@
     }
   },
   "build": {
-    "prebuild": [
-      "install-php-extensions bcmath gd gmp",
-      "echo '✔ Extensões PHP instaladas antes do Composer!'"
-    ],
-    "postbuild": [
-      "chmod -R a+rw storage bootstrap/cache",
-      "echo '✔ Permissões ajustadas e build finalizado'"
+    "steps": [
+      "cd core && composer install --ignore-platform-req=ext-bcmath --ignore-platform-req=ext-gd --ignore-platform-req=ext-gmp --optimize-autoloader --no-scripts --no-interaction",
+      "npm install",
+      "npm run build",
+      "chmod -R a+rw storage bootstrap/cache || true",
+      "cd core && php artisan config:cache",
+      "cd core && php artisan route:cache",
+      "cd core && php artisan view:cache"
     ],
     "env": {
       "APP_ENV": "production"
