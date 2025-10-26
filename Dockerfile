@@ -47,7 +47,7 @@ COPY Laravel/ .
 # Navega para o diretório core
 WORKDIR /var/www/html/core
 
-# Cria arquivo .env com configurações básicas se não existir
+# Cria arquivo .env com TODAS as variáveis necessárias
 RUN if [ ! -f .env ]; then \
         echo "APP_NAME=OvowppMax" > .env && \
         echo "APP_ENV=production" >> .env && \
@@ -56,6 +56,7 @@ RUN if [ ! -f .env ]; then \
         echo "APP_URL=https://inteligenciamax.com.br" >> .env && \
         echo "" >> .env && \
         echo "LOG_CHANNEL=stack" >> .env && \
+        echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env && \
         echo "LOG_LEVEL=error" >> .env && \
         echo "" >> .env && \
         echo "DB_CONNECTION=mysql" >> .env && \
@@ -70,7 +71,43 @@ RUN if [ ! -f .env ]; then \
         echo "FILESYSTEM_DISK=local" >> .env && \
         echo "QUEUE_CONNECTION=sync" >> .env && \
         echo "SESSION_DRIVER=file" >> .env && \
-        echo "SESSION_LIFETIME=120" >> .env; \
+        echo "SESSION_LIFETIME=120" >> .env && \
+        echo "" >> .env && \
+        echo "MEMCACHED_HOST=127.0.0.1" >> .env && \
+        echo "" >> .env && \
+        echo "REDIS_HOST=127.0.0.1" >> .env && \
+        echo "REDIS_PASSWORD=null" >> .env && \
+        echo "REDIS_PORT=6379" >> .env && \
+        echo "" >> .env && \
+        echo "MAIL_MAILER=smtp" >> .env && \
+        echo "MAIL_HOST=mailpit" >> .env && \
+        echo "MAIL_PORT=1025" >> .env && \
+        echo "MAIL_USERNAME=null" >> .env && \
+        echo "MAIL_PASSWORD=null" >> .env && \
+        echo "MAIL_ENCRYPTION=null" >> .env && \
+        echo "MAIL_FROM_ADDRESS=hello@example.com" >> .env && \
+        echo "MAIL_FROM_NAME=OvowppMax" >> .env && \
+        echo "" >> .env && \
+        echo "AWS_ACCESS_KEY_ID=" >> .env && \
+        echo "AWS_SECRET_ACCESS_KEY=" >> .env && \
+        echo "AWS_DEFAULT_REGION=us-east-1" >> .env && \
+        echo "AWS_BUCKET=" >> .env && \
+        echo "AWS_USE_PATH_STYLE_ENDPOINT=false" >> .env && \
+        echo "" >> .env && \
+        echo "PUSHER_APP_ID=" >> .env && \
+        echo "PUSHER_APP_KEY=" >> .env && \
+        echo "PUSHER_APP_SECRET=" >> .env && \
+        echo "PUSHER_HOST=" >> .env && \
+        echo "PUSHER_PORT=443" >> .env && \
+        echo "PUSHER_SCHEME=https" >> .env && \
+        echo "PUSHER_APP_CLUSTER=mt1" >> .env && \
+        echo "" >> .env && \
+        echo "VITE_APP_NAME=OvowppMax" >> .env && \
+        echo "VITE_PUSHER_APP_KEY=" >> .env && \
+        echo "VITE_PUSHER_HOST=" >> .env && \
+        echo "VITE_PUSHER_PORT=443" >> .env && \
+        echo "VITE_PUSHER_SCHEME=https" >> .env && \
+        echo "VITE_PUSHER_APP_CLUSTER=mt1" >> .env; \
     fi
 
 # Instala dependências PHP
@@ -79,9 +116,9 @@ RUN composer install --no-interaction --no-progress --no-dev --optimize-autoload
 # Gera APP_KEY (chave de criptografia do Laravel)
 RUN php artisan key:generate --force
 
-# Otimiza Laravel para produção
-RUN php artisan config:cache && \
-    php artisan route:cache && \
+# NÃO faz cache de config (devido às variáveis do pusher.php)
+# Apenas otimiza rotas e views
+RUN php artisan route:cache && \
     php artisan view:cache
 
 # Define permissões corretas para storage e cache
