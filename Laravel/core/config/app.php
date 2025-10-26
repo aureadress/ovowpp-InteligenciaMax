@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Facade;
 use App\Constants\Status;
 
-require 'timezone.php';
-require_once('pusher.php');
+require __DIR__ . '/timezone.php';      // ✅ LINHA 6 CORRIGIDA
+require_once __DIR__ . '/pusher.php';    // ✅ LINHA 7 CORRIGIDA
 
 return [
 
