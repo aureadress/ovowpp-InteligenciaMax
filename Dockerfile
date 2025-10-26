@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libonig-dev \
     libxml2-dev \
+    libgmp-dev \
     nginx \
     supervisor \
     --no-install-recommends && \
@@ -25,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 # Configura GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-# Instala extensões PHP (sem tokenizer)
+# Instala extensões PHP (incluindo gmp)
 RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install gd \
@@ -34,7 +35,8 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install xml \
     && docker-php-ext-install dom \
     && docker-php-ext-install exif \
-    && docker-php-ext-install pcntl
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install gmp
 
 # Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -61,6 +63,7 @@ RUN apt-get update && apt-get install -y \
     libpng16-16 \
     libzip-dev \
     libxml2 \
+    libgmp10 \
     nginx \
     supervisor \
     --no-install-recommends && \
