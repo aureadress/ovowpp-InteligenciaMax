@@ -124,12 +124,25 @@ RUN php artisan key:generate --force
 # Volta para o diretório raiz
 WORKDIR /var/www/html
 
-# Cria pasta public se não existir e copia arquivos necessários
+# Cria pasta public e CRIA index.php com caminhos corretos
 RUN mkdir -p core/public && \
-    if [ ! -f core/public/index.php ]; then \
-        cp -f index.php core/public/ 2>/dev/null || true; \
-    fi && \
-    if [ ! -f core/public/.htaccess ]; then \
+    echo '<?php' > core/public/index.php && \
+    echo '' >> core/public/index.php && \
+    echo 'use Illuminate\Http\Request;' >> core/public/index.php && \
+    echo '' >> core/public/index.php && \
+    echo 'define("LARAVEL_START", microtime(true));' >> core/public/index.php && \
+    echo '' >> core/public/index.php && \
+    echo 'if (file_exists($maintenance = __DIR__ . "/../storage/framework/maintenance.php")) {' >> core/public/index.php && \
+    echo '    require $maintenance;' >> core/public/index.php && \
+    echo '}' >> core/public/index.php && \
+    echo '' >> core/public/index.php && \
+    echo 'require __DIR__ . "/../vendor/autoload.php";' >> core/public/index.php && \
+    echo '' >> core/public/index.php && \
+    echo '(require_once __DIR__ . "/../bootstrap/app.php")' >> core/public/index.php && \
+    echo '    ->handleRequest(Request::capture());' >> core/public/index.php
+
+# Copia .htaccess se existir
+RUN if [ -f .htaccess ]; then \
         cp -f .htaccess core/public/ 2>/dev/null || true; \
     fi
 
