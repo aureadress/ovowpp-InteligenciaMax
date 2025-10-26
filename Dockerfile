@@ -44,8 +44,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia toda a aplicação Laravel
 COPY Laravel/ .
 
-# Navega para o diretório core para instalar dependências
-WORKDIR /var/www/html/core
+# Navega para o diretório Laravel/core para instalar dependências
+WORKDIR /var/www/html/Laravel/core
 
 # Cria arquivo .env com TODAS as variáveis necessárias
 RUN if [ ! -f .env ]; then \
@@ -120,11 +120,11 @@ RUN php artisan key:generate --force
 WORKDIR /var/www/html
 
 # Cria diretórios necessários se não existirem
-RUN mkdir -p core/storage/logs core/storage/framework/sessions core/storage/framework/views core/storage/framework/cache/data
+RUN mkdir -p Laravel/core/storage/logs Laravel/core/storage/framework/sessions Laravel/core/storage/framework/views Laravel/core/storage/framework/cache/data
 
 # Define permissões corretas para storage e cache
-RUN chown -R www-data:www-data core/storage core/bootstrap/cache && \
-    chmod -R 775 core/storage core/bootstrap/cache
+RUN chown -R www-data:www-data Laravel/core/storage Laravel/core/bootstrap/cache && \
+    chmod -R 775 Laravel/core/storage Laravel/core/bootstrap/cache
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
@@ -157,11 +157,11 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Configuração do Nginx - ROOT CORRETO: /var/www/html/core/public
+# Configuração do Nginx - ROOT CORRETO: /var/www/html/Laravel/core/public
 RUN echo 'server { \n\
     listen 8080; \n\
     server_name _; \n\
-    root /var/www/html/core/public; \n\
+    root /var/www/html/Laravel/core/public; \n\
     \n\
     index index.php index.html; \n\
     \n\
@@ -258,14 +258,14 @@ RUN mkdir -p /var/log/supervisor /var/log/nginx
 # Define permissões finais
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html && \
-    chmod -R 775 /var/www/html/core/storage /var/www/html/core/bootstrap/cache
+    chmod -R 775 /var/www/html/Laravel/core/storage /var/www/html/Laravel/core/bootstrap/cache
 
 EXPOSE 8080
 
 # Script de inicialização com migrations
 RUN echo '#!/bin/bash\n\
 set -e\n\
-cd /var/www/html/core\n\
+cd /var/www/html/Laravel/core\n\
 echo "Limpando cache..."\n\
 php artisan config:clear || true\n\
 php artisan cache:clear || true\n\
