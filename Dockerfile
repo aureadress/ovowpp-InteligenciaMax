@@ -44,9 +44,49 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia toda a aplicação Laravel PRIMEIRO
 COPY Laravel/ .
 
-# Instala dependências PHP
+# Navega para o diretório core
 WORKDIR /var/www/html/core
+
+# Cria arquivo .env com configurações básicas se não existir
+RUN if [ ! -f .env ]; then \
+        echo "APP_NAME=OvowppMax" > .env && \
+        echo "APP_ENV=production" >> .env && \
+        echo "APP_KEY=" >> .env && \
+        echo "APP_DEBUG=false" >> .env && \
+        echo "APP_URL=https://inteligenciamax.com.br" >> .env && \
+        echo "" >> .env && \
+        echo "LOG_CHANNEL=stack" >> .env && \
+        echo "LOG_LEVEL=error" >> .env && \
+        echo "" >> .env && \
+        echo "DB_CONNECTION=mysql" >> .env && \
+        echo "DB_HOST=\${DB_HOST}" >> .env && \
+        echo "DB_PORT=\${DB_PORT}" >> .env && \
+        echo "DB_DATABASE=\${DB_DATABASE}" >> .env && \
+        echo "DB_USERNAME=\${DB_USERNAME}" >> .env && \
+        echo "DB_PASSWORD=\${DB_PASSWORD}" >> .env && \
+        echo "" >> .env && \
+        echo "BROADCAST_DRIVER=log" >> .env && \
+        echo "CACHE_DRIVER=file" >> .env && \
+        echo "FILESYSTEM_DISK=local" >> .env && \
+        echo "QUEUE_CONNECTION=sync" >> .env && \
+        echo "SESSION_DRIVER=file" >> .env && \
+        echo "SESSION_LIFETIME=120" >> .env; \
+    fi
+
+# Instala dependências PHP
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
+
+# Gera APP_KEY (chave de criptografia do Laravel)
+RUN php artisan key:generate --force
+
+# Otimiza Laravel para produção
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
+
+# Define permissões corretas para storage e cache
+RUN chown -R www-data:www-data /var/www/html/core/storage /var/www/html/core/bootstrap/cache && \
+    chmod -R 775 /var/www/html/core/storage /var/www/html/core/bootstrap/cache
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
@@ -69,40 +109,97 @@ RUN apt-get update && apt-get install -y \
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
-# Copia aplicação
+# Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Corrige permissões
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
-
-# Configuração do Nginx
+# Configuração do Nginx para Laravel
 RUN echo 'server { \n\
     listen 8080; \n\
-    root /var/www/html; \n\
-    index index.php; \n\
+    server_name _; \n\
+    root /var/www/html/core/public; \n\
+    \n\
+    index index.php index.html; \n\
+    \n\
+    charset utf-8; \n\
+    \n\
+    # Security headers \n\
+    add_header X-Frame-Options "SAMEORIGIN" always; \n\
+    add_header X-Content-Type-Options "nosniff" always; \n\
+    add_header X-XSS-Protection "1; mode=block" always; \n\
+    \n\
+    # Logging \n\
+    access_log /var/log/nginx/access.log; \n\
+    error_log /var/log/nginx/error.log error; \n\
+    \n\
+    # Main location \n\
     location / { \n\
         try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
+    \n\
+    # PHP-FPM configuration \n\
     location ~ \.php$ { \n\
         fastcgi_pass 127.0.0.1:9000; \n\
         fastcgi_index index.php; \n\
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \n\
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name; \n\
         include fastcgi_params; \n\
+        fastcgi_buffers 16 16k; \n\
+        fastcgi_buffer_size 32k; \n\
     } \n\
+    \n\
+    # Static files optimization \n\
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ { \n\
+        expires 1y; \n\
+        access_log off; \n\
+        add_header Cache-Control "public, immutable"; \n\
+    } \n\
+    \n\
+    # Deny access to hidden files \n\
+    location ~ /\.(?!well-known).* { \n\
+        deny all; \n\
+    } \n\
+    \n\
+    # Deny access to sensitive files \n\
+    location ~ /\.env { \n\
+        deny all; \n\
+    } \n\
+    \n\
+    # Handle favicon and robots \n\
+    location = /favicon.ico { access_log off; log_not_found off; } \n\
+    location = /robots.txt  { access_log off; log_not_found off; } \n\
+    \n\
+    # 404 handling \n\
+    error_page 404 /index.php; \n\
 }' > /etc/nginx/sites-available/default
 
-# Configuração do Supervisor
+# Configuração do Supervisor com logs
 RUN echo '[supervisord] \n\
 nodaemon=true \n\
+logfile=/var/log/supervisor/supervisord.log \n\
+pidfile=/var/run/supervisord.pid \n\
+childlogdir=/var/log/supervisor \n\
+\n\
 [program:php-fpm] \n\
 command=php-fpm \n\
 autostart=true \n\
 autorestart=true \n\
+priority=5 \n\
+stdout_logfile=/dev/stdout \n\
+stdout_logfile_maxbytes=0 \n\
+stderr_logfile=/dev/stderr \n\
+stderr_logfile_maxbytes=0 \n\
+\n\
 [program:nginx] \n\
 command=nginx -g "daemon off;" \n\
 autostart=true \n\
-autorestart=true' > /etc/supervisor/conf.d/supervisord.conf
+autorestart=true \n\
+priority=10 \n\
+stdout_logfile=/dev/stdout \n\
+stdout_logfile_maxbytes=0 \n\
+stderr_logfile=/dev/stderr \n\
+stderr_logfile_maxbytes=0' > /etc/supervisor/conf.d/supervisord.conf
+
+# Cria diretórios de log
+RUN mkdir -p /var/log/supervisor /var/log/nginx
 
 EXPOSE 8080
 
