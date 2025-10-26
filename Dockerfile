@@ -52,12 +52,12 @@ RUN if [ ! -f .env ]; then \
         echo "APP_NAME=OvowppMax" > .env && \
         echo "APP_ENV=production" >> .env && \
         echo "APP_KEY=" >> .env && \
-        echo "APP_DEBUG=false" >> .env && \
+        echo "APP_DEBUG=true" >> .env && \
         echo "APP_URL=https://inteligenciamax.com.br" >> .env && \
         echo "" >> .env && \
         echo "LOG_CHANNEL=stack" >> .env && \
         echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env && \
-        echo "LOG_LEVEL=error" >> .env && \
+        echo "LOG_LEVEL=debug" >> .env && \
         echo "" >> .env && \
         echo "DB_CONNECTION=mysql" >> .env && \
         echo "DB_HOST=\${DB_HOST}" >> .env && \
@@ -119,9 +119,12 @@ RUN php artisan key:generate --force
 # Volta para o diretório raiz
 WORKDIR /var/www/html
 
+# Cria diretórios necessários se não existirem
+RUN mkdir -p core/storage/logs core/storage/framework/sessions core/storage/framework/views core/storage/framework/cache/data
+
 # Define permissões corretas para storage e cache
-RUN chown -R www-data:www-data /var/www/html/core/storage /var/www/html/core/bootstrap/cache && \
-    chmod -R 775 /var/www/html/core/storage /var/www/html/core/bootstrap/cache
+RUN chown -R www-data:www-data core/storage core/bootstrap/cache && \
+    chmod -R 775 core/storage core/bootstrap/cache
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
@@ -140,6 +143,13 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Configuração PHP para mostrar erros (desenvolvimento/debug)
+RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
+    echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
+    echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/display-errors.ini && \
+    echo "log_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
+    echo "error_log = /var/log/php_errors.log" >> /usr/local/etc/php/conf.d/display-errors.ini
+
 # Copia extensões PHP do builder
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
@@ -147,7 +157,7 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Configuração do Nginx - ROOT CORRETO: /var/www/html (não /core/public)
+# Configuração do Nginx - ROOT CORRETO: /var/www/html
 RUN echo 'server { \n\
     listen 8080; \n\
     server_name _; \n\
@@ -164,7 +174,7 @@ RUN echo 'server { \n\
     \n\
     # Logging \n\
     access_log /var/log/nginx/access.log; \n\
-    error_log /var/log/nginx/error.log error; \n\
+    error_log /var/log/nginx/error.log debug; \n\
     \n\
     # Main location \n\
     location / { \n\
@@ -179,6 +189,7 @@ RUN echo 'server { \n\
         include fastcgi_params; \n\
         fastcgi_buffers 16 16k; \n\
         fastcgi_buffer_size 32k; \n\
+        fastcgi_read_timeout 300; \n\
     } \n\
     \n\
     # Serve assets from /assets folder \n\
@@ -251,7 +262,8 @@ RUN mkdir -p /var/log/supervisor /var/log/nginx
 
 # Define permissões finais
 RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html
+    chmod -R 755 /var/www/html && \
+    chmod -R 775 /var/www/html/core/storage /var/www/html/core/bootstrap/cache
 
 EXPOSE 8080
 
