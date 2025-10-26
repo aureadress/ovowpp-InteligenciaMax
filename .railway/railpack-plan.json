@@ -1,25 +1,34 @@
 {
   "build": {
-    "php": {
-      "extensions": [
-        "ctype",
-        "curl",
-        "dom",
-        "fileinfo",
-        "filter",
-        "hash",
-        "mbstring",
-        "openssl",
-        "pcre",
-        "pdo",
-        "session",
-        "tokenizer",
-        "xml",
-        "pdo_mysql",
-        "bcmath",
-        "gd",
-        "gmp"
-      ]
+    "packages": {
+      "php": {
+        "version": "8.3",
+        "extensions": [
+          "ctype",
+          "curl",
+          "dom",
+          "fileinfo",
+          "filter",
+          "hash",
+          "mbstring",
+          "openssl",
+          "pcre",
+          "pdo",
+          "session",
+          "tokenizer",
+          "xml",
+          "pdo_mysql",
+          "bcmath",
+          "gd",
+          "gmp"
+        ]
+      },
+      "node": {
+        "version": "22"
+      }
+    },
+    "env": {
+      "APP_ENV": "production"
     }
   }
 }
