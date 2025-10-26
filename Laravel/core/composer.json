@@ -33,7 +33,23 @@
         "spatie/laravel-permission": "^6.21",
         "stripe/stripe-php": "^13.13",
         "twilio/sdk": "^7.16",
-        "vonage/client": "^4.0"
+        "vonage/client": "^4.0",
+        "ext-bcmath": "*",
+        "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-pdo_mysql": "*",
+        "ext-tokenizer": "*",
+        "ext-xml": "*",
+        "ext-filter": "*",
+        "ext-hash": "*",
+        "ext-session": "*",
+        "ext-zip": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -60,25 +76,26 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
+        "post-autoload-dump":,
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') |
+
+| copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php -r \"file_exists('database/database.sqlite') |
+
+| touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ]
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover":
         }
     },
     "config": {
