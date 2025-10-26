@@ -41,16 +41,12 @@ RUN docker-php-ext-install pdo_mysql \
 # Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia apenas os arquivos composer.json e composer.lock
-COPY Laravel/core/composer.json Laravel/core/composer.lock ./core/
+# Copia toda a aplicação Laravel PRIMEIRO
+COPY Laravel/ .
 
 # Instala dependências PHP
 WORKDIR /var/www/html/core
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
-
-# Copia toda a aplicação Laravel
-WORKDIR /var/www/html
-COPY Laravel/ .
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
