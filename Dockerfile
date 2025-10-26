@@ -44,10 +44,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia toda a aplicação Laravel
 COPY Laravel/ .
 
-# Navega para o diretório core para instalar dependências
-WORKDIR /var/www/html/core
+# Navega para o diretório correto do Laravel
+WORKDIR /var/www/html/Laravel/core
 
-# Cria arquivo .env com TODAS as variáveis necessárias
+# Cria arquivo .env com variáveis padrão (Railway substituirá as reais)
 RUN if [ ! -f .env ]; then \
         echo "APP_NAME=OvowppMax" > .env && \
         echo "APP_ENV=production" >> .env && \
@@ -73,12 +73,6 @@ RUN if [ ! -f .env ]; then \
         echo "SESSION_DRIVER=file" >> .env && \
         echo "SESSION_LIFETIME=120" >> .env && \
         echo "" >> .env && \
-        echo "MEMCACHED_HOST=127.0.0.1" >> .env && \
-        echo "" >> .env && \
-        echo "REDIS_HOST=127.0.0.1" >> .env && \
-        echo "REDIS_PASSWORD=null" >> .env && \
-        echo "REDIS_PORT=6379" >> .env && \
-        echo "" >> .env && \
         echo "MAIL_MAILER=smtp" >> .env && \
         echo "MAIL_HOST=mailpit" >> .env && \
         echo "MAIL_PORT=1025" >> .env && \
@@ -86,45 +80,27 @@ RUN if [ ! -f .env ]; then \
         echo "MAIL_PASSWORD=null" >> .env && \
         echo "MAIL_ENCRYPTION=null" >> .env && \
         echo "MAIL_FROM_ADDRESS=hello@example.com" >> .env && \
-        echo "MAIL_FROM_NAME=OvowppMax" >> .env && \
-        echo "" >> .env && \
-        echo "AWS_ACCESS_KEY_ID=" >> .env && \
-        echo "AWS_SECRET_ACCESS_KEY=" >> .env && \
-        echo "AWS_DEFAULT_REGION=us-east-1" >> .env && \
-        echo "AWS_BUCKET=" >> .env && \
-        echo "AWS_USE_PATH_STYLE_ENDPOINT=false" >> .env && \
-        echo "" >> .env && \
-        echo "PUSHER_APP_ID=" >> .env && \
-        echo "PUSHER_APP_KEY=" >> .env && \
-        echo "PUSHER_APP_SECRET=" >> .env && \
-        echo "PUSHER_HOST=" >> .env && \
-        echo "PUSHER_PORT=443" >> .env && \
-        echo "PUSHER_SCHEME=https" >> .env && \
-        echo "PUSHER_APP_CLUSTER=mt1" >> .env && \
-        echo "" >> .env && \
-        echo "VITE_APP_NAME=OvowppMax" >> .env && \
-        echo "VITE_PUSHER_APP_KEY=" >> .env && \
-        echo "VITE_PUSHER_HOST=" >> .env && \
-        echo "VITE_PUSHER_PORT=443" >> .env && \
-        echo "VITE_PUSHER_SCHEME=https" >> .env && \
-        echo "VITE_PUSHER_APP_CLUSTER=mt1" >> .env; \
+        echo "MAIL_FROM_NAME=OvowppMax" >> .env; \
     fi
 
-# Instala dependências PHP
+# Instala dependências PHP do Laravel
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
 
-# Gera APP_KEY (chave de criptografia do Laravel)
+# Gera APP_KEY (chave de criptografia)
 RUN php artisan key:generate --force
 
 # Volta para o diretório raiz
 WORKDIR /var/www/html
 
-# Cria diretórios necessários se não existirem
-RUN mkdir -p core/storage/logs core/storage/framework/sessions core/storage/framework/views core/storage/framework/cache/data
+# Cria diretórios necessários
+RUN mkdir -p Laravel/core/storage/logs \
+    Laravel/core/storage/framework/sessions \
+    Laravel/core/storage/framework/views \
+    Laravel/core/storage/framework/cache/data
 
-# Define permissões corretas para storage e cache
-RUN chown -R www-data:www-data core/storage core/bootstrap/cache && \
-    chmod -R 775 core/storage core/bootstrap/cache
+# Define permissões corretas
+RUN chown -R www-data:www-data Laravel/core/storage Laravel/core/bootstrap/cache && \
+    chmod -R 775 Laravel/core/storage Laravel/core/bootstrap/cache
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
@@ -143,7 +119,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Configuração PHP para mostrar erros (desenvolvimento/debug)
+# Configuração PHP (exibir erros no log)
 RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
     echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
     echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/display-errors.ini && \
@@ -157,31 +133,27 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Configuração do Nginx - ROOT CORRETO: /var/www/html/core/public
+# Configuração do Nginx com caminho correto
 RUN echo 'server { \n\
     listen 8080; \n\
     server_name _; \n\
-    root /var/www/html/core/public; \n\
+    root /var/www/html/Laravel/core/public; \n\
     \n\
     index index.php index.html; \n\
     \n\
     charset utf-8; \n\
     \n\
-    # Security headers \n\
     add_header X-Frame-Options "SAMEORIGIN" always; \n\
     add_header X-Content-Type-Options "nosniff" always; \n\
     add_header X-XSS-Protection "1; mode=block" always; \n\
     \n\
-    # Logging \n\
     access_log /var/log/nginx/access.log; \n\
     error_log /var/log/nginx/error.log debug; \n\
     \n\
-    # Main location \n\
     location / { \n\
         try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
     \n\
-    # PHP-FPM configuration \n\
     location ~ \.php$ { \n\
         fastcgi_pass 127.0.0.1:9000; \n\
         fastcgi_index index.php; \n\
@@ -192,7 +164,6 @@ RUN echo 'server { \n\
         fastcgi_read_timeout 300; \n\
     } \n\
     \n\
-    # Serve assets from /assets folder \n\
     location /assets/ { \n\
         try_files $uri =404; \n\
         expires 1y; \n\
@@ -200,32 +171,24 @@ RUN echo 'server { \n\
         add_header Cache-Control "public, immutable"; \n\
     } \n\
     \n\
-    # Static files optimization \n\
     location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ { \n\
         expires 1y; \n\
         access_log off; \n\
         add_header Cache-Control "public, immutable"; \n\
     } \n\
     \n\
-    # Deny access to hidden files \n\
     location ~ /\.(?!well-known).* { \n\
         deny all; \n\
     } \n\
-    \n\
-    # Deny access to sensitive files \n\
     location ~ /\.env { \n\
         deny all; \n\
     } \n\
-    \n\
-    # Handle favicon and robots \n\
     location = /favicon.ico { access_log off; log_not_found off; } \n\
     location = /robots.txt  { access_log off; log_not_found off; } \n\
-    \n\
-    # 404 handling \n\
     error_page 404 /index.php; \n\
 }' > /etc/nginx/sites-available/default
 
-# Configuração do Supervisor com logs
+# Configuração do Supervisor
 RUN echo '[supervisord] \n\
 nodaemon=true \n\
 logfile=/var/log/supervisor/supervisord.log \n\
@@ -258,14 +221,14 @@ RUN mkdir -p /var/log/supervisor /var/log/nginx
 # Define permissões finais
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html && \
-    chmod -R 775 /var/www/html/core/storage /var/www/html/core/bootstrap/cache
+    chmod -R 775 /var/www/html/Laravel/core/storage /var/www/html/Laravel/core/bootstrap/cache
 
 EXPOSE 8080
 
-# Script de inicialização com migrations
+# Script de inicialização
 RUN echo '#!/bin/bash\n\
 set -e\n\
-cd /var/www/html/core\n\
+cd /var/www/html/Laravel/core\n\
 echo "Limpando cache..."\n\
 php artisan config:clear || true\n\
 php artisan cache:clear || true\n\
