@@ -23,16 +23,15 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip xml dom
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Otimização de cache: Copia apenas os arquivos do Composer primeiro
-# Isso evita reinstalar tudo a cada mudança de código
 COPY Laravel/core/composer.json Laravel/core/composer.lock./core/
 
 # Define o diretório de trabalho para a pasta 'core' e instala as dependências
 WORKDIR /var/www/html/core
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
 
-# Volta para o diretório raiz do app e copia o restante dos arquivos
+# Volta para o diretório raiz do app e copia o restante dos arquivos da aplicação
 WORKDIR /var/www/html
-COPY Laravel/../
+COPY Laravel/..
 
 # ---------- Estágio 2: Runtime ----------
 FROM php:8.2-fpm
@@ -48,13 +47,12 @@ RUN apt-get update && apt-get install -y \
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 COPY --from=builder /var/www/html /var/www/html
 
-# Define o diretório de trabalho final para a pasta 'core', onde está o 'artisan'
-WORKDIR /var/www/html/core
-
 # Garante as permissões corretas
 RUN chown -R www-data:www-data /var/www/html
 
 # Expõe a porta que a Railway usará
 EXPOSE 8080
-# Executa o 'artisan serve' a partir do diretório 'core'
-CMD
+# O comando de inicialização original do seu Dockerfile.
+# Ele assume que o servidor web (Caddy/FrankenPHP) servirá a partir do diretório raiz /var/www/html
+# e que o index.php está lá.
+CMD ["php-fpm"]
