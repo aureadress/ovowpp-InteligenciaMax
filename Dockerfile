@@ -29,7 +29,8 @@ RUN docker-php-ext-install pdo_mysql bcmath ctype dom exif fileinfo gd mbstring 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Otimização de cache: Copia apenas os arquivos do Composer primeiro.
-COPY Laravel/core/composer.json Laravel/core/composer.lock ./core/
+# CORREÇÃO: Adicionado espaço entre os arquivos de origem e o destino.
+COPY Laravel/core/composer.json Laravel/core/composer.lock./core/
 
 # Define o diretório de trabalho para a pasta 'core' e instala as dependências do PHP.
 WORKDIR /var/www/html/core
@@ -37,11 +38,11 @@ RUN composer install --no-interaction --no-progress --no-dev --optimize-autoload
 
 # Volta para o diretório raiz e copia toda a aplicação (a pasta Laravel).
 WORKDIR /var/www/html
-COPY Laravel/ /var/www/html
+COPY Laravel/..
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
-WORKDIR /var/www/html
+WORKDIR /var/w ww/html
 
 # Instala apenas as bibliotecas de sistema mínimas necessárias para a execução.
 RUN apt-get update && apt-get install -y \
