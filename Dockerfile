@@ -116,10 +116,8 @@ RUN composer install --no-interaction --no-progress --no-dev --optimize-autoload
 # Gera APP_KEY (chave de criptografia do Laravel)
 RUN php artisan key:generate --force
 
-# NÃO faz cache de config (devido às variáveis do pusher.php)
-# Apenas otimiza rotas e views
-RUN php artisan route:cache && \
-    php artisan view:cache
+# NÃO FAZ NENHUM CACHE (devido ao problema com pusher.php)
+# O Laravel funcionará sem cache, apenas um pouco mais lento no primeiro acesso
 
 # Define permissões corretas para storage e cache
 RUN chown -R www-data:www-data /var/www/html/core/storage /var/www/html/core/bootstrap/cache && \
