@@ -37,7 +37,7 @@ RUN composer install --no-interaction --no-progress --no-dev --optimize-autoload
 
 # Volta para o diretório raiz e copia toda a aplicação (a pasta Laravel).
 WORKDIR /var/www/html
-COPY Laravel/.
+COPY Laravel/ /var/www/html
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
