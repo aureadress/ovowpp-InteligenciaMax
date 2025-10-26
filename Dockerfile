@@ -44,7 +44,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia toda a aplicação Laravel
 COPY Laravel/ .
 
-# Navega para o diretório core para instalar dependências
+# Navega para o diretório Laravel/core para instalar dependências
 WORKDIR /var/www/html/core
 
 # Cria arquivo .env com TODAS as variáveis necessárias
@@ -119,6 +119,15 @@ RUN php artisan key:generate --force
 # Volta para o diretório raiz
 WORKDIR /var/www/html
 
+# Cria pasta public se não existir e copia arquivos necessários
+RUN mkdir -p core/public && \
+    if [ ! -f core/public/index.php ]; then \
+        cp -f index.php core/public/ 2>/dev/null || true; \
+    fi && \
+    if [ ! -f core/public/.htaccess ]; then \
+        cp -f .htaccess core/public/ 2>/dev/null || true; \
+    fi
+
 # Cria diretórios necessários se não existirem
 RUN mkdir -p core/storage/logs core/storage/framework/sessions core/storage/framework/views core/storage/framework/cache/data
 
@@ -157,7 +166,7 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Configuração do Nginx - ROOT CORRETO: /var/www/html/core/public
+# Configuração do Nginx - ROOT EM /var/www/html/core/public + locations adicionais
 RUN echo 'server { \n\
     listen 8080; \n\
     server_name _; \n\
@@ -181,6 +190,28 @@ RUN echo 'server { \n\
         try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
     \n\
+    # Serve arquivos da pasta /assets (fora do public) \n\
+    location /assets/ { \n\
+        alias /var/www/html/assets/; \n\
+        try_files $uri =404; \n\
+        expires 1y; \n\
+        access_log off; \n\
+        add_header Cache-Control "public, immutable"; \n\
+    } \n\
+    \n\
+    # Serve arquivos da pasta /install (fora do public) \n\
+    location /install/ { \n\
+        alias /var/www/html/install/; \n\
+        try_files $uri $uri/ /install/index.php?$query_string; \n\
+        \n\
+        location ~ \.php$ { \n\
+            fastcgi_pass 127.0.0.1:9000; \n\
+            fastcgi_index index.php; \n\
+            fastcgi_param SCRIPT_FILENAME $request_filename; \n\
+            include fastcgi_params; \n\
+        } \n\
+    } \n\
+    \n\
     # PHP-FPM configuration \n\
     location ~ \.php$ { \n\
         fastcgi_pass 127.0.0.1:9000; \n\
@@ -190,14 +221,6 @@ RUN echo 'server { \n\
         fastcgi_buffers 16 16k; \n\
         fastcgi_buffer_size 32k; \n\
         fastcgi_read_timeout 300; \n\
-    } \n\
-    \n\
-    # Serve assets from /assets folder \n\
-    location /assets/ { \n\
-        try_files $uri =404; \n\
-        expires 1y; \n\
-        access_log off; \n\
-        add_header Cache-Control "public, immutable"; \n\
     } \n\
     \n\
     # Static files optimization \n\
