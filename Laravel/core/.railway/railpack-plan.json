@@ -1,0 +1,25 @@
+{
+  "setup": {
+    "php": {
+      "version": "8.3"
+    },
+    "node": {
+      "version": "22"
+    },
+    "phpExtensions": [
+      "ctype", "curl", "dom", "fileinfo", "filter", "hash", "mbstring",
+      "openssl", "pcre", "pdo", "session", "tokenizer", "xml", "pdo_mysql",
+      "bcmath",
+      "gd",
+      "gmp"
+    ]
+  },
+  "build": {
+    "prebuild": [
+      "chmod -R a+rw storage bootstrap/cache"
+    ],
+    "env": {
+      "APP_ENV": "production"
+    }
+  }
+}
