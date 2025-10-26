@@ -29,7 +29,7 @@ RUN docker-php-ext-install pdo_mysql bcmath ctype dom exif fileinfo gd mbstring 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Otimização de cache: Copia apenas os arquivos do Composer primeiro.
-COPY Laravel/core/composer.json Laravel/core/composer.lock./core/
+COPY Laravel/core/composer.json Laravel/core/composer.lock ./core/
 
 # Define o diretório de trabalho para a pasta 'core' e instala as dependências do PHP.
 WORKDIR /var/www/html/core
