@@ -3,7 +3,7 @@ FROM php:8.3-fpm AS builder
 
 WORKDIR /var/www/html
 
-# Instala dependências do sistema
+# Instala dependências do sistema necessárias para as extensões PHP
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -22,24 +22,24 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Configura GD primeiro
+# Configura GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-# Instala extensões PHP SEPARADAMENTE
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install gd
-RUN docker-php-ext-install zip
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install xml
-RUN docker-php-ext-install dom
-RUN docker-php-ext-install exif
-RUN docker-php-ext-install pcntl
+# Instala extensões PHP (sem tokenizer)
+RUN docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install zip \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install xml \
+    && docker-php-ext-install dom \
+    && docker-php-ext-install exif \
+    && docker-php-ext-install pcntl
 
-# Instala Composer
+# Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia arquivos do Composer da pasta Laravel/core
+# Copia apenas os arquivos composer.json e composer.lock
 COPY Laravel/core/composer.json Laravel/core/composer.lock ./core/
 
 # Instala dependências PHP
@@ -52,15 +52,14 @@ COPY Laravel/ .
 
 # ---------- Estágio 2: Runtime (Produção) ----------
 FROM php:8.3-fpm
-
 WORKDIR /var/www/html
 
-# Instala dependências de runtime + Nginx
+# Instala bibliotecas mínimas + Nginx + Supervisor
 RUN apt-get update && apt-get install -y \
     libfreetype6 \
     libjpeg62-turbo \
     libpng16-16 \
-    libzip5 \
+    libzip-dev \
     libxml2 \
     nginx \
     supervisor \
@@ -74,11 +73,11 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação
 COPY --from=builder /var/www/html /var/www/html
 
-# Configura permissões
+# Corrige permissões
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
-# Configuração Nginx - Aponta para index.php na raiz
+# Configuração do Nginx
 RUN echo 'server { \n\
     listen 8080; \n\
     root /var/www/html; \n\
@@ -94,7 +93,7 @@ RUN echo 'server { \n\
     } \n\
 }' > /etc/nginx/sites-available/default
 
-# Configuração Supervisor
+# Configuração do Supervisor
 RUN echo '[supervisord] \n\
 nodaemon=true \n\
 [program:php-fpm] \n\
