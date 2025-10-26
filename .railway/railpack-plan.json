@@ -5,11 +5,17 @@
     },
     "node": {
       "version": "22"
-    }
+    },
+    "phpExtensions": [
+      "ctype", "curl", "dom", "fileinfo", "filter", "hash", "mbstring",
+      "openssl", "pcre", "pdo", "session", "tokenizer", "xml", "pdo_mysql",
+      "bcmath",
+      "gd",
+      "gmp"
+    ]
   },
   "build": {
     "prebuild": [
-      "install-php-extensions bcmath gd gmp",
       "chmod -R a+rw storage bootstrap/cache"
     ],
     "env": {
