@@ -128,11 +128,12 @@ RUN mkdir -p core/public && \
         cp -f .htaccess core/public/ 2>/dev/null || true; \
     fi
 
-# Cria symlinks para que index.php encontre vendor e bootstrap
+# Cria symlinks para que index.php encontre vendor, bootstrap, storage e config
 RUN mkdir -p core/public/core && \
     ln -sf /var/www/html/core/vendor /var/www/html/core/public/core/vendor && \
     ln -sf /var/www/html/core/bootstrap /var/www/html/core/public/core/bootstrap && \
-    ln -sf /var/www/html/core/storage /var/www/html/core/public/core/storage
+    ln -sf /var/www/html/core/storage /var/www/html/core/public/core/storage && \
+    ln -sf /var/www/html/core/config /var/www/html/core/public/core/config
 
 # Cria diretórios necessários se não existirem
 RUN mkdir -p core/storage/logs core/storage/framework/sessions core/storage/framework/views core/storage/framework/cache/data
