@@ -41,10 +41,10 @@ RUN docker-php-ext-install pdo_mysql \
 # Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia toda a aplicação Laravel PRIMEIRO
+# Copia toda a aplicação Laravel
 COPY Laravel/ .
 
-# Navega para o diretório core
+# Navega para o diretório core para instalar dependências
 WORKDIR /var/www/html/core
 
 # Cria arquivo .env com TODAS as variáveis necessárias
@@ -116,8 +116,8 @@ RUN composer install --no-interaction --no-progress --no-dev --optimize-autoload
 # Gera APP_KEY (chave de criptografia do Laravel)
 RUN php artisan key:generate --force
 
-# NÃO FAZ NENHUM CACHE (devido ao problema com pusher.php)
-# O Laravel funcionará sem cache, apenas um pouco mais lento no primeiro acesso
+# Volta para o diretório raiz
+WORKDIR /var/www/html
 
 # Define permissões corretas para storage e cache
 RUN chown -R www-data:www-data /var/www/html/core/storage /var/www/html/core/bootstrap/cache && \
@@ -147,11 +147,11 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Configuração do Nginx para Laravel
+# Configuração do Nginx - ROOT CORRETO: /var/www/html (não /core/public)
 RUN echo 'server { \n\
     listen 8080; \n\
     server_name _; \n\
-    root /var/www/html/core/public; \n\
+    root /var/www/html; \n\
     \n\
     index index.php index.html; \n\
     \n\
@@ -175,10 +175,18 @@ RUN echo 'server { \n\
     location ~ \.php$ { \n\
         fastcgi_pass 127.0.0.1:9000; \n\
         fastcgi_index index.php; \n\
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name; \n\
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \n\
         include fastcgi_params; \n\
         fastcgi_buffers 16 16k; \n\
         fastcgi_buffer_size 32k; \n\
+    } \n\
+    \n\
+    # Serve assets from /assets folder \n\
+    location /assets/ { \n\
+        try_files $uri =404; \n\
+        expires 1y; \n\
+        access_log off; \n\
+        add_header Cache-Control "public, immutable"; \n\
     } \n\
     \n\
     # Static files optimization \n\
@@ -195,6 +203,11 @@ RUN echo 'server { \n\
     \n\
     # Deny access to sensitive files \n\
     location ~ /\.env { \n\
+        deny all; \n\
+    } \n\
+    \n\
+    # Deny access to core folder directly \n\
+    location ~ ^/core/ { \n\
         deny all; \n\
     } \n\
     \n\
@@ -235,6 +248,10 @@ stderr_logfile_maxbytes=0' > /etc/supervisor/conf.d/supervisord.conf
 
 # Cria diretórios de log
 RUN mkdir -p /var/log/supervisor /var/log/nginx
+
+# Define permissões finais
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
 EXPOSE 8080
 
