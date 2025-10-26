@@ -1,32 +1,17 @@
 {
-  "build": {
-    "packages": {
-      "php": {
-        "version": "8.3",
-        "extensions": [
-          "ctype",
-          "curl",
-          "dom",
-          "fileinfo",
-          "filter",
-          "hash",
-          "mbstring",
-          "openssl",
-          "pcre",
-          "pdo",
-          "session",
-          "tokenizer",
-          "xml",
-          "pdo_mysql",
-          "bcmath",
-          "gd",
-          "gmp"
-        ]
-      },
-      "node": {
-        "version": "22"
-      }
+  "setup": {
+    "php": {
+      "version": "8.3"
     },
+    "node": {
+      "version": "22"
+    }
+  },
+  "build": {
+    "prebuild": [
+      "install-php-extensions bcmath gd gmp",
+      "chmod -R a+rw storage bootstrap/cache"
+    ],
     "env": {
       "APP_ENV": "production"
     }
