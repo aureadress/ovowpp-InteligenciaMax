@@ -29,7 +29,11 @@
   "build": {
     "prebuild": [
       "install-php-extensions bcmath gd gmp",
-      "chmod -R a+rw storage bootstrap/cache"
+      "echo '✔ Extensões PHP instaladas antes do Composer!'"
+    ],
+    "postbuild": [
+      "chmod -R a+rw storage bootstrap/cache",
+      "echo '✔ Permissões ajustadas e build finalizado'"
     ],
     "env": {
       "APP_ENV": "production"
