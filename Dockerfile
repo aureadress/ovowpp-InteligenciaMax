@@ -44,15 +44,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia toda a aplicação Laravel
 COPY Laravel/ .
 
+# Copia .env da raiz do Laravel para dentro do core se não existir em core
+RUN if [ -f .env ] && [ ! -f core/.env ]; then \
+        cp -f .env core/.env; \
+    fi
+
 # Navega para o diretório Laravel/core para instalar dependências
 WORKDIR /var/www/html/core
 
-# Cria arquivo .env com TODAS as variáveis necessárias
+# Cria arquivo .env com TODAS as variáveis necessárias (APENAS SE NÃO EXISTIR)
 RUN if [ ! -f .env ]; then \
-        echo "APP_NAME=OvowppMax" > .env && \
+        echo "APP_NAME=InteligenciaMax" > .env && \
         echo "APP_ENV=production" >> .env && \
         echo "APP_KEY=" >> .env && \
-        echo "APP_DEBUG=true" >> .env && \
+        echo "APP_DEBUG=false" >> .env && \
         echo "APP_URL=https://inteligenciamax.com.br" >> .env && \
         echo "" >> .env && \
         echo "LOG_CHANNEL=stack" >> .env && \
@@ -66,7 +71,7 @@ RUN if [ ! -f .env ]; then \
         echo "DB_USERNAME=\${DB_USERNAME}" >> .env && \
         echo "DB_PASSWORD=\${DB_PASSWORD}" >> .env && \
         echo "" >> .env && \
-        echo "BROADCAST_DRIVER=log" >> .env && \
+        echo "BROADCAST_DRIVER=pusher" >> .env && \
         echo "CACHE_DRIVER=file" >> .env && \
         echo "FILESYSTEM_DISK=local" >> .env && \
         echo "QUEUE_CONNECTION=sync" >> .env && \
@@ -86,7 +91,7 @@ RUN if [ ! -f .env ]; then \
         echo "MAIL_PASSWORD=null" >> .env && \
         echo "MAIL_ENCRYPTION=null" >> .env && \
         echo "MAIL_FROM_ADDRESS=hello@example.com" >> .env && \
-        echo "MAIL_FROM_NAME=OvowppMax" >> .env && \
+        echo "MAIL_FROM_NAME=InteligenciaMax" >> .env && \
         echo "" >> .env && \
         echo "AWS_ACCESS_KEY_ID=" >> .env && \
         echo "AWS_SECRET_ACCESS_KEY=" >> .env && \
@@ -102,7 +107,7 @@ RUN if [ ! -f .env ]; then \
         echo "PUSHER_SCHEME=https" >> .env && \
         echo "PUSHER_APP_CLUSTER=mt1" >> .env && \
         echo "" >> .env && \
-        echo "VITE_APP_NAME=OvowppMax" >> .env && \
+        echo "VITE_APP_NAME=InteligenciaMax" >> .env && \
         echo "VITE_PUSHER_APP_KEY=" >> .env && \
         echo "VITE_PUSHER_HOST=" >> .env && \
         echo "VITE_PUSHER_PORT=443" >> .env && \
