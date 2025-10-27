@@ -3,7 +3,7 @@ FROM php:8.3-fpm AS builder
 
 WORKDIR /var/www/html
 
-# Instala dependências do sistema necessárias para as extensões PHP
+# Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -18,145 +18,38 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libgmp-dev \
-    nginx \
-    supervisor \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configura GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-# Instala extensões PHP (incluindo gmp)
-RUN docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install bcmath \
-    && docker-php-ext-install gd \
-    && docker-php-ext-install zip \
-    && docker-php-ext-install mbstring \
-    && docker-php-ext-install xml \
-    && docker-php-ext-install dom \
-    && docker-php-ext-install exif \
-    && docker-php-ext-install pcntl \
-    && docker-php-ext-install gmp
+# Instala extensões PHP
+RUN docker-php-ext-install pdo_mysql bcmath gd zip mbstring xml dom exif pcntl gmp
 
 # Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia toda a aplicação Laravel
+# Copia toda a aplicação (pastas Laravel/core, Laravel/assets, etc)
 COPY Laravel/ .
 
-# Copia .env da raiz do Laravel para dentro do core se não existir em core
-RUN if [ -f .env ] && [ ! -f core/.env ]; then \
-        cp -f .env core/.env; \
-    fi
-
-# Navega para o diretório Laravel/core para instalar dependências
+# Navega para o diretório core para instalar dependências
 WORKDIR /var/www/html/core
-
-# Cria arquivo .env com TODAS as variáveis necessárias (APENAS SE NÃO EXISTIR)
-RUN if [ ! -f .env ]; then \
-        echo "APP_NAME=InteligenciaMax" > .env && \
-        echo "APP_ENV=production" >> .env && \
-        echo "APP_KEY=" >> .env && \
-        echo "APP_DEBUG=false" >> .env && \
-        echo "APP_URL=https://inteligenciamax.com.br" >> .env && \
-        echo "" >> .env && \
-        echo "LOG_CHANNEL=stack" >> .env && \
-        echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env && \
-        echo "LOG_LEVEL=debug" >> .env && \
-        echo "" >> .env && \
-        echo "DB_CONNECTION=mysql" >> .env && \
-        echo "DB_HOST=\${DB_HOST}" >> .env && \
-        echo "DB_PORT=\${DB_PORT}" >> .env && \
-        echo "DB_DATABASE=\${DB_DATABASE}" >> .env && \
-        echo "DB_USERNAME=\${DB_USERNAME}" >> .env && \
-        echo "DB_PASSWORD=\${DB_PASSWORD}" >> .env && \
-        echo "" >> .env && \
-        echo "BROADCAST_DRIVER=pusher" >> .env && \
-        echo "CACHE_DRIVER=file" >> .env && \
-        echo "FILESYSTEM_DISK=local" >> .env && \
-        echo "QUEUE_CONNECTION=sync" >> .env && \
-        echo "SESSION_DRIVER=file" >> .env && \
-        echo "SESSION_LIFETIME=120" >> .env && \
-        echo "" >> .env && \
-        echo "MEMCACHED_HOST=127.0.0.1" >> .env && \
-        echo "" >> .env && \
-        echo "REDIS_HOST=127.0.0.1" >> .env && \
-        echo "REDIS_PASSWORD=null" >> .env && \
-        echo "REDIS_PORT=6379" >> .env && \
-        echo "" >> .env && \
-        echo "MAIL_MAILER=smtp" >> .env && \
-        echo "MAIL_HOST=mailpit" >> .env && \
-        echo "MAIL_PORT=1025" >> .env && \
-        echo "MAIL_USERNAME=null" >> .env && \
-        echo "MAIL_PASSWORD=null" >> .env && \
-        echo "MAIL_ENCRYPTION=null" >> .env && \
-        echo "MAIL_FROM_ADDRESS=hello@example.com" >> .env && \
-        echo "MAIL_FROM_NAME=InteligenciaMax" >> .env && \
-        echo "" >> .env && \
-        echo "AWS_ACCESS_KEY_ID=" >> .env && \
-        echo "AWS_SECRET_ACCESS_KEY=" >> .env && \
-        echo "AWS_DEFAULT_REGION=us-east-1" >> .env && \
-        echo "AWS_BUCKET=" >> .env && \
-        echo "AWS_USE_PATH_STYLE_ENDPOINT=false" >> .env && \
-        echo "" >> .env && \
-        echo "PUSHER_APP_ID=" >> .env && \
-        echo "PUSHER_APP_KEY=" >> .env && \
-        echo "PUSHER_APP_SECRET=" >> .env && \
-        echo "PUSHER_HOST=" >> .env && \
-        echo "PUSHER_PORT=443" >> .env && \
-        echo "PUSHER_SCHEME=https" >> .env && \
-        echo "PUSHER_APP_CLUSTER=mt1" >> .env && \
-        echo "" >> .env && \
-        echo "VITE_APP_NAME=InteligenciaMax" >> .env && \
-        echo "VITE_PUSHER_APP_KEY=" >> .env && \
-        echo "VITE_PUSHER_HOST=" >> .env && \
-        echo "VITE_PUSHER_PORT=443" >> .env && \
-        echo "VITE_PUSHER_SCHEME=https" >> .env && \
-        echo "VITE_PUSHER_APP_CLUSTER=mt1" >> .env; \
-    fi
 
 # Instala dependências PHP
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
 
-# Gera APP_KEY (chave de criptografia do Laravel)
+# Gera APP_KEY (necessário para o cache)
+# Não se preocupe, o Railway vai injetar a APP_KEY correta em produção.
 RUN php artisan key:generate --force
 
-# Volta para o diretório raiz
+# Otimiza para produção
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
+
+# Define permissões
 WORKDIR /var/www/html
-
-# Cria pasta public e CRIA index.php com caminhos corretos
-RUN mkdir -p core/public && \
-    echo '<?php' > core/public/index.php && \
-    echo '' >> core/public/index.php && \
-    echo 'use Illuminate\Http\Request;' >> core/public/index.php && \
-    echo '' >> core/public/index.php && \
-    echo 'define("LARAVEL_START", microtime(true));' >> core/public/index.php && \
-    echo '' >> core/public/index.php && \
-    echo 'if (file_exists($maintenance = __DIR__ . "/../storage/framework/maintenance.php")) {' >> core/public/index.php && \
-    echo '    require $maintenance;' >> core/public/index.php && \
-    echo '}' >> core/public/index.php && \
-    echo '' >> core/public/index.php && \
-    echo 'require __DIR__ . "/../vendor/autoload.php";' >> core/public/index.php && \
-    echo '' >> core/public/index.php && \
-    echo '(require_once __DIR__ . "/../bootstrap/app.php")' >> core/public/index.php && \
-    echo '    ->handleRequest(Request::capture());' >> core/public/index.php
-
-# Copia .htaccess se existir
-RUN if [ -f .htaccess ]; then \
-        cp -f .htaccess core/public/ 2>/dev/null || true; \
-    fi
-
-# Cria symlinks para que index.php encontre vendor, bootstrap, storage e config
-RUN mkdir -p core/public/core && \
-    ln -sf /var/www/html/core/vendor /var/www/html/core/public/core/vendor && \
-    ln -sf /var/www/html/core/bootstrap /var/www/html/core/public/core/bootstrap && \
-    ln -sf /var/www/html/core/storage /var/www/html/core/public/core/storage && \
-    ln -sf /var/www/html/core/config /var/www/html/core/public/core/config
-
-# Cria diretórios necessários se não existirem
-RUN mkdir -p core/storage/logs core/storage/framework/sessions core/storage/framework/views core/storage/framework/cache/data
-
-# Define permissões corretas para storage e cache
 RUN chown -R www-data:www-data core/storage core/bootstrap/cache && \
     chmod -R 775 core/storage core/bootstrap/cache
 
@@ -177,12 +70,12 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Configuração PHP para mostrar erros (desenvolvimento/debug)
-RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
-    echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
-    echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/display-errors.ini && \
-    echo "log_errors = On" >> /usr/local/etc/php/conf.d/display-errors.ini && \
-    echo "error_log = /var/log/php_errors.log" >> /usr/local/etc/php/conf.d/display-errors.ini
+# Configuração PHP para NÃO mostrar erros em produção
+RUN echo "display_errors = Off" > /usr/local/etc/php/conf.d/errors.ini && \
+    echo "display_startup_errors = Off" >> /usr/local/etc/php/conf.d/errors.ini && \
+    echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/errors.ini && \
+    echo "log_errors = On" >> /usr/local/etc/php/conf.d/errors.ini && \
+    echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/errors.ini
 
 # Copia extensões PHP do builder
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
@@ -191,40 +84,26 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Copia aplicação compilada do builder
 COPY --from=builder /var/www/html /var/www/html
 
-# Configuração do Nginx - ROOT EM /var/www/html/core/public + locations adicionais
+# Configuração do Nginx (com os aliases para /assets e /install)
 RUN echo 'server { \n\
     listen 8080; \n\
     server_name _; \n\
     root /var/www/html/core/public; \n\
-    \n\
-    index index.php index.html; \n\
-    \n\
+    index index.php; \n\
     charset utf-8; \n\
     \n\
-    # Security headers \n\
-    add_header X-Frame-Options "SAMEORIGIN" always; \n\
-    add_header X-Content-Type-Options "nosniff" always; \n\
-    add_header X-XSS-Protection "1; mode=block" always; \n\
+    access_log /dev/stdout; \n\
+    error_log /dev/stderr debug; \n\
     \n\
-    # Logging \n\
-    access_log /var/log/nginx/access.log; \n\
-    error_log /var/log/nginx/error.log debug; \n\
-    \n\
-    # Main location \n\
     location / { \n\
         try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
     \n\
-    # Serve arquivos da pasta /assets (fora do public) \n\
     location /assets/ { \n\
         alias /var/www/html/assets/; \n\
         try_files $uri =404; \n\
-        expires 1y; \n\
-        access_log off; \n\
-        add_header Cache-Control "public, immutable"; \n\
     } \n\
     \n\
-    # Serve arquivos da pasta /install (fora do public) \n\
     location /install/ { \n\
         alias /var/www/html/install/; \n\
         try_files $uri $uri/ /install/index.php?$query_string; \n\
@@ -237,48 +116,23 @@ RUN echo 'server { \n\
         } \n\
     } \n\
     \n\
-    # PHP-FPM configuration \n\
     location ~ \.php$ { \n\
         fastcgi_pass 127.0.0.1:9000; \n\
         fastcgi_index index.php; \n\
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \n\
         include fastcgi_params; \n\
-        fastcgi_buffers 16 16k; \n\
-        fastcgi_buffer_size 32k; \n\
-        fastcgi_read_timeout 300; \n\
     } \n\
     \n\
-    # Static files optimization \n\
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ { \n\
-        expires 1y; \n\
-        access_log off; \n\
-        add_header Cache-Control "public, immutable"; \n\
-    } \n\
-    \n\
-    # Deny access to hidden files \n\
     location ~ /\.(?!well-known).* { \n\
         deny all; \n\
     } \n\
-    \n\
-    # Deny access to sensitive files \n\
-    location ~ /\.env { \n\
-        deny all; \n\
-    } \n\
-    \n\
-    # Handle favicon and robots \n\
-    location = /favicon.ico { access_log off; log_not_found off; } \n\
-    location = /robots.txt  { access_log off; log_not_found off; } \n\
-    \n\
-    # 404 handling \n\
-    error_page 404 /index.php; \n\
 }' > /etc/nginx/sites-available/default
 
-# Configuração do Supervisor com logs
+# Configuração do Supervisor
 RUN echo '[supervisord] \n\
 nodaemon=true \n\
-logfile=/var/log/supervisor/supervisord.log \n\
+logfile=/dev/null \n\
 pidfile=/var/run/supervisord.pid \n\
-childlogdir=/var/log/supervisor \n\
 \n\
 [program:php-fpm] \n\
 command=php-fpm \n\
@@ -300,25 +154,15 @@ stdout_logfile_maxbytes=0 \n\
 stderr_logfile=/dev/stderr \n\
 stderr_logfile_maxbytes=0' > /etc/supervisor/conf.d/supervisord.conf
 
-# Cria diretórios de log
-RUN mkdir -p /var/log/supervisor /var/log/nginx
-
 # Define permissões finais
 RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html && \
-    chmod -R 775 /var/www/html/core/storage /var/www/html/core/bootstrap/cache
+    chmod -R 755 /var/www/html
 
 EXPOSE 8080
 
-# Script de inicialização com migrations
+# Script de inicialização (SEM MIGRATIONS)
 RUN echo '#!/bin/bash\n\
 set -e\n\
-cd /var/www/html/core\n\
-echo "Limpando cache..."\n\
-php artisan config:clear || true\n\
-php artisan cache:clear || true\n\
-echo "Executando migrations..."\n\
-php artisan migrate --force || echo "Migrations falharam, continuando..."\n\
 echo "Iniciando supervisor..."\n\
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf' > /start.sh && chmod +x /start.sh
 
