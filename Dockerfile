@@ -33,14 +33,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia toda a aplicação (pastas Laravel/core, Laravel/assets, etc)
 COPY Laravel/ .
 
+# -------------------------------------------------------------------
+#  >>> LINHA ADICIONADA AQUI <<<
+# Copia o .env da raiz para dentro do core, para o build funcionar
+# Este .env não será usado em produção, apenas para o build
+RUN if [ -f .env ]; then cp .env core/.env; fi
+# -------------------------------------------------------------------
+
 # Navega para o diretório core para instalar dependências
 WORKDIR /var/www/html/core
 
 # Instala dependências PHP
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
 
-# Gera APP_KEY (necessário para o cache)
-# Não se preocupe, o Railway vai injetar a APP_KEY correta em produção.
+# Gera APP_KEY (agora vai funcionar)
 RUN php artisan key:generate --force
 
 # Otimiza para produção
