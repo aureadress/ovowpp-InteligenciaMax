@@ -1,7 +1,6 @@
 # ---------- Estágio 1: Builder (Construtor) ----------
 FROM php:8.3-fpm AS builder
 
-WORKDIR /var/www/html
 
 # Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
@@ -30,18 +29,6 @@ RUN docker-php-ext-install pdo_mysql bcmath gd zip mbstring xml dom exif pcntl g
 # Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia toda a aplicação (pastas Laravel/core, Laravel/assets, etc)
-COPY Laravel/ .
-
-# -------------------------------------------------------------------
-#  >>> LINHA ADICIONADA AQUI <<<
-# Copia o .env da raiz para dentro do core, para o build funcionar
-# Este .env não será usado em produção, apenas para o build
-RUN if [ -f .env ]; then cp .env core/.env; fi
-# -------------------------------------------------------------------
-
-# Navega para o diretório core para instalar dependências
-WORKDIR /var/www/html/core
 
 # Instala dependências PHP
 RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader
